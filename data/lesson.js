@@ -1,21 +1,12 @@
 import path from "path";
 import fs from "fs/promises";
-import * as matter from "gray-matter";
+import matter from "gray-matter";
 import { titleCase } from "title-case";
 import { marked } from "marked";
 import hljs from "highlight.js";
 
-marked.setOptions({
-  baseUrl: process.env.BASE_URL ? process.env.BASE_URL + "/" : "/",
-  highlight: function (code, lang) {
-    const language = hljs.getLanguage(lang) ? lang : "plaintext";
-    return hljs.highlight(code, { language }).value;
-  },
-  langPrefix: "hljs language-",
-});
-
 const DEFAULT_ICON = "info-circle";
-const lessonsPath = path.join(process.env.ROOT, "lessons");
+const lessonsPath = path.join(process.cwd(), "lessons");
 
 function getTitle(slug, override) {
   let title = override;
@@ -52,6 +43,15 @@ function slugify(inputPath) {
 }
 
 export async function getLessons() {
+  marked.setOptions({
+    baseUrl: process.env.BASE_URL ? process.env.BASE_URL + "/" : "/",
+    highlight: function (code, lang) {
+      const language = hljs.getLanguage(lang) ? lang : "plaintext";
+      return hljs.highlight(code, { language }).value;
+    },
+    langPrefix: "hljs language-",
+  });
+
   const dir = await fs.readdir(lessonsPath);
   const sections = [];
 
@@ -103,8 +103,9 @@ export async function getLessons() {
         slug,
         fullSlug: `/lessons/${sectionSlug}/${slug}`,
         title,
-        order: `${sectionOrder}${lessonOrder}`,
+        order: `${sectionOrder}${lessonOrder.toUpperCase()}`,
         path: filePath,
+        description: data.description ? data.description : "",
       });
     }
 

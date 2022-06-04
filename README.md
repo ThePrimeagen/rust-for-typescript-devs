@@ -31,6 +31,7 @@ This json file allows you to configure the details of the site. Update the info 
 - _description_ – The description you want to show up in search engine results.
 - _keywords_ – The SEO keywords for this course. An array of strings
 - _productionBaseUrl_ – Typically useful for GitHub Pages. This adds a base path to your project. For GitHub Pages, this will be the name of your repo. For example, this site's base URL is `/next-course-starter` because the production URL for this site is `btholt.github.io/next-course-starer`. Do note this will also make your dev server's base URL this as well so you can catch problems before they go to production.
+- _csvPath_ – A CSV with the meta data for your lessons will be created at this path when you build the project. If you delete this config option it will not generate a CSV.
 
 ### styles/variables.css
 
@@ -53,6 +54,10 @@ The image that will be used if someone shares your website to Twitter/Facebook/e
 ### public/images/course-icon.png
 
 The image at the top of the course. If you call it this, you won't have to change any code. If you do need to change it, it's in `pages/index.js`
+
+## Favicon
+
+Just replace the favicon\* files and the apple-touch-icon.png in the public/images directory. If you have a PNG, [favicon.io](https://favicon.io) will generate these files for you. If you don't want favicons, just remove the references to them in `pages/_app.js`.
 
 ## Lessons
 
@@ -96,14 +101,8 @@ By default the GitHub Action looks for a `main` branch, so be sure you're using 
 
 - [This repo itself](https://btholt.github.io/next-course-starter/)
 - [Complete Intro to React v6](https://btholt.github.io/next-react-v6/)
-
-## CSV
-
-**Not implemented yet, but coming soon**.
-
-If you run `npm run csv`, a CSV will be generated with all the various lessons' frontmatter outputted to `public/lessons.csv`. You can change the path by changing the `OUTPUT_CSV_PATH` environment variable.
-
-Another CSV will be output to `public/links.csv` where it pull all the links out of each lesson and put them into a CSV. This path can be modified by setting the `LINKS_CSV_PATH` environment variable.
+- [Complete Intro to React v7](https://btholt.github.io/complete-intro-to-react-v7/)
+- [Complete Intro to Web Dev v3](https://btholt.github.io/complete-intro-to-web-dev-v3/)
 
 ## npm commands
 
@@ -111,6 +110,13 @@ Another CSV will be output to `public/links.csv` where it pull all the links out
 - `npm run build` - Build your site for production. This will still include the Next.js server run time. Use this if you're using something like Vercel to host your site.
 - `npm run export` - Builds your site statically, use this if you're going to deploy to GitHub Pages, S3, or somewhere else with no server. This will run next build and then next export (no need to run build yourself first.)
 - `npm run start` - Start an already-built server.
+- `npm run csv` – Will generate the CSV of the metadata from your course. Note you may have to run build first, depending on your csvPath.
+
+## Analytics
+
+By default this doesn't generate any analytics. If you are creating a Frontend Masters course and would like a weekly report of analytics, contact me (Brian Holt) and I'll give you a snippet to drop on your page (though fair warning, I will also have access to your data, if that bothers you.)
+
+Otherwise I'm pretty pleased with [Simple Analytics](referral.simpleanalytics.com/brian) (this is a referral link, free month for me and free month for you); I've been using them for my courses personally.
 
 ## License
 
