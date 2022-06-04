@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && npm run csv",
-    "export": "next build && next export",
+    "export": "next build && next export && npm run csv",
     "start": "next start",
     "csv": "node csv/index.js"
   },

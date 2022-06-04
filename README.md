@@ -31,7 +31,7 @@ This json file allows you to configure the details of the site. Update the info 
 - _description_ – The description you want to show up in search engine results.
 - _keywords_ – The SEO keywords for this course. An array of strings
 - _productionBaseUrl_ – Typically useful for GitHub Pages. This adds a base path to your project. For GitHub Pages, this will be the name of your repo. For example, this site's base URL is `/next-course-starter` because the production URL for this site is `btholt.github.io/next-course-starer`. Do note this will also make your dev server's base URL this as well so you can catch problems before they go to production.
-- _csvPath_ – A CSV with the meta data for your lessons will be created at this path when you build the project. If you delete this config option it will not generate a CSV.
+- _csvPath_ – A CSV with the meta data for your lessons will be created at this path when you build or export the project. If you delete this config option it will not generate a CSV.
 
 ### styles/variables.css
 
