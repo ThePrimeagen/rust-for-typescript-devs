@@ -97,6 +97,8 @@ It also includes a GitHub Action to automatically deploy to your gh-pages branch
 
 By default the GitHub Action looks for a `main` branch, so be sure you're using that instead of `master`.
 
+If you want a custom domain, make sure you uncomment the `fqdn` field in [.github/workflows/next.yaml][] file and put your custom domain. If you don't do that and only set it up with the GitHub web GUI, every deploy will break the custom domain.
+
 ## Example Sites
 
 - [This repo itself](https://btholt.github.io/next-course-starter/)
