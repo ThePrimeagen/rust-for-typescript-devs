@@ -1,9 +1,9 @@
 import React from "react";
 import Gh from "./github";
 import Tw from "./twitter";
-import Li from "./linkedin";
+import Twitch from "./twitch";
 
-export default function Footer({ twitter, linkedin, github }) {
+export default function Footer({ twitter, twitch, github }) {
   return (
     <footer className="footer">
       <ul className="socials">
@@ -21,10 +21,10 @@ export default function Footer({ twitter, linkedin, github }) {
             </a>
           </li>
         ) : null}
-        {linkedin ? (
+        {twitch ? (
           <li className="social">
-            <a href={`https://linkedin.com/in/${linkedin}`}>
-              <Li />
+            <a href={`https://twitch.tv/${twitch}`}>
+              <Twitch />
             </a>
           </li>
         ) : null}

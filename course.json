@@ -1,18 +1,18 @@
 {
   "author": {
-    "name": "Brian Holt",
-    "company": "Stripe"
+    "name": "ThePrimeagen",
+    "company": "ThePrimeagen"
   },
-  "title": "Next.js Course Starter Kit",
+  "title": "Rust For Typescript Devs",
   "subtitle": "for Frontend Masters",
   "frontendMastersLink": "https://frontendmasters.com/courses/complete-react-v6/",
   "social": {
-    "linkedin": "btholt",
-    "github": "btholt",
-    "twitter": "holtbt"
+    "twitch": "theprimeagen",
+    "github": "theprimeagen",
+    "twitter": "theprimeagen"
   },
-  "description": "A starter kit for making really amazing courses, optimized for Frontend Masters",
-  "keywords": ["your", "Google", "keywords", "here"],
-  "productionBaseUrl": "/next-course-starter",
+  "description": "The greatest course you will ever take on rust for a typescript dev.",
+  "keywords": ["Rust", "Rustlang", "Typescript", "JavaScript"],
+  "productionBaseUrl": "/rust-for-typescript-dev",
   "csvPath": "./out/lessons.csv"
 }

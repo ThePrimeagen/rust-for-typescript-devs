@@ -25,7 +25,7 @@ This json file allows you to configure the details of the site. Update the info 
 - _title_ – The title of your course
 - _subtitle_ – The subtitle of your course. Optional.
 - _frontendMastersLink_ – A link to the published video on FrontendMasters.com. Optional.
-- _social.linkedin_ - Your LinkedIn public user name, just the name, not the full link. Optional
+- _social.twitch -
 - _social.twitter_ – Your Twitter user name. Optional.
 - _social.github_ – Your GitHub user name. Optional.
 - _description_ – The description you want to show up in search engine results.

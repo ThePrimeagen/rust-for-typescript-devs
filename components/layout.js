@@ -20,7 +20,7 @@ function Layout({ children }) {
           <Footer
             twitter={courseInfo.social.twitter}
             github={courseInfo.social.github}
-            linkedin={courseInfo.social.linkedin}
+            twitch={courseInfo.social.twitch}
           />
         </div>
       </HeaderProvider>
