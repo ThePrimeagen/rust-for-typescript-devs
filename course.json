@@ -13,6 +13,6 @@
   },
   "description": "The greatest course you will ever take on rust for a typescript dev.",
   "keywords": ["Rust", "Rustlang", "Typescript", "JavaScript"],
-  "productionBaseUrl": "/rust-for-typescript-dev",
+  "productionBaseUrl": "/rust-for-typescript-devs",
   "csvPath": "./out/lessons.csv"
 }
