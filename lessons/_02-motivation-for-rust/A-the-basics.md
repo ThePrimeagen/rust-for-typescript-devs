@@ -163,6 +163,24 @@ fn foo() -> usize {
 }
 ```
 
+### Closures
+```typescript
+(x) => {
+    return x;
+}
+
+// or auto return x + 1 like
+(x) => x + 1
+```
+
+```rust
+|x| {
+    return x;
+}
+
+|x| x + 1
+```
+
 ### Class and Methods
 This one is where the truest magic happens
 
