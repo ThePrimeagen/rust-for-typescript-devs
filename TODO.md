@@ -2,6 +2,26 @@
 Basic language run through
 - basic differences
 - Numbers
+- String vs &str // partial ownership question, mention that
+- Stack vs Heap
+- Vector
+
+## The big three to help understand rust
+Iterator
+- for_each
+- map / collect
+- filter
+- sum
+- count
+- position
+
+Options
+- get(i) in vector
+
+Results
+- read file
+- anyhow package
+- explain why not thiserror
 
 Read File filled with numbers and sum it
 - results
@@ -25,9 +45,23 @@ Start with FS read json, parse json, and print json
 - basics about iterators
 - options
 
-Working with Options & Errors
-
 Basic Traits
+- FromStr
+- An example of TraitExt!
+- your own iterator!
+  - skip other
+- your own collect!
+  - Point object
+
+### ownership
+Lets talk about it!
+- references vs values
+- the examples from yt!
+
+### Advanced
+- iterator and ownership
+- interion mutability
+- sizing and passing traits
 
 ## Ordering
 - Language run through.
@@ -106,4 +140,3 @@ Cargo install instructions
 Setup project directory so that we can run things right away
 Disable Inlay hints for vscoders
 References, Strings, Slices, mutable references
-
