@@ -109,34 +109,12 @@ Lets talk about it!
 * mutable things... with many references
 - rc and refcell
 
-### Vectors
-
-### Option
-
-### Iterators
-- vectors
-- debug print
-- let var mut
-- pattern matching if statements
-- tuples
-- closures
-- collect, turbofish
-
-### Enums
-- iterators
-- results
-- options
-- vector
-  - declaration
-  - for loop
-- Basics about Strings / numbers
-- parsing, turbofish
-- debug print
-
-
 ### Things to remember
 An intro?
 Cargo install instructions
 Setup project directory so that we can run things right away
+- consider main file for the first bit
 Disable Inlay hints for vscoders
 References, Strings, Slices, mutable references
+Why learn rust?
+Mutability
