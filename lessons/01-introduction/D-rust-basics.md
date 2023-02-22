@@ -3,6 +3,30 @@ title: "Rust Basics"
 description: "Some basics about rust.  Vectors & unwrap"
 ---
 
+### Did you remember everything i just said?
+Of course not.  Learning a language is not so different from yours is nice, but
+unless you put it into practice, you will literally forget everything.
+
+We will be putting these into practice, i just wanted to get through this as
+fast as possible to get to the fun parts.
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 ### Basics on Rust
 Just some basics so we can understand things going forward
 
@@ -63,7 +87,7 @@ let a = vec![1, 2, 3, 4, 5];
 
 ```typescript
 const a = [1, 2, 3, 4, 5];
-a.push(6); // [1, 2, 3, 4, 5, 6]
+a.push(6); // [1, 2, 3, 4, 5, 6] // returns size
 ```
 
 ```rust
@@ -72,17 +96,18 @@ a.push(6); // Error: a is not mutable
 
 // but with rust we can shadow
 let mut a = a;
-a.push(6); //  [1, 2, 3, 4, 5, 6]
+a.push(6); //  [1, 2, 3, 4, 5, 6] // does not return size
+```
 
 
 ```typescript
 const a = [1, 2, 3, 4, 5]
-a.pop(); // [1, 2, 3, 4]
+a.pop(); // [1, 2, 3, 4] undefined or T
 ```
 
 ```rust
 let mut a = vec![1, 2, 3, 4, 5];
-a.pop(); //  [1, 2, 3, 4]
+a.pop(); //  [1, 2, 3, 4] Option<T>
 ```
 
 <br />
@@ -136,7 +161,7 @@ we will talk about enums and Options in depth shortly
 <br />
 <br />
 
-### Now you will forget everything we just said
+### Gentle Reminder: Now you will forget everything we just said
 But to help you not forget, we will start doing some exercises soon.
 
 <br />

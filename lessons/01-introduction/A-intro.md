@@ -12,7 +12,6 @@ i hope you are ready, we will be moving fast today.
 * You can program TypeScript with relative ease.
 * You know types, maybe no wizard, but you know types.
 
-
 ```typescript
 // I assume everyone here can easily read this and understand what is happening
 // here just by type definitions
@@ -25,7 +24,12 @@ type PromiseFactory<T> = () => Promiseable<T>;
 
 function explodePromise<T>(): Promiseable<T> {
 
-    // codez
+    // technically there would be some errors here, but just ignore that :)
+    let resolve, reject;
+    let promise = new Promise((res, rej) => {
+        resolve = res;
+        reject = rej;
+    });
 
     return {
         promise,
@@ -68,7 +72,6 @@ software with low unexpected behavior, and two, maintain software longer
 - Specify Readonly vs Specify Mutability
 - undefined/null vs Option
 - errors being thrown vs being returned
-- abstraction programming vs macros
 
 #### Skill gap
 

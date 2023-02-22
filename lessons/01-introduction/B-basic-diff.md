@@ -26,8 +26,8 @@ const foo = someMethod(foo);
 ```
 
 ```rust
-let foo = [...];
-let foo = someMethod(foo); // YA! perfectly fine
+let foo = [...];  // I am of Type A
+let foo = someMethod(foo); // I am of Type B - YA! perfectly fine
 ```
 
 #### Why though?
@@ -36,7 +36,7 @@ One thing that makes shadowing amazing is that you can change types.
 ```typescript
 let foo = get_file(args); // FileHandle
 let foo = read_file(foo); // String
-let foo = parse_the_important_parts_of(foo); // Vec<String>
+let foo = tokenize_and_do_things_to_string(foo); // Vec<String>
 ```
 
 ### If
