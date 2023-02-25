@@ -12,6 +12,17 @@ This is where we talk more about rust only concepts.
 - interior mutability
 - traits
 
+
+```typescript
+function foo(arr: (string | number)[]) {
+    arr.push(69);
+}
+
+const items = ["hello"] as string[];
+
+foo(items);
+```
+
 <br/>
 <br/>
 <br/>

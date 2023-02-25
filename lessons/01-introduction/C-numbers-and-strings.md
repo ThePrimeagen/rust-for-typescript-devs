@@ -108,7 +108,6 @@ straight forward.
 Yes, you will see there are two types of strings you commonly run into.  So
 what are they?
 
-
 #### String
 * Well `String` is a heap allocated (heap may be a foreign word to you)
 * String is mutable
@@ -117,3 +116,24 @@ what are they?
 * this points to a sequence of utf-8 characters.  Its commonly called a slice.
   Its a view into a data structure
 * its immutable
+
+
+So if i say String, i mean `String` and if i say stir i mean `&str`
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+

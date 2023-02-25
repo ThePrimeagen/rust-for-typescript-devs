@@ -3,7 +3,7 @@ title: "Rust Basics"
 description: "Some basics about rust.  Vectors & unwrap"
 ---
 
-### Did you remember everything i just said?
+### Did you remember everything I just said?
 Of course not.  Learning a language is not so different from yours is nice, but
 unless you put it into practice, you will literally forget everything.
 
@@ -234,7 +234,7 @@ bar(a);
 ### unwrap, todo, and unreachables
 These are things that only exist within Rust and may be a bit confusing.
 
-Let me give you an example of each in rust.
+Let me give you an example of each in rust starting with TODO
 
 ### TODO:
 I particularly like this as it allows for me to do `// TODO:`
