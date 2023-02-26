@@ -3,7 +3,7 @@ title: "Rust's Borrow Checker"
 description: "This is usually the hardest part of Rust"
 ---
 
-### So lets start greating the graph that looks like the following
+### So lets start creating the graph that looks like the following
 
 ```
      +---+
@@ -354,25 +354,82 @@ fn main() {
 <br />
 <br />
 
+### Lets break another rule, how about #2
+To do this,
+* create a function called `print_all` that takes in an immutable borrow
+  (reference) to `items` and prints each item, one at a time
+* grab a **mutable** reference to item 0 (`get_mut`)
+* print item 0
+* call `print_all`
+* print item 0
 
-### Some version of the complete code
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
+### So how did we break it?
+Try to explain why this happened.
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Complete Code
 ```rust
 #[derive(Debug)]
 struct Item {
-    age: isize,
+    count: isize,
+}
+
+fn add_one(item: &mut Item) {
+    item.count += 1;
+}
+
+fn print_all(items: &Vec<Item>) {
+    for item in items {
+        println!("print {:?}", item);
+    }
 }
 
 fn main() {
-    let mut items = vec![Item { age: 1 }, Item { age: 2 }];
 
-    println!("items: {:?}", items);
+    let mut items = vec![
+        Item { count: 0 },
+        Item { count: 0 },
+        Item { count: 0 },
+    ];
 
-    let item = items.get(0).unwrap();
+    let item = items.get_mut(0).unwrap();
+    add_one(item);
+    print_all(&items);
 
-    println!("item: {:?}", item);
-
-    items.push(Item { age: 3 });
+    println!("help {:?}", item);
 }
 ```
 
@@ -393,7 +450,59 @@ fn main() {
 <br />
 <br />
 
-### Three rules to keep in your head
+### Rule 3!
+Lets just keep this one simple.
+
+Does this error? Why or why not?
+```rust
+fn main() {
+
+    let mut items = vec![
+        Item { count: 0 },
+        Item { count: 0 },
+        Item { count: 0 },
+    ];
+
+    let item = items.get_mut(0).unwrap();
+    let item2 = items.get_mut(1).unwrap();
+    println!("help {:?}", item2);
+}
+```
+
+Does this one error? Why or why not?
+```rust
+fn main() {
+
+    let mut items = vec![
+        Item { count: 0 },
+        Item { count: 0 },
+        Item { count: 0 },
+    ];
+
+    let item = items.get_mut(0).unwrap();
+    let item2 = items.get_mut(1).unwrap();
+    println!("help {:?}", item);
+}
+```
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Quick Recap: The big three rules
 
 #### There can only be one value owner
 ```rust
@@ -423,240 +532,6 @@ let items3: &mut Vec<Item> = &mut items; // Error occurs here
 
 items2.push(Item { age: 3 }); // nope!
 ```
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-
-### Lets start with some exercises
-
-Lets make the following:
-
-1. a function that takes a vector
-1. prints the contents of the vector
-
-also remember how to define a function
-
-First, lets do it in TypeScript
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-
-### TypeScript Complete
-about as simple as it gets
-
-```typescript
-function print(list) {
-    console.log(list);
-}
-
-const list = [1, 2, 3];
-print(list);
-```
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-
-### Do it in rust now
-You may have forgot, so here are a few things
-
-```rust
-fn <name>(<var>: <type>) {
-fn <name>(<var>: <type>) -> <return type> {
-// {:?} = debug print
-println!("text you want {:?}", vec);
-```
-
-I'll give you 2 minutes to do it again!
-
-```rust
-// define your function here
-
-fn main() {
-
-    let vec: Vec<isize> = vec![1, 2, 3];
-
-    // call your function here
-}
-```
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-
-### You probably got stuck at...
-
-Maybe your code looks something like
-```rust
-// You may not even got to this poin
-fn print(vec: Vec<isize>) {
-    println!("vec: {:?}", vec);
-}
-
-fn main() {
-
-    let vec: Vec<isize> = vec![1, 2, 3];
-
-    print(vec);
-}
-```
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-
-### Ok lets update it
-please call the function 2 times to print out the vector
-
-```rust
-fn main() {
-
-    let vec: Vec<isize> = vec![1, 2, 3];
-
-    print(vec);
-    print(vec); // <--- Who got an error here?
-}
-```
-
-So how do we fix this?  Well its pretty simple.
-
-Remember rule 1: there can be only one owner.
-
-```rust
-let vec = vec![1, 2, 3]; // vec owns the vector 1, 2, 3
-print(vec); // print function gets handed the vec, and now _OWNS_ it
-```
-
-That means to fix this, we need to let the print function _borrow_ the vector,
-not own it.
-
-Let me show you what that would look like.
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-
-### Complete code
-
-```rust
-// TODO: CHECK CODE
-fn print(vec: &Vec<isize>) {
-    println!("vec: {:?}", vec);
-}
-
-fn main() {
-
-    let vec: Vec<isize> = vec![1, 2, 3];
-
-    print(&vec);
-    print(&vec);
-}
-```
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-
-### So what happened there?
-What happened is that `&vec` is creating a reference to vec, or in rust terms
-created an immutable reference.  The functions refering to those values cannot
-change the values handed to them.
-
-Go ahead, try calling `.push` on the vector you provided in function `print`.
-(you do it to show)
 
 <br />
 <br />
