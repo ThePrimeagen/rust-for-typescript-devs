@@ -5,40 +5,7 @@ description: "Sometimes you just want to mutate something"
 
 ### Interior Mutability
 When i heard this the first time it sounds like its really complictated.  Well,
-technically, it is, but the good news is that the api is really simple
-
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-
-### Some Auto Traits
-Some things in rust don't need to be programmed, instead you can derive their
-features.  There are lots of important ones, but some very common ones are
-`Debug`, `Copy`, and `Clone`.
-
-Lets go over each of these, as we will start using them frequently
-
-* create a struct
-* derive Debug
-* derive Clone
-* derive Copy
+technically, it is, but the good news is that the API is really simple
 
 <br/>
 <br/>
@@ -62,7 +29,36 @@ Lets go over each of these, as we will start using them frequently
 <br/>
 
 ### Cell
-Ok, back to Interior Mutability
+The simplest interior mutability item is called a `Cell`.  It gives you the
+ability to `get` and `set` the current value.  but the Type inside `Cell` must
+be of trait `Copy`.
+
+#### Quick detour on copy
+`Copy` will make a copy of the object on assignment
+(code time)
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+#### Complete Code Example
 
 Lets start with a simple example using cell
 ```rust
