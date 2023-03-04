@@ -22,10 +22,6 @@ struct Node {
     neighbors: Vec<Node>,
 }
 
-struct Graph {
-    nodes: Vec<Node>
-}
-
 fn main() {
     let mut A = Node { name: "A".into(), neighbors: vec![] };
     let mut B = Node { name: "B".into(), neighbors: vec![] };
@@ -184,10 +180,6 @@ use std::rc::Rc;
 struct Node {
     name: String,
     neighbors: Vec<Rc<Node>>,
-}
-
-struct Graph {
-    nodes: Vec<Rc<Node>>
 }
 
 fn main() {

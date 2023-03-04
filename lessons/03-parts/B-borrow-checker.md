@@ -33,11 +33,10 @@ description: "This is usually the hardest part of Rust"
 <br />
 
 ### First, lets create the structs
-First lets represent our code with two structs
+First lets create a struct
 
 * `Node` - contains a `name`, which is a `String`, and `neighbors`, which is
   `Vec<Node>`
-* `Graph` - contains the `Vec` of `Node`s
 
 First, implement this on your own, in the main file we have been working in
 
@@ -70,10 +69,6 @@ struct Node {
 struct Node {
     name: String,
     neighbors: Vec<Node>,
-}
-
-struct Graph {
-    nodes: Vec<Node>
 }
 
 fn main() { }
