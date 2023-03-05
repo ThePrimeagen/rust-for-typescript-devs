@@ -32,6 +32,36 @@ description: "This is usually the hardest part of Rust"
 <br />
 <br />
 
+### Note
+The following is not considered "idiomatic" rust.  But i am doing it this way
+because it makes the concepts of interior mutability and refernce counting very
+obvious.
+
+Its the simplest way to create a graph and the most natural coming from another
+language, but its not _the_ way.
+
+Perf: the perf is not the best with our examples, i am here to show concepts,
+not best perf.  Like any language, doing things for best performance can lead
+to code that is more "complicated." (complicated is likely a function of
+experience)
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 ### First, lets create the structs
 First lets create a struct
 

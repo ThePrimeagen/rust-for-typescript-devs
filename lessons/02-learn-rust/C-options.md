@@ -45,9 +45,9 @@ a ton
 
 First, the ENUM definition of Option
 ```rust
-enum Option<T> {
-    Some(T),
+enum Option<T> { // yes, generics can be used in enums, again, cool
     None
+    Some(T),
 }
 ```
 
@@ -78,15 +78,203 @@ let foo = Some(Custom { age: 69, name: "ThePrimeagen" });
 <br />
 <br />
 
+### But why?
+Why do we need `Option`s in rust?  The answer is memory.  If you may or maynot
+return an item from a function, rust needs to be able to allocate that memory
+on the stack.
+
+This happens in JS too, it is just behind the scenes in the engine
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Working with Option
+They are enums, so `match`/`if let` pattern matching works, but there is more
+because there are plenty of convenient methods.
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Lets start with a small exercise
+You can erase all the code you have written thus far and lets start with
+TypeScript.
+
+I want you to write a function with the following:
+* signature takes in a `number` or `undefined` and returns a `number`
+* if the value is `undefined`, return 0
+* else multiply the value by `5`
+
+I think you can do this pretty quick, i'll give you one minute.
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Complete Code
+```typescript
+function multiply(num: number | undefined): number {
+    return (num ?? 0) * 5;
+}
+```
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Lets do the same thing with rust
+Remember, repetition and small exercises are a great way to learn, so make sure
+you are participating!
+
+Requirements
+* signature takes in a `number` or `undefined` and returns a `number`
+* if the value is `undefined`, return 0
+* else multiply the value by `5`
+
+I'll give you a couple moments to try yourself
+(don't just code, scroll down (note to me))
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### How I started
+When you first start with rust, it looks pretty ugly, so let me show you how i
+would have completed this.
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Complete Code (How I would have)
+```rust
+fn multiply(num: Option<usize>) -> usize {
+    if num.is_some() {
+        return num.unwrap() * 5; // unwrap a None causes a panic
+    }
+    return 0;
+}
+```
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### How I would now
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 ### When I started with rust, this is what i would of wrote
 ```rust
-fn foo(bar: Option<usize>) -> usize {
-    // How you start out, you probably write code like this
-    // note: compliment...
-    if bar.is_some() {
-        return bar.unwrap() * 5; // unwrap a None causes a panic
-    }
-    return 0;
+fn multiply(num: Option<usize>) -> usize {
+    return num.unwrap_or(0) * 5;
 }
 ```
 
@@ -94,60 +282,45 @@ fn foo(bar: Option<usize>) -> usize {
 <br />
 <br />
 <br />
-
-### Then to be more clear i may have done this...
-```rust
-fn foo(bar: Option<usize>) -> usize {
-    // How you start out, you probably write code like this
-    // note: compliment...
-    if bar.is_some() {
-        return bar.expect("this should never be None") * 5; // unwrap a None causes a panic
-    }
-    return 0;
-}
-```
-
-
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 <br />
 <br />
 <br />
 <br />
 
-### don't worry, its better... but we have to take advantage of pattern match
+### Lets change up the rules a bit
+Start with TypeScript<br/>
+instead of returing 0, if `undefined` is provided, return `undefined` else
+multiply by 5
 
 <br />
 <br />
 <br />
 <br />
-
-### if let Enum(containedValue) = value {
-
-```rust
-// Version 1: if let
-fn foo_if_let(bar: Option<usize>) -> usize {
-    if let Some(value) = bar {
-        return value * 5;
-    }
-    return 0;
-}
-```
-
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 <br />
 <br />
 <br />
 <br />
 
-### match value
-
-```rust
-// Version 2: match
-fn foo_match(bar: Option<usize>) -> usize {
-    return match bar {
-        Some(value) => {
-            value * 5
-        }
-        None => 0
-    }
+### Complete Code
+```typescript
+function multiply(num: number | undefined): undefined | number {
+    return num === undefined ? undefined : num * 5;
 }
 ```
 
@@ -155,14 +328,78 @@ fn foo_match(bar: Option<usize>) -> usize {
 <br />
 <br />
 <br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
-### If a default value will do
+### Can Rust help us?
+yes it can!  We ackshually have 2 different ways we can accomplish this
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Method 1: map
+`Option#map` keeps the box value (`Option`) while giving you a chance to deal
+with the inner value, which for us is a number.
 
 ```rust
-// Version 3: unwrap_or
-fn foo_match(bar: Option<usize>) -> usize {
-    return bar.unwrap_or(0) * 5; // no panic
-    return bar.unwrap_or_else(|| HashMap::new()); // if the type is expensive
+let foo = Some(5);
+//-----------------v is a {integer}!
+let foo = foo.map(|x| {...})
+//---^ is now Option<Return type of map>
+```
+
+Go a head, give it a shot, and upgrade our previous example.  The new signature
+should look like `fn multiply(num: Option<usize>) -> Option<usize> {...`
+
+<br/>
+
+i'll give you a moment to try it out
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Complete Code
+```rust
+fn multiply(num: Option<usize>) -> Option<usize> {
+    return num.map(|x| x * 5); // remains as an option
 }
 ```
 
@@ -170,36 +407,73 @@ fn foo_match(bar: Option<usize>) -> usize {
 <br />
 <br />
 <br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
-### A map can do too!
+### Version 2, ? operator
+When you have a function that returns an `Option` you can automagically unwrap
+the value.
 
+<br/>
+
+That might sound confusing, let me show you what its doing
 ```rust
-// Version 4: map
-fn foo_match(bar: Option<usize>) -> Option<usize> {
-    return bar.map(|x| x * 5); // remains as an option
-}
+fn test() -> Option<usize> {
+    let foo = Some(5);
 
-foo_match(None); // > None
-foo_match(Some(20)); // > Some(100)
+    // --------v Option<usize>
+    let foo = foo?;
+    //---^ usize
+}
 ```
 
-<br />
-<br />
-<br />
-<br />
-
-### There is also take.. which can be really handy
+This expands out to
 
 ```rust
-#[derive(Debug)]
-struct Foo {
-    bar: Option<usize>
+fn test() -> Option<usize> {
+    let foo = Some(5);
+    let foo = match foo {
+        Some(x) => x,
+        None => return None
+    };
 }
+```
 
-let mut foo = Foo { bar: Some(14) };
-let bar = foo.bar.take();
-println!("bar: {:?} -- foo: {:?}", bar, foo);
-// bar: Some(14) -- foo: Foo { bar: None }
+See if you can change your `.map` example to use `?`
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Complete Code
+```rust
+fn multiply(num: Option<usize>) -> Option<usize> {
+    let result = num? * 5;
+    return Some(result);
+}
 ```
 
 <br />
@@ -223,12 +497,14 @@ println!("bar: {:?} -- foo: {:?}", bar, foo);
 lets do a moment of practice!
 
 ### Small program
-- write a function that takes `Vec<usize>` and an `index: usize`
-- will take the value out of the vector, if it exists, and return it
-- before returning multiple by 5
-- if the index does not exist, return that one multiplied by 5
+- write a function, call it `practice`, that takes `Vec<usize>` and an `index:
+  usize`
 
-First typescript!
+- Return one of the following
+  - if value exists, return it multiplied by 5
+  - if value doesn't exist, return `index` multiplied by 5
+
+First typescript (i'll give you a moment)!
 
 <br />
 <br />
@@ -283,6 +559,7 @@ console.log(practice(list, 4));
 <br />
 
 ### Now to the rust version!
+I'll give you a moment.
 
 <br />
 <br />
@@ -345,8 +622,27 @@ return list.get(idx).unwrap_or(&idx) * 5;
 Rust as a language is hard.  But there are TONS of utilities that make it
 really easy to work with.  This is just one example.  The Option<?> interface
 
-
 Rusts take on the "Billion" dollar mistake i think is the right move.
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Some(Questions)?
+... maybe that joke is a bit nerdy
 
 <br />
 <br />

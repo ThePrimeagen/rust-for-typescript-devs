@@ -4,8 +4,9 @@ description: "Some basics about rust.  Vectors & unwrap"
 ---
 
 ### Did you remember everything I just said?
-Of course not.  Learning a language is not so different from yours is nice, but
-unless you put it into practice, you will literally forget everything.
+Of course not.  Learning a language that is not so different from yours is
+nice, but unless you put it into practice, you will literally forget
+everything.
 
 We will be putting these into practice, i just wanted to get through this as
 fast as possible to get to the fun parts.
@@ -54,8 +55,9 @@ in waves.  The more I understand, the more I realize I understand less.
 <br />
 <br />
 
-### Vectors
-`Vec`s are functionally equivalent to `[]` in JavaScript.
+### Lets start learning!  Starting with a Vector
+`Vec` (rust) and `[]` (typescript) are very similar.  Their behaviors are near
+identical.
 
 these two are functionally equivalent
 ```typescript
@@ -234,7 +236,22 @@ bar(a);
 ### unwrap, todo, and unreachables
 These are things that only exist within Rust and may be a bit confusing.
 
-Let me give you an example of each in rust starting with TODO
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
 ### TODO:
 I particularly like this as it allows for me to do `// TODO:`
@@ -266,6 +283,8 @@ This unsures that the program behaves properly.
 
 think of it like an assert statement.
 
+lets do a quick example
+
 <br />
 <br />
 <br />
@@ -284,12 +303,15 @@ think of it like an assert statement.
 <br />
 
 ### Unwrap
-This is the most common thing that could possibly ever happen in rust when you
+when you are new to rust, `unwrap`s are your friend.  You will end up using
+them a lot because you don't know the language / tools available to you yet.
 are starting out.  Often you feel like you don't know how to handle some basic
 operations and unwrap can be your friend.
 
 But!!! if you unwrap an Error or an undefined, your program crashes... so...
 don't do it.
+
+Let me give you a quick example of that.
 
 <br />
 <br />

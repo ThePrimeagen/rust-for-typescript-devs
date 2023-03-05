@@ -111,10 +111,5 @@ Lets talk about it!
 
 ### Things to remember
 An intro?
-Cargo install instructions
-Setup project directory so that we can run things right away
-- consider main file for the first bit
-Disable Inlay hints for vscoders
-References, Strings, Slices, mutable references
 Why learn rust?
 Mutability

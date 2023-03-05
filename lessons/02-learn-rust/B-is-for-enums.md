@@ -3,31 +3,6 @@ title: "Rust Enums"
 description: "Rust enums are the greatest thing you have ever seen"
 ---
 
-### Iterators, Options, and Results
-Those are the three big things to teach you... therefore, we are going to teach
-you enums...
-
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-
 ### Enums in TypeScript
 ![Enums are bad](./images/enums-bad.png)
 
@@ -57,6 +32,9 @@ So... why are we learning enums?
 <br/>
 
 ### Rust enums are incredible
+They are nothing like TypeScript's enums, and a reason why rust, for a static
+typed language, is so good.
+
 So lets go over a basic set of examples
 
 <br/>
@@ -127,6 +105,8 @@ function printColor(color: Color) {
             break;
     }
 }
+
+printColor(Color.Green);
 ```
 
 <br/>
@@ -152,6 +132,11 @@ function printColor(color: Color) {
 
 ### Lets do the same thing in Rust
 Exact same thing
+
+1. the syntax for an equivalent enum in rust is 100% identical to ts
+1. use `match` to get _near_ equivalent behavior of `switch`
+
+i'll give you ~2 minutes, then i'll start
 
 <br/>
 <br/>
@@ -191,7 +176,7 @@ fn print_color(color: Color) {
 }
 
 fn main() {
-    print_color(Color::Red);
+    print_color(Color::Green);
 }
 ```
 
@@ -247,7 +232,10 @@ First in TS and then Rust
 <br/>
 
 ### Ok...
-I still think enums suck..
+I still think enums suck.. I mean technically it was the `match` statement that
+made rust so good, not the enum itself. <br/>
+
+Lets take enum's to another level
 
 <br/>
 <br/>
@@ -271,6 +259,11 @@ I still think enums suck..
 <br/>
 
 ### Stand back, its method time
+* We are going to add 2 methods to the enum in rust
+* is_green
+  - return true for green
+* is_green_parts
+  - return true for blue and yellow
 
 <br/>
 <br/>
@@ -304,7 +297,7 @@ enum Color {
 }
 
 impl Color {
-    fn green_parts(&self) -> bool {
+    fn is_green_parts(&self) -> bool {
         match self {
             Color::Yellow => true,
             Color::Blue => true,
@@ -357,6 +350,7 @@ fn main() {
 <br/>
 
 ### Ok... are you impressed yet?
+well, you shouldn't be.  this isn't awesome yet
 
 <br/>
 <br/>
@@ -380,30 +374,15 @@ fn main() {
 <br/>
 
 ### I hope you are sitting down
-First, lets write up something in typescript
+First, lets start with typescript
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
+* create a custom struct called Custom
+  - it should have 2 fields, age: number, and name: string
 
-### Lets see how rust does it?
+* create a union type `Item` that is `number | string | Custom`
+* create a method `append` to take in a list of `Item`s and push in the string `"Hello Fem!"`
+* create an `Item`s array (doesn't matter if its empty or not)
+* pass it to `addItem`
 
 <br/>
 <br/>
@@ -438,16 +417,116 @@ type Custom = {
 type Item = number | Custom | string;
 
 function append(items: Item[]) {
-    items.push(1);
-    items.push("hello");
-    items.push({ age: 1, name: "2" });
+    items.push("hello fem");
 }
 
-const justStrings: string[] = ["hello", "world"];
-append(justStrings);
+const items: Item[] = [];
+append(items);
 
-console.log(justStrings);
+console.log(items);
 ```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### One more task
+* create a list of `number` and pass it to `append`
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### How do you feel?
+Do you feel you have been lied to?
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### The rust way
+Lets do the same thing, but this time the rust way, and we will do it together.
+
+#### Instructions (in case you forgot)
+* create a custom struct called Custom
+  - it should have 2 fields, age: number, and name: string
+
+* create a union type `Item` that is `number | string | Custom`
+* create a method `append` to take in a list of `Item`s and push in the string `"Hello Fem!"`
+* create an `Item`s array (doesn't matter if its empty or not)
+* pass it to `addItem`
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
 
 Rust
@@ -468,10 +547,11 @@ fn append(items: &mut Vec<Item>) {
 }
 
 fn main() {
-    let mut just_strings = vec!["hello", "fem"];
-
+    let mut items: Vec<Item> = vec![];
     append(&mut just_strings);
 
+    let mut items: Vec<usize> = vec![];
+    append(&mut just_strings); // errors
 }
 ```
 

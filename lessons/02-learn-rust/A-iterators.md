@@ -28,15 +28,19 @@ impression its easier to learn with my hands than my eyes.
 <br/>
 <br/>
 
-### There are 3 big things to cover to be able to use rust
+### To begin with, There are 2 things that have to be understood in Rust
+This is for fundamental understanding of the language.
+
 1. Iterators
-1. Options
-1. Results
+1. Enums
 
-These are three big items to understand about rust.  Once you get those, it
-becomes easier to work with rust initially.
+Once you get these two, it becomes easier to work with rust initially. As these
+concepts are a bit wonkey coming from TypeScript.
 
-I even think that it makes learning the borrow checker a bit easier.
+You are even probably thinking... "I use iterators all the time and enums are
+horrible!"
+
+From a typescript perspective you are right and wrong.
 
 <br/>
 <br/>
@@ -60,6 +64,30 @@ I even think that it makes learning the borrow checker a bit easier.
 <br/>
 
 ### Lets start with iterators
+(first basic whiteboard explanation)
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Iterators
 I think iterators will make the easiest transition as they have the strongest
 similarity in javascript.
 
@@ -90,7 +118,7 @@ and we can start with `.map`
 Lets go over a quick example in typescript
 
 Lets create a script that:
-- creates an list filled with 1, 2, 3
+- creates an list initialized with 1, 2, 3
 - adds 1 to each item in that list
 - prints the list
 
@@ -196,6 +224,7 @@ fn main() {
 ```
 
 Let's whiteboard what happens here.
+(show other "infering" that can go on, (`fn` and on `collect`))
 
 <br/>
 <br/>
@@ -219,7 +248,32 @@ Let's whiteboard what happens here.
 <br/>
 
 ### Wanna see something cool with collect?
-Well, collect is more that just "put back into array"
+Well, collect is more that just "put back into a vector"
+
+(show them the deets)
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
 
 Collect into string!
 ```rust
@@ -261,8 +315,25 @@ let foo: HashMap<String, isize> = vec!["this", "is", "a", "test"]
 <br/>
 <br/>
 <br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
-Numeric fun
+### there are other types of "collects"
+
 ``` rust
 let sum: usize = vec![1, 2, 3]
     .iter()
@@ -307,8 +378,25 @@ let how_many_evens: usize = vec![1, 2, 3]
 <br/>
 <br/>
 <br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
-What about other collections?
+### What about other collections?
+
 ```rust
 let map = HashMap::from([
    ("foo", 1),
@@ -320,6 +408,40 @@ map
     .iter()
     .for_each(|(k, v)| println!("{}: {}", k, v));
 ```
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+```rust
+let set = HashSet::from([
+    "foo",
+    "bar",
+    "baz",
+]);
+
+set
+    .iter()
+    .for_each(|v| println!("{}", v));
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+### You can even create your own iterators!
+We will soon, but here is a basic example!
+
+```rust
+let todos = Todo { ... values ... }
+
+for task in &todos { // requires trait implementations
+    println!("I need to do: {}", task); // require trait implementations
+}
+```
+
 
 <br/>
 <br/>
@@ -349,72 +471,742 @@ This is an important concept which isn't in javascript
 [Type] -> [Iterator] -> [Type]
 ```
 
-This gives us 0 cost abstractions whereas with javascript, its not.
-
-What is 0 cost abstractions? Lets demonstraight it with a little example.
+This typically gives us code that looks like.
 
 ```rust
-let b: Vec<i32> = vec![1, 2, 3]
-    .iter()
-    .map(|x| x * 3)
-    .filter(|x| x > 5)
-    .map(|x| x * 10)
-    .collect();
+some_type
+    .iter() // creates iterator
+    .filter(|x| ...
+
+    ) // A series of combinators
+
+    .collect/sum/count/for_each() // some operation that takes the iterator and consumes it
 ```
 
-This code would "compile to" something like this
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Lets do a simple exercise
+Lets do the following.
+
+1. read a file from disk
+2. print out each line individually
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### TypeScript
+lets do it first in TypeScript
+
+I'll give you 2 minutes to type up an example
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+
+```typescript
+import fs from "fs";
+
+const file = fs.readFileSync("lines");
+
+file.
+    toString().
+    split("\n").
+    forEach(line => console.log(line));
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Lets do the same in Rust
+Since you are new, i'll have to walk through each line of code. <br/>
+<br/>
+Just in case you forgot
+1. read a file from disk
+2. print out each line individually
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+
 ```rust
-let a = vec![1, 2, 3];
-let mut b = vec![];
-for i in 0..a.len() {
-    let x = a[i] * 3;
-    if x > 5 {
-        let x = x * 10;
-        b.push(x);
-    }
+
+fn main() {
+    let file = std::fs::read_to_string("lines").unwrap();
+
+    file
+        .lines()
+        .for_each(|line| println!("{}", line));
 }
 ```
 
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### How about every other line?
+First, typescript
+
+I'll give you ~1 minute to do this
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+
 ```typescript
-let b = [1, 2, 3]
-    .map((x) => x * 3)
-    .filter((x) => x > 5)
-    .map((x) => x * 10);
+
+import fs from "fs";
+
+const file = fs.readFileSync("lines");
+
+file.
+    toString().
+    split("\n").
+    filter((_, i) => i % 2 === 0).
+    forEach(line => console.log(line));
 ```
 
-This code would "compile to" something like this
-```typescript
-function map_1(x: number): number {
-    return x * 3;
-}
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
-function filter_1(x: number): boolean {
+### But how to do this in rust?
+Well, iterators give us MANY useful combinators.  Lets step through it one at a
+time.
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+Observation: Rust does exactly what you tell it and no more.
+
+```rust
+fn main() {
+    let file = std::fs::read_to_string("lines").unwrap();
+
+    file
+        .lines()
+        .enumerate()
+        .filter(|(idx, _)| idx % 2 == 0)
+        .for_each(|line| println!("{}", line.1));
+}
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### One more
+* every other line
+* skip the first two every others
+* print the next two every others lines
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+```typescript
+
+import fs from "fs";
+
+const file = fs.readFileSync("lines");
+
+file.
+    toString().
+    split("\n").
+    filter((_, i) => i % 2 === 0).
+    filter((_, i) => i >= 2 && i < 4).
+    forEach(line => console.log(line));
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Now Rust
+Remember when i said rust has an amazing combinator set?  Its time to shine
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+```rust
+
+fn main() {
+    let file = std::fs::read_to_string("lines").unwrap();
+
+    file
+        .lines()
+        .enumerate()
+        .filter(|(idx, _)| idx % 2 == 0)
+        .skip(2)
+        .take(2)
+        .for_each(|line| println!("{}", line.1));
+}
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Lets break down what happened
+```typescript
+    split("\n").
+    filter((_, i) => i % 2 === 0).
+    filter((_, i) => i >= 2 && i < 4).
+    forEach(line => console.log(line));
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+#### Split
+that takes substrings and creates an array.
+
+That means calling `split` iterates the entire string up front and creates a
+list
+
+```typescript
+[
+    "line1",
+    "line2",
+    ...
+]
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### What about filter?
+Filter takes in a list and produces a new list
+
+```typescript
+[
+    "line1",
+    "line2",
+    ...
+] => [
+    "line2",
+    "line4",
+    ...
+]
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### The second filter
+```typescript
+[
+    "line1",
+    "line2",
+    ...
+] => [
+    "line2",
+    "line4",
+    ...
+] => [ // no matter how many lines were before, it goes through ALL
+    "line6",
+    "line8",
+]
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### for each
+This just goes through each item in the final array, i approve
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### So what does the "code produced" ackshually look like?
+With javascript its so easy to perform _many_ high level tasks that you forget
+exactly what is happening.
+
+Here is "transpiled" code
+
+```typescript
+function filter_1(_: string[], x: number): boolean {
     return x > 5;
 }
 
-function map_2(x: number): number {
+function filter_2(x: number): number {
     return x * 10;
 }
 
-let a = [1, 2, 3];
+// Skipping the split operation
+let a = contents.toString().split("\n");
 let b = [];
 for (let i = 0; i < a.length; ++i) {
-    b.push(map_1(a[i]));
+    if (filter_1(a[i])) {
+        b.push(a[i]);
+    }
 }
 let c = [];
 for (let i = 0; i < b.length; ++i) {
-    if (filter_1(b[i])) {
+    if (filter_2(b[i])) {
         c.push(b[i]);
     }
 }
-let d = [];
 for (let i = 0; i < c.length; ++i) {
-    d.push(map_2(c[i]));
+    console.log(c[i]);
 }
 ```
 
 *likely* v8 will optimize some of this away.  To what extent, i don't have the
 faintest clue.
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Same example, but in rust
+
+```rust
+    .lines()
+    .enumerate()
+    .filter(|(idx, _)| idx % 2 == 0)
+    .skip(2)
+    .take(2)
+    .for_each(|line| println!("{}", line.1));
+
+// Goes through every char
+let mut start = 0;
+let mut taken = 0;
+let mut skipped = 0;
+for (idx, c) in lines.enumerate().chars() {
+    if c !== "\n" {
+        continue;
+    }
+
+    // doesn't copy, just a &str (ptr, len)
+    let slice = lines[start..idx];
+    start = idx;
+
+    if idx % 2 != 0 {
+        continue
+    }
+
+    if skipped < 2 {
+        skipped += 1;
+        continue;
+    }
+
+    taken += 1;
+    println!("{}", slice);
+
+    if taken == 2 {
+        break;
+    }
+}
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Zero cost abstractions
+You will see this phrase commonly in the rust community, and this is why.  Its
+able to have these higher order abstractions, just without all the cost of them
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Questions?
+Good time for a quick questions answering
 
 <br/>
 <br/>

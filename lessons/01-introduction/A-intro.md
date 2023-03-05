@@ -119,6 +119,43 @@ very cool things.
 <br />
 <br />
 
+### Goals for today
+My goal today is that you end with enough knowledge to be able to google your
+way through a small to mid sized cli application in rust
+
+* We will go over the core concepts you need to know about
+  * Vectors, Results, Options, Enums in general
+  * Structs and traits
+  * Rcs
+  * Interior mutability
+  * Project layout
+
+---
+
+* We wont go over async
+* We wont go deep into memory, what's happening under the hood
+* We wont go into ways to conditionally build parts of your project
+
+I want you to be able to _use_ rust.  You can learn the deep concepts on your
+own.
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 ### Who am I?
 I am best known for my role at TheStartup™, which is CEO, CEO, CEO, and CEO.
 

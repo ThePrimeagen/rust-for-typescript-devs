@@ -3,8 +3,31 @@ title: "The Basics: Syntax"
 description: "An important second lesson"
 ---
 
-remember my **ASSUMPTION**?  Time to make good on that...
+### No need to memorize
+remember my **ASSUMPTIONS**?  Time to make good on that...
 
+We are going to spend a short period of time just going over differences
+between the two languages and some specific rust only features.
+
+So there is going to be no programming, its meant to get you familiar with
+words and ideas.
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
 ### Variable
 ```typescript
@@ -18,6 +41,23 @@ const foo = [] as const; // const pointer to a constant..
 let foo = 5; // constant
 let mut foo = 5; // mutable
 ```
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
 #### Shadowing
 ```typescript
@@ -39,6 +79,23 @@ let foo = read_file(foo); // String
 let foo = tokenize_and_do_things_to_string(foo); // Vec<String>
 ```
 
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 ### If
 ```typescript
 if (condition && second || this_one) {
@@ -53,6 +110,24 @@ if condition && second || this_one { // rust will warn you
 } else if ...
 else ...
 ```
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 
 ### Loops
 ### For
@@ -130,6 +205,23 @@ vec![1, 2, 3]
     .collect::<Vec<_>>();
 ```
 
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 ### Functions
 
 ```typescript
@@ -188,6 +280,23 @@ fn foo() -> usize {
 |x| x + 1
 ```
 
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 ### Class and Methods
 This one is where the truest magic happens
 
@@ -233,6 +342,23 @@ impl Foo {
 
 * What stuck out to you?
 
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 #### Interfaces
 ```typescript
 interface Foo {
@@ -246,6 +372,7 @@ interface Foo {
 ```
 
 again, look for something special here
+
 ```rust
 trait Foo {
     // no properties
@@ -258,10 +385,8 @@ impl Foo for MyStruct {
 ```
 
 * traits compose
-this may not sound big, but its AMAZING
-effectively prevents the need for inheritance
-
-* there are some trait rules as well, we will go over them
+this may not sound big, but its AMAZING effectively prevents the need for
+inheritance
 
 <br />
 <br />
