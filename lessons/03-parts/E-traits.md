@@ -612,12 +612,27 @@ So lets fix the error in rust
 <br/>
 <br/>
 
-### Why are we here?
-If you have forgotten, we have this whole cannot print a node with `Debug`
-trait because we get a stack overflow.
+### Lets organize our files a bit more
+Lets create the following structure in our code base, and then move the
+contents of `shapes.rs` into `shapes/mod.rs`
 
-How does this help us solve things?  Well, we only need to implement a few
-traits.
+`mod.rs` is effectively the same thing as `index.ts`
+
+#### TypeScript
+```
+src/
+  shapes/
+    index.ts
+  index.ts
+```
+
+#### Rust
+```
+src/
+  shapes/
+    mod.rs
+  main.rs
+```
 
 <br/>
 <br/>
@@ -640,46 +655,208 @@ traits.
 <br/>
 <br/>
 
-### First, lets make it so we can display a single Node
-that seems pretty reasonable, if we can display one, then we just need to
-display each possible node until we have visited every node!
+### Lets further break up the rust files
+```
+src/
+  shapes/
+    mod.rs
+    rect.rs
+    circle.rs
+    area.rs
+  main.rs
+```
 
-Lets implement the `Display` trait!
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
-Here is our previous code for easy of reference
+### This is annoying to type
 
 ```rust
-use std::{cell::RefCell, rc::Rc};
+mod shapes;
 
-struct Node {
-    name: String,
-    neighbors: RefCell<Vec<Rc<Node>>>,
-}
+use shapes::Rectangle;
 
 fn main() {
-    //let mut foo = RefCell::new(Foo { count: 0 });
-
-    let a = Rc::new(Node {
-        name: "a".into(),
-        neighbors: RefCell::new(vec![]),
-    });
-    let b = Rc::new(Node {
-        name: "a".into(),
-        neighbors: RefCell::new(vec![]),
-    });
-    let c = Rc::new(Node {
-        name: "a".into(),
-        neighbors: RefCell::new(vec![]),
-    });
-
-    a.neighbors.borrow_mut().push(b.clone());
-    a.neighbors.borrow_mut().push(c.clone());
-    b.neighbors.borrow_mut().push(a.clone());
-    b.neighbors.borrow_mut().push(c.clone());
-    c.neighbors.borrow_mut().push(a.clone());
-    c.neighbors.borrow_mut().push(b.clone());
+    let rect = Rectangle {
+        height: 10f64,
+        width: 10f64,
+        x: 0f64,
+        y: 0f64,
+    };
 }
 ```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Lets implement the `default` method
+This also allows us to have some amazing other integrations, but for now its
+nice to just have a way to create the default rectangle and circle.
+
+(to the code)
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+
+src/shapes/rect.rs
+```rust
+use super::area::Area;
+
+pub struct Rectangle {
+    pub x: f64,
+    pub y: f64,
+    pub width: f64,
+    pub height: f64,
+}
+
+impl Area for Rectangle {
+    fn area(&self) -> f64 {
+        return self.width * self.height;
+    }
+}
+
+impl Default for Rectangle {
+    fn default() -> Self {
+        return Rectangle {
+            x: 0f64,
+            y: 0f64,
+            width: 10f64,
+            height: 10f64,
+        };
+    }
+}
+```
+
+src/main.rs
+```rust
+use shapes::rect::Rectangle;
+
+mod shapes;
+
+fn main() {
+    let rect = Rectangle::default();
+}
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### I just want....
+to print out the rectangle now... but i don't want `Debug` print out, i want my
+_own_ printout!
+
+I want this...
+```rust
+use shapes::rect::Rectangle;
+
+mod shapes;
+
+fn main() {
+    let rect = Rectangle::default();
+
+    println!("{}", rect);
+}
+```
+
+Can someone tell me what error do you see?
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Ok... so implement display?
+Lets try it out!
 
 <br/>
 <br/>
@@ -705,49 +882,42 @@ fn main() {
 ### Complete Code
 
 ```rust
-use std::{cell::RefCell, rc::Rc, fmt::Display};
+use std::fmt::Display;
 
-struct Node {
-    name: String,
-    neighbors: RefCell<Vec<Rc<Node>>>,
+use super::area::Area;
+
+pub struct Rectangle {
+    pub x: f64,
+    pub y: f64,
+    pub width: f64,
+    pub height: f64,
 }
 
-impl Display for Node {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "Node {}: Neighbors: {}", self.name, self.neighbors.borrow().len())?;
-
-        for neighbor in self.neighbors.borrow().iter() {
-            writeln!(f, "  -> {}", neighbor.name)?;
-        }
-
-        return Ok(());
+impl Area for Rectangle {
+    fn area(&self) -> f64 {
+        return self.width * self.height;
     }
 }
 
-fn main() {
-    //let mut foo = RefCell::new(Foo { count: 0 });
+impl Default for Rectangle {
+    fn default() -> Self {
+        return Rectangle {
+            x: 0f64,
+            y: 0f64,
+            width: 10f64,
+            height: 10f64,
+        };
+    }
+}
 
-    let a = Rc::new(Node {
-        name: "a".into(),
-        neighbors: RefCell::new(vec![]),
-    });
-    let b = Rc::new(Node {
-        name: "a".into(),
-        neighbors: RefCell::new(vec![]),
-    });
-    let c = Rc::new(Node {
-        name: "a".into(),
-        neighbors: RefCell::new(vec![]),
-    });
-
-    a.neighbors.borrow_mut().push(b.clone());
-    a.neighbors.borrow_mut().push(c.clone());
-    b.neighbors.borrow_mut().push(a.clone());
-    b.neighbors.borrow_mut().push(c.clone());
-    c.neighbors.borrow_mut().push(a.clone());
-    c.neighbors.borrow_mut().push(b.clone());
-
-    println!("A: {}", a);
+impl Display for Rectangle {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        return write!(
+            f,
+            "Rectangle {{ x: {}, y: {}, width: {}, height: {} }}",
+            self.x, self.y, self.width, self.height
+        );
+    }
 }
 ```
 
@@ -772,15 +942,83 @@ fn main() {
 <br/>
 <br/>
 
-### So this is better... but how would we display a graph?
-Well one thing we could do is put all the nodes into a `Vec<Node>` and just go
-through it and display the nodes and their information in order of the vector,
-but that is boring.
+### Can we do this in TypeScript?
 
-What if i want to display them in a specific order?  How about Breadth First?
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
-What trait do you think we could use to iterate through our nodes, givin a
-starting node?
+### Complete Code
+
+src/shapes/index.ts
+```typescript
+export class Rectangle implements Area {
+    constructor(
+        public x: number,
+        public y: number,
+        public width: number,
+        public height: number) { }
+
+    area(): number {
+        return this.width * this.height;
+    }
+
+    toString(): string {
+        return `Rectangle(${this.x}, ${this.y}, ${this.width}, ${this.height})`;
+    }
+}
+```
+
+src/index.ts
+```typescript
+import { Rectangle } from "./shapes";
+
+let rect = new Rectangle(5, 5, 10, 20);
+
+console.log(`${rect}`);
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Now its time to take it to the next level
+Lets make some things that are a bit... useless, but they show off how to use
+rust and that is what we are going for
 
 <br/>
 <br/>
@@ -804,11 +1042,11 @@ starting node?
 <br/>
 
 ### Iterator
-Yes!  we can create our own iterators and then we get all of those sweet
-methods for free!
+An iterator isn't just something we interact with, its something we can also
+use!
 
-So lets implement an `Iterator` for a `Node`, but first, lets white board how
-to go about iterators
+Lets talk about iterators (whiteboard)
+Lets implement an iterator for `Rectangle`
 
 <br/>
 <br/>
@@ -832,107 +1070,63 @@ to go about iterators
 <br/>
 
 ### Complete Code
+Why are we getting a borrow checker issue?
 
+src/main.rs
 ```rust
-use std::{cell::RefCell, rc::Rc, fmt::Display, collections::HashSet, hash::Hash};
+use shapes::rect::Rectangle;
 
-#[derive(PartialEq, Eq, Hash, Clone)]
-struct RcNode(Rc<Node>);
-
-impl Into<RcNode> for Rc<Node> {
-    fn into(self) -> RcNode {
-        return RcNode(self);
-    }
-}
-
-#[derive(PartialEq, Eq)]
-struct Node {
-    name: String,
-    neighbors: RefCell<Vec<RcNode>>,
-}
-
-impl Hash for Node {
-    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.name.hash(state);
-    }
-}
-
-struct NodeIter {
-    seen: HashSet<Rc<Node>>,
-    stack: Vec<Rc<Node>>,
-}
-
-impl Iterator for NodeIter {
-    type Item = Rc<Node>;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        return self.stack.pop().map(move |node| {
-            for child in node.neighbors.borrow().iter() {
-                if self.seen.insert(child.0.clone()) {
-                    self.stack.push(child.0.clone());
-                }
-            }
-            return node;
-        });
-    }
-}
-
-impl IntoIterator for RcNode {
-    type Item = Rc<Node>;
-    type IntoIter = NodeIter;
-
-    fn into_iter(self: Self) -> Self::IntoIter {
-        let mut seen = HashSet::new();
-        let mut stack = Vec::new();
-
-        seen.insert(self.0.clone());
-        stack.push(self.0.clone());
-
-        return NodeIter { seen, stack };
-    }
-}
-
-
-impl Display for Node {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "Node {}: Neighbors: {}", self.name, self.neighbors.borrow().len())?;
-
-        for neighbor in self.neighbors.borrow().iter() {
-            writeln!(f, "  -> {}", neighbor.0.name)?;
-        }
-
-        return Ok(());
-    }
-}
+mod shapes;
 
 fn main() {
-    //let mut foo = RefCell::new(Foo { count: 0 });
+    let rect = Rectangle::default();
 
-    let A = Rc::new(Node {
-        name: "A".into(),
-        neighbors: RefCell::new(vec![]),
-    });
-    let B = Rc::new(Node {
-        name: "B".into(),
-        neighbors: RefCell::new(vec![]),
-    });
-    let C = Rc::new(Node {
-        name: "C".into(),
-        neighbors: RefCell::new(vec![]),
-    });
+    for point in rect {
+        println!("({}, {})", point.0, point.1);
+    }
 
-    A.neighbors.borrow_mut().push(B.clone().into());
-    A.neighbors.borrow_mut().push(C.clone().into());
-    B.neighbors.borrow_mut().push(A.clone().into());
-    B.neighbors.borrow_mut().push(C.clone().into());
-    C.neighbors.borrow_mut().push(A.clone().into());
-    C.neighbors.borrow_mut().push(C.clone().into());
+    println!("{}", rect);
+}
+```
 
+src/shapes/rect.rs
+```rust
+pub struct RectIter {
+    points: [(f64, f64); 4],
+    idx: usize,
+}
 
-    let A: RcNode = A.into();
-    A.into_iter().for_each(|node| {
-        println!("{}", node);
-    });
+impl Iterator for RectIter {
+    type Item = (f64, f64);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.idx >= self.points.len() {
+            return None;
+        }
+
+        let point = self.points[self.idx];
+        self.idx += 1;
+
+        return Some(point);
+    }
+}
+
+impl IntoIterator for &Rectangle {
+    type Item = (f64, f64);
+
+    type IntoIter = RectIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        return RectIter {
+            points: [
+                (self.x, self.y),
+                (self.x + self.width, self.y),
+                (self.x, self.y + self.height),
+                (self.x + self.width, self.y + self.height),
+            ],
+            idx: 0,
+        }
+    }
 }
 ```
 
@@ -957,9 +1151,310 @@ fn main() {
 <br/>
 <br/>
 
-### But... what if if if if we want to load from a file?
-Well, we need to implement a few more traits!  Lets implement `FromStr` for
-both `Node` and `Graph`
+### IntoIterator
+It _consumes_ the thing you give it.  We need to give it something to consume
+that wont consume our original struct!
+
+* we want to be able to consume, if we choose (think of `Vec`)
+* we want to be able to not consume
+
+So what do we do?
+(make simple fix)
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### I hate duplicating code
+* lets implement a constructor
+* lets do it the trait way
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+Never sleep on the `From<T>` trait.  It allows you to hide complicated code and
+it relies on built in behavior.
+
+```rust
+pub struct RectIter {
+    points: [(f64, f64); 4],
+    idx: usize,
+}
+
+impl From<&Rectangle> for RectIter {
+    fn from(rect: &Rectangle) -> Self {
+        return RectIter {
+            points: [
+                (rect.x, rect.y),
+                (rect.x + rect.width, rect.y),
+                (rect.x, rect.y + rect.height),
+                (rect.x + rect.width, rect.y + rect.height),
+            ],
+            idx: 0,
+        }
+    }
+}
+
+impl IntoIterator for Rectangle {
+    type Item = (f64, f64);
+
+    type IntoIter = RectIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        return (&self).into();
+    }
+}
+
+impl IntoIterator for &Rectangle {
+    type Item = (f64, f64);
+
+    type IntoIter = RectIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        return self.into();
+    }
+}
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Observations
+There seems to be this way rust works which is
+
+Library code -> trait implementations -> Application code interacts heavily
+with standard methods
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### What about our own traits?
+Lets create our own amazing trait!
+
+Lets talk about collisions (don't worry we will stay out of complicated math)
+
+```
+src/
+  shapes/
+    collisions.rs
+```
+
+Don't forget to add it to `mod.rs`
+
+```rust
+pub mod collisions;
+```
+
+First lets white board our two algorithms for `Rectangle` and `Circle`
+
+Also, i am going to shortcut the `Circle` collision algorithm because its easy
+and `Circle` against `AABB` (`Rectangle`) is a complicated formula.
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+
+src/shapes/rect.rs
+```rust
+impl Rectangle {
+    fn contains_point(&self, (x, y): (f64, f64)) -> bool {
+        return x >= self.x && x <= self.x + self.width &&
+            y >= self.y && y <= self.y + self.height;
+    }
+}
+
+impl Collidable<Circle> for Rectangle {
+    fn collide(&self, other: &Circle) -> bool {
+        return other.collide(self);
+    }
+}
+
+impl Collidable<Rectangle> for Rectangle {
+    fn collide(&self, other: &Rectangle) -> bool {
+        for point in other {
+            if self.contains_point(point) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+src/shapes/circle.rs
+```rust
+impl Circle {
+    fn contains_point(&self, (x, y): (f64, f64)) -> bool {
+        let dx = self.x - x;
+        let dy = self.y - y;
+
+        return dx * dx + dy * dy <= self.radius * self.radius;
+    }
+}
+
+impl Collidable<Rectangle> for Circle {
+    fn collide(&self, other: &Rectangle) -> bool {
+        for point in other {
+            if self.contains_point(point) {
+                return true;
+            }
+        }
+        return true;
+    }
+}
+
+impl Collidable<Circle> for Circle {
+    fn collide(&self, other: &Circle) -> bool {
+        return self.contains_point((other.x, other.y)) ||
+            other.contains_point((self.x, self.y));
+    }
+}
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Is the code a bit... similar?
+Lets pull out yet another trick with traits
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Lets try something different
+* create a `Points` trait that has one method, `points`, that returns an
+  `Iterator<Item = (f64, f64)>`
+
+* create a `Contains` trait that has one method, `contains_point`, that returns
+  `bool` if the point is contained within the geometry
+
+* implement `Iterator` for `Points`, requires `PointIter` struct
 
 <br/>
 <br/>
@@ -985,145 +1480,32 @@ both `Node` and `Graph`
 ### Complete Code
 
 ```rust
-use anyhow::Result;
-use std::{cell::RefCell, rc::Rc, fmt::Display, collections::{HashSet, HashMap}, hash::Hash, str::FromStr};
-
-#[derive(PartialEq, Eq, Hash, Clone)]
-struct RcNode(Rc<Node>);
-
-impl Into<RcNode> for Rc<Node> {
-    fn into(self) -> RcNode {
-        return RcNode(self);
-    }
+pub struct PointIter {
+    points: Vec<(f64, f64)>,
+    idx: usize,
 }
 
-#[derive(PartialEq, Eq)]
-struct Node {
-    name: String,
-    neighbors: RefCell<Vec<RcNode>>,
-}
-
-impl Hash for Node {
-    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.name.hash(state);
-    }
-}
-
-struct NodeIter {
-    seen: HashSet<Rc<Node>>,
-    stack: Vec<Rc<Node>>,
-}
-
-impl Iterator for NodeIter {
-    type Item = Rc<Node>;
+impl Iterator for PointIter {
+    type Item = (f64, f64);
 
     fn next(&mut self) -> Option<Self::Item> {
-        return self.stack.pop().map(move |node| {
-            for child in node.neighbors.borrow().iter() {
-                if self.seen.insert(child.0.clone()) {
-                    self.stack.push(child.0.clone());
-                }
-            }
-            return node;
-        });
-    }
-}
-
-impl IntoIterator for &RcNode {
-    type Item = Rc<Node>;
-    type IntoIter = NodeIter;
-
-    fn into_iter(self: Self) -> Self::IntoIter {
-        let mut seen = HashSet::new();
-        let mut stack = Vec::new();
-
-        seen.insert(self.0.clone());
-        stack.push(self.0.clone());
-
-        return NodeIter { seen, stack };
-    }
-}
-
-impl FromStr for RcNode {
-    type Err = anyhow::Error;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        return Ok(RcNode(Rc::new(Node {
-            name: s.into(),
-            neighbors: RefCell::new(vec![]),
-        })));
-    }
-}
-
-
-impl Display for Node {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "Node {}: Neighbors: {}", self.name, self.neighbors.borrow().len())?;
-
-        for neighbor in self.neighbors.borrow().iter() {
-            writeln!(f, "  -> {}", neighbor.0.name)?;
+        if self.idx >= self.points.len() {
+            return None;
         }
 
-        return Ok(());
+        let point = self.points[self.idx];
+        self.idx += 1;
+
+        return Some(point);
     }
 }
 
-struct Graph {
-    nodes: Vec<RcNode>,
+pub trait Points {
+    fn points(&self) -> PointIter;
 }
 
-impl FromStr for Graph {
-    type Err = anyhow::Error;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut all_nodes: HashMap<String, RcNode> = HashMap::new();
-        for line in s.lines().filter(|x| !x.is_empty()) {
-            let (a, b) = line
-                .split_once(" -> ")
-                .ok_or(anyhow::anyhow!("Unable to parse nodes"))?;
-
-            all_nodes.entry(a.into()).or_insert(a.parse()?);
-            all_nodes.entry(b.into()).or_insert(b.parse()?);
-
-            match (all_nodes.get(a.into()), all_nodes.get(b.into())) {
-                (Some(a), Some(b)) => {
-                    a.0.neighbors.borrow_mut().push(b.clone());
-                }
-                _ => unreachable!("this should never happen")
-            }
-        }
-
-        return Ok(Graph {
-            nodes: all_nodes.values().map(|x| x.clone()).collect(),
-        });
-    }
-}
-
-impl Display for Graph {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut seen = HashSet::new();
-        for node in &self.nodes {
-            for node in node {
-                if !seen.contains(&node) {
-                    writeln!(f, "{}", node)?;
-                    seen.insert(node.clone());
-                }
-            }
-        }
-
-        return Ok(());
-    }
-}
-
-fn main() -> Result<()> {
-    let file = std::fs::read_to_string(
-        std::env::args().nth(1).expect("please provide a file"))?;
-
-    let graph: Graph = file.parse()?;
-
-    println!("{}", graph);
-
-    return Ok(());
+pub trait Contains {
+    fn contains_point(&self, point: (f64, f64)) -> bool;
 }
 ```
 
@@ -1148,3 +1530,155 @@ fn main() -> Result<()> {
 <br/>
 <br/>
 
+### So why did we do this?
+Lets relook at our `Collidable` implementation.  We can now do a "blanket"
+implementation.  This allows us to define a generic implemenation using trait
+combinations!!!
+
+You> "i know all these words individually, but when you put them together like
+that..."
+
+Me> "Just watch (and program to get the most out of it)"
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+
+```rust
+impl<T> Collidable<T> for T where T: Contains + Points {
+    fn collide(&self, other: &T) -> bool {
+        for point in other.points() {
+            if self.contains_point(point) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### So what does this give us?
+You are probably confused as to what this even means... Let me show you
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+
+src/main.rs
+```rust
+fn main() {
+    let rect = Rectangle::default();
+
+    for point in rect.points() {
+        println!("({}, {})", point.0, point.1);
+    }
+
+    let rect2 = Rectangle::default();
+
+    println!("{}", rect.collide(&rect2));
+}
+```
+
+src/shapes/rect.rs
+```rust
+impl Points for Rectangle {
+    fn points(&self) -> super::collisions::PointIter {
+        return super::collisions::PointIter {
+            points: vec![
+                (self.x, self.y),
+                (self.x + self.width, self.y),
+                (self.x, self.y + self.height),
+                (self.x + self.width, self.y + self.height),
+            ],
+            idx: 0,
+        };
+    }
+}
+
+impl Contains for Rectangle {
+    fn contains_point(&self, (x, y): (f64, f64)) -> bool {
+        return x >= self.x && x <= self.x + self.width &&
+            y >= self.y && y <= self.y + self.height;
+    }
+}
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
