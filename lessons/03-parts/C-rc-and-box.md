@@ -117,6 +117,7 @@ memory is cleared up
 same rules for immutable borrows.  They work _slightly_ different
 
 (whiteboard)
+(then simple code example (1 node 3 vecs))
 
 <br/>
 <br/>
@@ -187,9 +188,7 @@ fn main() {
     let mut B = Rc::new(Node { name: "B".into(), neighbors: vec![] });
     let mut C = Rc::new(Node { name: "C".into(), neighbors: vec![] });
 
-    A.neighbors.push(B);
-    A.neighbors.push(C);
-    B.neighbors.push(A); // wut?
+    A.neighbors.push(B); // we are more broken!
 }
 ```
 
@@ -222,9 +221,6 @@ each node can contain a reference to another node
 
 #### What's wrong
 Once a `Node` is behind an `Rc` we cannot mutate it anymore.
-
-#### What we need to solve this.
-(whiteboard)
 
 <br/>
 <br/>

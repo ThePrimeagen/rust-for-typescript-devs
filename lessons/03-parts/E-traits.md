@@ -4,11 +4,14 @@ description: "Perhaps one of the best things about rust"
 ---
 
 ### Traits, they are like interfaces
-You can define most of rust's behavior, from addition, parsing strings, to
-being displayed via traits.
+You can define most of rust's behavior, from addition, equality checks,
+hashing, parsing strings, to being displayed via traits.
 
-Traits also allow you to define basic behaviors without knowing the underlying
-behavior, in other words, interfaces.
+Traits are effectively Interfaces but how they are used are a bit different,
+and how the language lets you specify them is different.
+
+What traits allow you to do cannot be done in JS.  The language doesn't have the
+ability to do the same thing.
 
 <br/>
 <br/>
@@ -37,6 +40,9 @@ Lets do the following:
 
 * create type `Rectangle`, defined with `width`, `height`, `x`, and `y`.
 * create type `Circle`, defined with `radius`, `x`, and `y`.
+
+we will be adding methods to `Rectangle` and `Circle` so it is easiest just to
+make them classes
 
 <br/>
 <br/>
@@ -80,6 +86,9 @@ We could use types here, but we are about to add methods which will make the
 creation of these objects inefficient and frustrating.
 
 Lets add an `Area` interface that defines an area method
+* `interface Area`
+  - `area(): number`
+* add `area` to both `Circle` and `Rectangle`
 
 <br/>
 <br/>
@@ -326,7 +335,7 @@ Lets move the definition to another file.
 
 ### Complete Code
 
-src/lib.rs
+src/main.rs
 ```rust
 pub mod shapes;
 ```
@@ -390,7 +399,8 @@ fn main() {
 
 ### Now do you see?
 trust me, you don't. Lets make this even better.  This small change makes a lot
-of things possible.  Watch this.
+of things possible.  Watch this, i can `impl Area` on any type, even types I
+don't own, like a `f64`.
 
 <br/>
 <br/>
@@ -450,8 +460,7 @@ fn main() {
 <br/>
 
 ### It gets even better
-Let's move `Area` trait and everything into the `shapes.rs` file and lets see
-exactly how this `Area` implementation works for `f64`
+Let's move `Area` trait and trait implementations into `shapes.rs`
 
 ```rust
 use std::f64::consts::PI;
@@ -550,10 +559,6 @@ This means there is no global polyfills...  In JavaScript you edit the
 In Rust, its only for files that import the trait
 
 ```typescript
-➜  rust-typescript git:(master) ✗ node
-Welcome to Node.js v18.14.0.
-Type ".help" for more information.
-
 > Number.prototype.area = function() { return this * this; }
 [Function (anonymous)]
 
@@ -639,14 +644,13 @@ traits.
 that seems pretty reasonable, if we can display one, then we just need to
 display each possible node until we have visited every node!
 
-Lets look at the `Display` trait!
+Lets implement the `Display` trait!
 
 Here is our previous code for easy of reference
 
 ```rust
 use std::{cell::RefCell, rc::Rc};
 
-#[derive(Debug)]
 struct Node {
     name: String,
     neighbors: RefCell<Vec<Rc<Node>>>,
@@ -655,25 +659,25 @@ struct Node {
 fn main() {
     //let mut foo = RefCell::new(Foo { count: 0 });
 
-    let A = Rc::new(Node {
-        name: "A".into(),
+    let a = Rc::new(Node {
+        name: "a".into(),
         neighbors: RefCell::new(vec![]),
     });
-    let B = Rc::new(Node {
-        name: "B".into(),
+    let b = Rc::new(Node {
+        name: "a".into(),
         neighbors: RefCell::new(vec![]),
     });
-    let C = Rc::new(Node {
-        name: "C".into(),
+    let c = Rc::new(Node {
+        name: "a".into(),
         neighbors: RefCell::new(vec![]),
     });
 
-    A.neighbors.borrow_mut().push(B.clone());
-    A.neighbors.borrow_mut().push(C.clone());
-    B.neighbors.borrow_mut().push(A.clone());
-    B.neighbors.borrow_mut().push(C.clone());
-    C.neighbors.borrow_mut().push(A.clone());
-    C.neighbors.borrow_mut().push(C.clone());
+    a.neighbors.borrow_mut().push(b.clone());
+    a.neighbors.borrow_mut().push(c.clone());
+    b.neighbors.borrow_mut().push(a.clone());
+    b.neighbors.borrow_mut().push(c.clone());
+    c.neighbors.borrow_mut().push(a.clone());
+    c.neighbors.borrow_mut().push(b.clone());
 }
 ```
 
@@ -723,27 +727,27 @@ impl Display for Node {
 fn main() {
     //let mut foo = RefCell::new(Foo { count: 0 });
 
-    let A = Rc::new(Node {
-        name: "A".into(),
+    let a = Rc::new(Node {
+        name: "a".into(),
         neighbors: RefCell::new(vec![]),
     });
-    let B = Rc::new(Node {
-        name: "B".into(),
+    let b = Rc::new(Node {
+        name: "a".into(),
         neighbors: RefCell::new(vec![]),
     });
-    let C = Rc::new(Node {
-        name: "C".into(),
+    let c = Rc::new(Node {
+        name: "a".into(),
         neighbors: RefCell::new(vec![]),
     });
 
-    A.neighbors.borrow_mut().push(B.clone());
-    A.neighbors.borrow_mut().push(C.clone());
-    B.neighbors.borrow_mut().push(A.clone());
-    B.neighbors.borrow_mut().push(C.clone());
-    C.neighbors.borrow_mut().push(A.clone());
-    C.neighbors.borrow_mut().push(C.clone());
+    a.neighbors.borrow_mut().push(b.clone());
+    a.neighbors.borrow_mut().push(c.clone());
+    b.neighbors.borrow_mut().push(a.clone());
+    b.neighbors.borrow_mut().push(c.clone());
+    c.neighbors.borrow_mut().push(a.clone());
+    c.neighbors.borrow_mut().push(b.clone());
 
-    println!("A: {}", A);
+    println!("A: {}", a);
 }
 ```
 
@@ -773,10 +777,10 @@ Well one thing we could do is put all the nodes into a `Vec<Node>` and just go
 through it and display the nodes and their information in order of the vector,
 but that is boring.
 
-TODO: Spelling
 What if i want to display them in a specific order?  How about Breadth First?
 
-What could we implement now??
+What trait do you think we could use to iterate through our nodes, givin a
+starting node?
 
 <br/>
 <br/>
@@ -803,7 +807,8 @@ What could we implement now??
 Yes!  we can create our own iterators and then we get all of those sweet
 methods for free!
 
-So lets implement an `Iterator` for a `Node`
+So lets implement an `Iterator` for a `Node`, but first, lets white board how
+to go about iterators
 
 <br/>
 <br/>

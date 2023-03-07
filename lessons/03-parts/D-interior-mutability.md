@@ -178,9 +178,14 @@ Should we use `Cell` for our use case?  Why or why not?
 ### Introducing Ref Cell
 `RefCell` effectively enforces the compile time rules of rust, at run time.
 
-TODO: Check out Jonhoo's YT video on this
+It is safe, but you can make it "dangerous." Lets go over both
 
-Lets check out how to use it safely and unsafely.
+First, lets go over basic usage
+* create struct `Foo` with a `count` property and derive `Debug`
+* create a `foo` in the `main` function that is placed into a `RefCell`
+* println `foo`
+* mutate `foo`
+* println `foo`
 
 <br/>
 <br/>
@@ -217,6 +222,8 @@ struct Foo {
 fn main() {
     let foo = RefCell::new(Foo { count: 0 });
 
+    println!("foo {:?}", foo);
+
     foo.borrow_mut().count += 5;
 
     println!("foo {:?}", foo);
@@ -244,11 +251,9 @@ fn main() {
 <br/>
 <br/>
 
-### I thought you said it was dangerous?
-I did and `RefCel` can be.  Don't forget to show how it can behave differently
-than rusts rules
-
-(back to code)
+### RefCell does have some compile time protection
+Lets code up an example where `RefCell` immutable borrow + mutable borrow gets
+compile time caught
 
 <br/>
 <br/>
@@ -316,9 +321,82 @@ fn main() {
 <br/>
 <br/>
 
+### The dangerous usage of RefCell
+We can also cause a panic if we do this right.  Lets use `Rc` and a `RefCell`
+and cause a panic.
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+```rust
+use std::{cell::RefCell, rc::Rc};
+
+#[derive(Debug)]
+struct Foo {
+    count: usize,
+}
+
+fn immutable_borrow(foo: Rc<RefCell<Foo>>) {
+
+    println!("immutable borrow: {:?}", foo.borrow());
+}
+
+fn main() {
+    let foo = Rc::new(RefCell::new(Foo { count: 0 }));
+
+    let mut_foo = foo.borrow_mut();
+
+    immutable_borrow(foo.clone());
+
+    println!("foo {:?}", mut_foo);
+}
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
 ### Lets now use RefCell in our little graph
-(update verbage once we know what we are doing)
-TODO: Ask benny on RefCell on Vec or on Node
+I would like you to try to upgrade the graph to use `RefCell`
+
+There is a lot of places where you could make this change!  So the task is a
+bit fun!  Pick the place you think is best and make the change
 
 <br/>
 <br/>
