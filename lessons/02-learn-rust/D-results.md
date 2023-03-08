@@ -69,6 +69,17 @@ enum Result<V, E> {
     Err(E),
 }
 ```
+<br />
+<br />
+<br />
+<br />
+
+Also, rust has `Ok` and `Err` as first class citizens
+
+<br />
+<br />
+<br />
+<br />
 
 ```rust
 if let Ok(value) = a_function_that_can_error() {
@@ -139,8 +150,14 @@ newly introduced `Result`. <br />
 
 But!  Lets go in small steps
 1. read the first argument passed to the program
+  - `cargo run -- this_is_an_arg`
+  - `npx ts-node file this_is_an_arg`
 1. the first argument is a name and path to the file to read
 1. print out each line of the file
+
+```typescript
+process.argv[2] <--- first arg to program
+```
 
 Now we have already done some of this, so this should become a bit easier, lets
 start with TypeScript.
@@ -236,7 +253,8 @@ Ok lets try the same thing in rust.  It will be a bit more involved.
 I'll give you some hints.
 
 ```rust
-std::env::args().nth(1) // <--- gets the first argument passed to the program
+std::env::args().nth(1) // <--- gets the first argument
+                        //      passed to the program
 ```
 
 if you forgot
@@ -244,6 +262,8 @@ if you forgot
 ```rust
 std::fs::read_to_string(...) // reads a file to string
 ```
+
+I'll give you a second, then i'll do it
 
 <br />
 <br />
@@ -317,7 +337,7 @@ what makes rust better or worse in this example?
 lets only print out lines that are `number`s and lines that are not, lets print
 out `Line not a number`
 
-First, TypeScript
+First, TypeScript, i'll give you a moment
 
 <br />
 <br />
@@ -390,6 +410,9 @@ fn mult() -> usize {
     return "5".parse().unwrap_or(0);
 }
 ```
+
+I'll give you a moment to try it out, then i'll do it
+(think pattern matching)
 
 <br />
 <br />
@@ -471,6 +494,34 @@ know when undefineds can happen
 - Result saves you from errors you should be able to prevent
 - Option saves you from `undefined is not a function`
 - Rust doesn't save you from bad logic, we are all bad programmers, sowwy
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Questions?
+Get them out of the way now, even if its not `Result` based.
+
+Remember:
+- If you don't understand something, this is a great time understand it better
+- If you don't understand something, guarantee the person next to you is
+  struggling with the same thing
+- If you don't ask, who will?
+
+The next section is going to be harder
 
 <br />
 <br />

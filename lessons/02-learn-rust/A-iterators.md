@@ -40,7 +40,8 @@ concepts are a bit wonkey coming from TypeScript.
 You are even probably thinking... "I use iterators all the time and enums are
 horrible!"
 
-From a typescript perspective you are right and wrong.
+From a typescript perspective you are right and from a rust perspective, you
+are wrong.
 
 <br/>
 <br/>
@@ -186,6 +187,12 @@ Now lets do it in rust!
 |x| x * 5
 ```
 
+See how far you can get on your own!
+* do you remember how to define a vector? `vec![...]`
+* convert to iterator `.iter()`
+* map it
+* but... how to get an iterator back to a vector... (`collect`)
+
 (in case you forgot)
 - creates an list filled with 1, 2, 3
 - adds 1 to each item in that list
@@ -223,8 +230,33 @@ fn main() {
 }
 ```
 
-Let's whiteboard what happens here.
-(show other "infering" that can go on, (`fn` and on `collect`))
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### What is collect?
+One thing that is different than you may be use to is that an `Iterator` is its
+own data type.  So we must convert from an iterator back into the struct we
+want and in our case its a `Vec`
+
+So lets do this manually
 
 <br/>
 <br/>
@@ -246,11 +278,54 @@ Let's whiteboard what happens here.
 <br/>
 <br/>
 <br/>
+
+### Complete Code
+
+```rust
+fn main() {
+    let items = vec![1, 2, 3];
+    let mut iter = items
+        .iter()
+        .map(|x| x + 1);
+
+    let mut collected_items = vec![];
+    while let Some(value) = iter.next() {
+        collected_items.push(value);
+    }
+
+    println!("collected_items: {:?}", collected_items);
+}
+```
+
+Its sometimes easy to think things magic when they are not, its literally, in
+our example, a simple while loop
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
 
 ### Wanna see something cool with collect?
 Well, collect is more that just "put back into a vector"
 
-(show them the deets)
+(show them the deets, String, HashSet, HashMap)
 
 <br/>
 <br/>
@@ -301,11 +376,11 @@ let foo: HashSet<isize> = vec![1, 2, 3]
 
 Collect into a HashMap
 ```rust
-let foo: HashMap<String, isize> = vec!["this", "is", "a", "test"]
-    .iter()
+let foo: HashMap<&str, usize> = vec!["this", "is", "a", "test"]
+    .into_iter()
     .enumerate() // Adds the index to the iterator!
                  // one of the glories of rust is that we work with iterators
-    .map(|(idx, item)| (item.to_string(), idx as isize))
+    .map(|(idx, item)| (item, idx)) // reverses the order
     .collect();
 ```
 
@@ -332,10 +407,34 @@ let foo: HashMap<String, isize> = vec!["this", "is", "a", "test"]
 <br/>
 <br/>
 
-### there are other types of "collects"
+### We are going to play a game
+this will help you see whats possible
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### What is value?
 
 ``` rust
-let sum: usize = vec![1, 2, 3]
+let value: usize = vec![1, 2, 3]
     .iter()
     .sum();
 ```
@@ -344,19 +443,56 @@ let sum: usize = vec![1, 2, 3]
 <br/>
 <br/>
 <br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
 ``` rust
 let how_many_items: usize = vec![1, 2, 3]
     .iter()
-    .skip(2) // skips the first two
-    .count(); // prints 1
+    .skip(2)
+    .count();
 ```
 
-What will i print?
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### What will i print?
 ``` rust
-    let how_many_items: usize = vec![1, 2, 5, 9, 4]
+    vec![1, 2, 5, 9, 4]
         .iter()
-        .skip(2) // skips the first two
+        .skip(2)
         .take_while(|&&x| x > 4) // i can explain the && later,
                                  // but know its pattern matching
         .for_each(|x| println!("{}", x));
@@ -366,9 +502,25 @@ What will i print?
 <br/>
 <br/>
 <br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
 ``` rust
-let how_many_evens: usize = vec![1, 2, 3]
+let what_about_this: usize = vec![1, 2, 3]
     .iter()
     .filter(|x| *x % 2 == 0) // we will explain the * later
     .count();
@@ -654,7 +806,7 @@ fn main() {
 <br/>
 
 ### How about every other line?
-First, typescript
+Add a few more lines to your test file and then implement it in TypeScript
 
 I'll give you ~1 minute to do this
 
@@ -777,9 +929,11 @@ fn main() {
 <br/>
 
 ### One more
+do these steps _IN ORDER_.
+
 * every other line
-* skip the first two every others
-* print the next two every others lines
+* skip the first two
+* print the next two
 
 <br/>
 <br/>
@@ -840,6 +994,8 @@ file.
 
 ### Now Rust
 Remember when i said rust has an amazing combinator set?  Its time to shine
+
+i think you should give it a try
 
 <br/>
 <br/>
@@ -1067,12 +1223,12 @@ exactly what is happening.
 Here is "transpiled" code
 
 ```typescript
-function filter_1(_: string[], x: number): boolean {
-    return x > 5;
+function filter_1(x: number): boolean {
+    return x % 2 === 0;
 }
 
 function filter_2(x: number): number {
-    return x * 10;
+    return x >= 2 && x < 4;
 }
 
 // Skipping the split operation
@@ -1094,8 +1250,8 @@ for (let i = 0; i < c.length; ++i) {
 }
 ```
 
-*likely* v8 will optimize some of this away.  To what extent, i don't have the
-faintest clue.
+v8 may optimize some of this away.  To what extent, i don't have the faintest
+clue and neither do you
 
 <br/>
 <br/>
@@ -1206,7 +1362,6 @@ able to have these higher order abstractions, just without all the cost of them
 <br/>
 
 ### Questions?
-Good time for a quick questions answering
 
 <br/>
 <br/>

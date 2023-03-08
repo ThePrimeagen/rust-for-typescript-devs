@@ -204,11 +204,12 @@ fn main() {
 ### ok...?
 They seem the same...
 
-Ok... lets make it harder
+Ok... lets extend our original example
 
 Lets add `Yellow`
 
 First in TS and then Rust
+(follow along pls and make you type out the full example)
 
 <br/>
 <br/>
@@ -351,6 +352,46 @@ fn main() {
 
 ### Ok... are you impressed yet?
 well, you shouldn't be.  this isn't awesome yet
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### One small argument
+Most of what rust can do, javascript can do, but differently.
+
+You could imagen that a javascript module exists for `Color` where the function
+`is_green` and `is_green_parts` are defined and exported.  But i would argue
+that having to peruse through a module to know what operations are supported is
+not nearly as nice as having them hang off the struct itself.  And in this
+case, the enum
+
+```javascript
+import Color, { is_green } from "./colors";
+
+// this is simply not as convenient as green.is_green();
+const green = Color.Green;
+if (is_green(green)) {
+    console.log("i am green");
+}
+```
 
 <br/>
 <br/>
@@ -593,6 +634,15 @@ if ("bar" in x) {
 }
 ```
 
+So no more "magic" checking for types, you get named types and this works very
+well with non type discriminated unions (what we made).  This is because the
+discrimination exists at a language level, not a `type: string` level
+
+#### its not all magic
+Sometimes code can become a bit more verbose because of this, and that isn't as
+nice to write.  But at the same time, it prevents easy errors where you forgot
+to handle cases.
+
 <br/>
 <br/>
 <br/>
@@ -614,7 +664,7 @@ if ("bar" in x) {
 <br/>
 <br/>
 
-### A touch more on pattern matching
+### Lets talk about Pattern Matching
 Its incredible, and you can DO a lot.  Check this out
 
 ```rust
@@ -635,11 +685,13 @@ fn main() {
     match &foo {
         Item::Number(num) => println!("i am a number: {}", num),
         Item::String(str) => println!("i am a string: {}", str),
-        Item::Custom(custom) => println!("name: {}, age: {}", custom.name, custom.age),
+        Item::Custom(custom) =>
+            println!("name: {}, age: {}", custom.name, custom.age),
     }
 
     match &foo {
-        Item::Custom(custom) => println!("name: {}, age: {}", custom.name, custom.age),
+        Item::Custom(custom) =>
+            println!("name: {}, age: {}", custom.name, custom.age),
         _ => {}
     }
 
@@ -652,9 +704,12 @@ fn main() {
     }
 
     match &foo {
-        Item::Custom(custom) if custom.name == "Ricky" => println!("Hi, Ricky"),
-        Item::Custom(custom) if custom.age > 33 => println!("N64 was the best console"),
-        Item::Custom(custom) if custom.age < 30  => println!("Xbox was the best console"),
+        Item::Custom(custom) if custom.name == "Ricky" =>
+            println!("Hi, Ricky"),
+        Item::Custom(custom) if custom.age > 33 =>
+            println!("N64 was the best console"),
+        Item::Custom(custom) if custom.age < 30  =>
+            println!("Xbox was the best console"),
         _ => {}
     }
 }

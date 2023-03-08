@@ -470,6 +470,37 @@ fn main() {
 <br />
 <br />
 
+### Do you remember this from earlier?
+
+```rust
+fn main() {
+    let items = vec![1, 2, 3]
+        .iter()
+        .map(|x| x + 1);
+
+    println!("{:?}", items);
+}
+```
+
+lets talk about why this happens!
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 ### Quick Recap: The big three rules
 
 #### There can only be one value owner

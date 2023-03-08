@@ -3,14 +3,40 @@ title: "options"
 description: "an introduction of option"
 ---
 
-### options
-Options are the answer to typescript's undefined / null problem.
+### Option
+`Option` is the answer to typescript's undefined / null problem.
+
+`Option` is an enum
+
+<br />
+<br />
 
 The thing about null / undefined is that you get different answers for why you
 should use what or the other...
 
-null: undefined on purpose
-undefined: it might not be there...?
+`null`: `undefined` on purpose
+
+`undefined`: we have no reasonable guarantee it will be there...
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Fun Challenge
+is this valid TS?
 
 ```typescript
 type Foo = {
@@ -39,11 +65,33 @@ const item3: Foo = {bar: undefined}; // <-- is this valid?
 <br />
 <br />
 
+### Depends on your TSConfig
+`exactOptionalPropertyTypes` requires that bar either be _not specified_ or a
+string.
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
 ### Rust handles it different and better
 At first, this may seem annoying, but once you get use to them, it grows on you
 a ton
 
-First, the ENUM definition of Option
+1. the ENUM definition of Option
 ```rust
 enum Option<T> { // yes, generics can be used in enums, again, cool
     None
@@ -51,8 +99,10 @@ enum Option<T> { // yes, generics can be used in enums, again, cool
 }
 ```
 
-That means we can create Options with any inner value.  Rust also recognizes
-that they will be used so much that they made them first class citizens.
+That means we can create Options with any inner value.
+
+2. Rust also recognizes that they will be used so much that they made them
+   first class citizens.
 
 ```rust
 // notice i don't have to do Option::Some(...)
@@ -79,9 +129,9 @@ let foo = Some(Custom { age: 69, name: "ThePrimeagen" });
 <br />
 
 ### But why?
-Why do we need `Option`s in rust?  The answer is memory.  If you may or maynot
-return an item from a function, rust needs to be able to allocate that memory
-on the stack.
+Why do we need `Option`s in rust?  The answer is memory.  If you might or might
+not return an item from a function, rust needs to be able to allocate that
+memory on the stack.
 
 This happens in JS too, it is just behind the scenes in the engine
 
@@ -131,6 +181,8 @@ I want you to write a function with the following:
 * signature takes in a `number` or `undefined` and returns a `number`
 * if the value is `undefined`, return 0
 * else multiply the value by `5`
+* the signature cannot use `?` as that doesn't mean you _have to pass in
+  undefined_.
 
 I think you can do this pretty quick, i'll give you one minute.
 
@@ -271,7 +323,7 @@ fn multiply(num: Option<usize>) -> usize {
 <br />
 <br />
 
-### When I started with rust, this is what i would of wrote
+### Much nicer
 ```rust
 fn multiply(num: Option<usize>) -> usize {
     return num.unwrap_or(0) * 5;
@@ -471,8 +523,7 @@ See if you can change your `.map` example to use `?`
 ### Complete Code
 ```rust
 fn multiply(num: Option<usize>) -> Option<usize> {
-    let result = num? * 5;
-    return Some(result);
+    return Some(num? * 5);
 }
 ```
 
@@ -497,12 +548,12 @@ fn multiply(num: Option<usize>) -> Option<usize> {
 lets do a moment of practice!
 
 ### Small program
-- write a function, call it `practice`, that takes `Vec<usize>` and an `index:
-  usize`
+- write a function, call it `practice`, that takes in `nums` of `Vec<usize>`
+  and an `index: usize`
 
 - Return one of the following
-  - if value exists, return it multiplied by 5
-  - if value doesn't exist, return `index` multiplied by 5
+  - if value exists at `index` in `nums`, return it multiplied by 5
+  - if there is no value, return `index` multiplied by 5
 
 First typescript (i'll give you a moment)!
 
@@ -623,6 +674,33 @@ Rust as a language is hard.  But there are TONS of utilities that make it
 really easy to work with.  This is just one example.  The Option<?> interface
 
 Rusts take on the "Billion" dollar mistake i think is the right move.
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### A quick thing about Vectors
+* What's the difference between `[]` and `.get(x)`?
+  - `[]` directly accesses the element, if its not there, its like accessing
+    undefined.
+  - `.get(x)` safely handles out of bounds values
+
+* why `unwrap_or(&idx)`?
+  - `.get(x)` returns Option<&T>
+  - `unwrap_or` must maintain the _same_ type
 
 <br />
 <br />
