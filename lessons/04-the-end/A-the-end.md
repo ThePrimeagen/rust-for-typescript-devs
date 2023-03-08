@@ -118,7 +118,15 @@ into making a career out of rust.  the skill gap is large!
 
 ### My hope for you
 You don't leave knowing everything about rust, but you feel more empowered to
-learn it.  When you see lifetimes you will realize they are not all that hard
+learn it.  When you see lifetimes you will realize they are not all that hard.
+You know how the borrow checker works and you now understand how long things
+work.  Lifetimes are specifying how long a property "lives" for.
+
+What makes rust great?
+* Errors are Values
+* Options instead of null / undefined
+* Specify Mutation vs Readonly
+* Traits are amazing
 
 <br/>
 <br/>
