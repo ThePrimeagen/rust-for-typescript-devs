@@ -50,17 +50,37 @@ mutable reference
 <br />
 <br />
 
+### Terminology
+Dropped - releasing memory
+
+<br />
+<br />
+
 ### There are THREE rules you must have in your head at all times.
 1. There can only be **one** value owner
 1. There can be **unlimited** immutable borrows (reference) with **no** mutable references
 1. There can be only **one** mutable reference and **no** immutable references
 
+<br />
+<br />
+
+### There is one rule for Lifetimes
+1. A reference cannot outlive its value
+
+<br />
+<br />
+
 #### Stated differently
 One var owns the the data
+
 One var can change the data
+
 Many vars can look at the data
+
 You cannot look and change the data simultaneously
 
+You cannot refer to something that has been dropped (released in memory)
+
 <br />
 <br />
 <br />
@@ -78,10 +98,9 @@ You cannot look and change the data simultaneously
 <br />
 <br />
 
-### Rule #1: There can only be one value owner
-To illustrate this rule, lets
+### Test
 
-1. create a new struct `Item`, derives `Debug`, with one property, `count`, that is an `isize`.
+1. create a new struct `Item`, derives `Debug`, with one property, `count`, that is an `usize`.
 1. create a new `fn`, `add_one` that takes in an `Item` and adds 1 to it.
 1. In the main function, create `item` of type `Item`
 1. Print out `item` (with Debug print)
@@ -96,8 +115,9 @@ allows for printing of the struct.
 struct Item {...}
 
 fn main() {
+    let item = Item { .. };
     // --------v debug print
-    println!("{:?}", Item {...});
+    println!("{:?}", item);
     // Item {
     //    count: 69
     // }
@@ -121,7 +141,7 @@ fn main() {
 <br />
 <br />
 
-### What happened?
+### First, what is causing the error?
 What is causing the error?
 
 ```rust
@@ -194,9 +214,6 @@ Did you read the errors from your LSP?
 <br />
 
 ### How do we fix this?
-There are technically two ways to fix it
-
-Lets do both
 
 <br />
 <br />
@@ -252,11 +269,13 @@ fn main() {
 <br />
 <br />
 
-### Lets break another rule, how about #2
+### Lets make the borrow checker angry again!
 To do this,
-* create a vector of `Item`s called `items`
 * create a function called `print_all` that takes in an immutable borrow
   (reference) to `items` and prints each item, one at a time
+
+In the main function
+* create a vector of `Item`s called `items`
 * grab a **mutable** reference to item 0 (`get_mut`)
 * print item 0
 * call `print_all`
@@ -280,7 +299,12 @@ To do this,
 <br />
 
 ### So how did we break it?
-Try to explain why this happened.
+Try to explain why this happened, then what rule did we break?
+
+### What rule are we breaking?
+1. There can only be **one** value owner
+1. There can be **unlimited** immutable borrows (reference) with **no** mutable references
+1. There can be only **one** mutable reference and **no** immutable references
 
 <br />
 <br />
@@ -350,11 +374,10 @@ fn main() {
 <br />
 
 ### One more time
-Lets just keep this one simple.
 
-* create 2 mutable references by calling `get_mut(0)` and `get_mut(1)`
+* get a mutable reference named `one`, `get_mut(0)`
+* get a mutable reference named `two`, `get_mut(1)`
 * `println!("{:?}", one)`
-* `println!("{:?}", two)`
 
 <br />
 <br />
@@ -374,6 +397,9 @@ Lets just keep this one simple.
 <br />
 
 ### What rule are we breaking?
+1. There can only be **one** value owner
+1. There can be **unlimited** immutable borrows (reference) with **no** mutable references
+1. There can be only **one** mutable reference and **no** immutable references
 
 <br />
 <br />
@@ -453,6 +479,8 @@ fn main() {
 }
 ```
 
+Why or why not?
+
 <br />
 <br />
 <br />
@@ -470,7 +498,7 @@ fn main() {
 <br />
 <br />
 
-### Do you remember this from earlier?
+### Now, with all of your knowledge why does this error?
 
 ```rust
 fn main() {
@@ -521,7 +549,7 @@ println!("{:?}", item.age); // borrow of moved value (item moved to other)
 ```rust
 let mut items = vec![Item { age: 1 }, Item { age: 2 }];
 
-let items2: &Vec<Item> = &mut items; // immutable borrow occurs here
+let items2: &Vec<Item> = &items; // immutable borrow occurs here
 let items3: &mut Vec<Item> = &mut items; // cannot borrow mutably with immutable references out
 
 items2.get(0); // item3 is mutably borrowed
@@ -546,6 +574,20 @@ items2.push(Item { age: 3 }); // nope!
 <br />
 <br />
 <br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Applications of the rules
 
 #### There is a "flow" to references
 Since `items2` was not used when `items3` mutable borrow out, this is ok
@@ -554,10 +596,27 @@ Since `items2` was not used when `items3` mutable borrow out, this is ok
 let mut items = vec![Item { age: 1 }, Item { age: 2 }];
 
 let items2: &mut Vec<Item> = &mut items; // First mutable borrow
-items2.push(Item { age: 3 }); // nope!
+items2.push(Item { age: 3 }); // ok!
 
-let items3: &mut Vec<Item> = &mut items; // Error occurs here
-items3.push(Item { age: 3 }); // nope!
+let items3: &mut Vec<Item> = &mut items; // Second mutable borrow
+items3.push(Item { age: 3 }); // still ok!
+```
+
+<br />
+<br />
+<br />
+<br />
+
+### References cannot outlive their associated values
+
+```rust
+let y: &usize;
+{
+    let x: usize = 5;
+    y = &x;
+}
+
+println!("ooh no! {}", y);
 ```
 
 <br />

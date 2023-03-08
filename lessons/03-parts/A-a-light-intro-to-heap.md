@@ -59,10 +59,14 @@ You have probably heard this term throughout your career.  It may confuse you
 what they are.  To understand rust, it is required you have a very simple
 understanding of the stack
 
-(prepare the code)
+(write a bit of code, vec, struct, stack overflow)
+
 (whiteboard time!)
+
 (don't forget to mention returing my_foo)
+
 (don't forget to mention Option)
+
 (for every heap allocation, there is a stack allocation)
 
 <br />
