@@ -37,8 +37,14 @@ This is for fundamental understanding of the language.
 Once you get these two, it becomes easier to work with rust initially. As these
 concepts are a bit wonkey coming from TypeScript.
 
-You are even probably thinking... "I use iterators all the time and enums are
+
+<br />
+
+**You are even probably thinking...** "I use iterators all the time and enums are
 horrible!"
+
+<br />
+
 
 From a typescript perspective you are right and from a rust perspective, you
 are wrong.
@@ -189,7 +195,7 @@ Now lets do it in rust!
 
 See how far you can get on your own!
 * do you remember how to define a vector? `vec![...]`
-* convert to iterator `.iter()`
+* to iterator over references `.iter()`
 * map it
 * but... how to get an iterator back to a vector... (`collect`)
 
@@ -197,6 +203,7 @@ See how far you can get on your own!
 - creates an list filled with 1, 2, 3
 - adds 1 to each item in that list
 - prints the list
+  - debug print works on vectors auto_magically_ `println!("{:?}", foo);`
 
 <br/>
 <br/>
@@ -547,7 +554,7 @@ let what_about_this: usize = vec![1, 2, 3]
 <br/>
 <br/>
 
-### What about other collections?
+### Iterators from other collections!
 
 ```rust
 let map = HashMap::from([
@@ -659,34 +666,26 @@ some_type
 ### Lets do a simple exercise
 Lets do the following.
 
-1. read a file from disk
-2. print out each line individually
+1. create this file called `project/lines`
+```bash
+hello
+fem
+how
+1
+2
+3
+are
+you?
+```
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
+1. read file `lines`
+1. print out each line individually
 
-### TypeScript
-lets do it first in TypeScript
+<br />
 
-I'll give you 2 minutes to type up an example
+#### **TypeScript**
+I'll give you a few moments to try this yourself
+
 
 <br/>
 <br/>
@@ -868,8 +867,8 @@ file.
 <br/>
 
 ### But how to do this in rust?
-Well, iterators give us MANY useful combinators.  Lets step through it one at a
-time.
+You have seen me mention `.enumerate()` `.filter(|x| ...)` thus far, why not
+take 1 minute and see if you can update your code to take every other!
 
 <br/>
 <br/>
@@ -932,8 +931,8 @@ fn main() {
 do these steps _IN ORDER_.
 
 * every other line
-* skip the first two
-* print the next two
+* skip the first two lines
+* print two lines
 
 <br/>
 <br/>
@@ -1241,7 +1240,7 @@ for (let i = 0; i < a.length; ++i) {
 }
 let c = [];
 for (let i = 0; i < b.length; ++i) {
-    if (filter_2(b[i])) {
+    if (filter_2(i)) {
         c.push(b[i]);
     }
 }
@@ -1288,6 +1287,7 @@ clue and neither do you
 let mut start = 0;
 let mut taken = 0;
 let mut skipped = 0;
+let mut lines_found = 0;
 for (idx, c) in lines.enumerate().chars() {
     if c !== "\n" {
         continue;
@@ -1295,9 +1295,10 @@ for (idx, c) in lines.enumerate().chars() {
 
     // doesn't copy, just a &str (ptr, len)
     let slice = lines[start..idx];
-    start = idx;
+    start = idx + 1;
 
-    if idx % 2 != 0 {
+    lines_found += 1
+    if lines_found % 2 == 0 {
         continue
     }
 

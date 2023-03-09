@@ -35,6 +35,8 @@ So... why are we learning enums?
 They are nothing like TypeScript's enums, and a reason why rust, for a static
 typed language, is so good.
 
+<br />
+
 So lets go over a basic set of examples
 
 <br/>
@@ -159,7 +161,7 @@ i'll give you ~2 minutes, then i'll start
 <br/>
 <br/>
 
-### Full code
+### Complete Code
 ```rust
 enum Color {
     Red,
@@ -208,8 +210,103 @@ Ok... lets extend our original example
 
 Lets add `Yellow`
 
-First in TS and then Rust
+I'll give you a moment with `TypeScript`
+
 (follow along pls and make you type out the full example)
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+```typescript
+enum Color {
+    Red,
+    Yellow,
+    Green,
+    Blue,
+}
+
+function printColor(color: Color) {
+    switch (color) {
+        case Color.Red:
+            console.log("red");
+            break;
+        case Color.Green:
+            console.log("green");
+            break;
+        case Color.Blue:
+            console.log("blue");
+            break;
+    }
+}
+
+printColor(Color.Green);
+```
+
+### Rust's turn
+Upgrade the enum in rust.
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+```rust
+enum Color {
+    Red,
+    Yellow,
+    Green,
+    Blue,
+}
+
+fn print_color(color: Color) {
+    match color {
+        Color::Red => println!("red"),
+        Color::Yellow => println!("yellow"),
+        Color::Green => println!("green"),
+        Color::Blue => println!("blue"),
+    }
+}
+
+fn main() {
+    print_color(Color::Green);
+}
+```
 
 <br/>
 <br/>
