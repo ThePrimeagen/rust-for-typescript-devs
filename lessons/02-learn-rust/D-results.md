@@ -42,6 +42,12 @@ Notice this is very similar to Option.
 - Result is value or error value
 
 <br />
+
+### if err != nil
+yes, the golang meme of error handling doesn't exist in rust.  Rust handles
+errors better than go.
+
+<br />
 <br />
 <br />
 <br />

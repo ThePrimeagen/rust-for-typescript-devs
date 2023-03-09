@@ -356,12 +356,16 @@ Lets take enum's to another level
 <br/>
 <br/>
 
-### Stand back, its method time
-* We are going to add 2 methods to the enum in rust
+### Lets create some helpers!
+Lets create two methods
 * is_green
   - return true for green
 * is_green_parts
   - return true for blue and yellow
+
+first, lets create this only in Rust. I'll give you a couple moments to try on
+your own. (you should always try to follow along, it will deeply help with your
+learnings!)
 
 <br/>
 <br/>
@@ -511,16 +515,16 @@ if (is_green(green)) {
 <br/>
 <br/>
 
-### I hope you are sitting down
+### You may get offended...
 First, lets start with typescript
 
-* create a custom struct called Custom
-  - it should have 2 fields, age: number, and name: string
+* create a custom type called `Custom`
+  - it should have 2 fields, `age: number`, and `name: string`
 
 * create a union type `Item` that is `number | string | Custom`
 * create a method `append` to take in a list of `Item`s and push in the string `"Hello Fem!"`
 * create an `Item`s array (doesn't matter if its empty or not)
-* pass it to `addItem`
+* pass it to `append`
 
 <br/>
 <br/>
@@ -637,13 +641,15 @@ Do you feel you have been lied to?
 Lets do the same thing, but this time the rust way, and we will do it together.
 
 #### Instructions (in case you forgot)
-* create a custom struct called Custom
-  - it should have 2 fields, age: number, and name: string
+* create a custom struct called `Custom`
+  - it should have 2 fields, `age: number`, and `name: string`
 
 * create a union type `Item` that is `number | string | Custom`
 * create a method `append` to take in a list of `Item`s and push in the string `"Hello Fem!"`
 * create an `Item`s array (doesn't matter if its empty or not)
-* pass it to `addItem`
+* pass it to `append`
+* create a `Vec<usize>`
+* try to pass it to `append`
 
 <br/>
 <br/>
@@ -686,10 +692,10 @@ fn append(items: &mut Vec<Item>) {
 
 fn main() {
     let mut items: Vec<Item> = vec![];
-    append(&mut just_strings);
+    append(&mut items);
 
-    let mut items: Vec<usize> = vec![];
-    append(&mut just_strings); // errors
+    let mut just_numbers: Vec<usize> = vec![];
+    append(&mut just_numbers); // errors
 }
 ```
 
@@ -814,6 +820,34 @@ fn main() {
 
 There are SO many problems that can be solved by good pattern matching, its
 wild.
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Questions?
+Do you understand how pattern matching works?
+
+<br/>
+
+**if you have a question speak up!!!**
 
 <br/>
 <br/>

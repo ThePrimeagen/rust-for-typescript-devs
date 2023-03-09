@@ -70,6 +70,20 @@ const item3: Foo = {bar: undefined}; // <-- is this valid?
 string.
 
 <br />
+
+Why is `item3` not technically valid
+
+<br />
+
+```typescript
+type Foo = {
+    bar?: string
+}
+
+const item3: Foo = {bar: undefined};
+```
+
+<br />
 <br />
 <br />
 <br />
@@ -131,7 +145,7 @@ let foo = Some(Custom { age: 69, name: "ThePrimeagen" });
 ### But why?
 Why do we need `Option`s in rust?  The answer is memory.  If you might or might
 not return an item from a function, rust needs to be able to allocate that
-memory on the stack.
+memory on the stack. (we will talk about this more shortly)
 
 This happens in JS too, it is just behind the scenes in the engine
 
@@ -547,6 +561,8 @@ fn multiply(num: Option<usize>) -> Option<usize> {
 ### Lets do a little exercise
 lets do a moment of practice!
 
+<br />
+
 ### Small program
 - write a function, call it `practice`, that takes in `nums` of `Vec<usize>`
   and an `index: usize`
@@ -671,7 +687,9 @@ return list.get(idx).unwrap_or(&idx) * 5;
 ```
 
 Rust as a language is hard.  But there are TONS of utilities that make it
-really easy to work with.  This is just one example.  The Option<?> interface
+really easy to work with.  This is just one example.  The Option<T> interface
+
+<br />
 
 Rusts take on the "Billion" dollar mistake i think is the right move.
 

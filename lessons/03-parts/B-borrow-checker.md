@@ -636,3 +636,58 @@ println!("ooh no! {}", y);
 <br />
 <br />
 
+### Test
+Remember this code from the `enum` section?
+
+```rust
+struct Custom {
+    name: String,
+    age: usize,
+}
+
+enum Item {
+    Number(usize),
+    Custom(Custom),
+    String(String),
+}
+
+fn main() {
+    let foo = Item::Number(5);
+
+    match &foo {
+        Item::Number(num) => println!("i am a number: {}", num),
+        Item::String(str) => println!("i am a string: {}", str),
+        Item::Custom(custom) =>
+            println!("name: {}, age: {}", custom.name, custom.age),
+    }
+
+    match &foo {
+        Item::Custom(custom) =>
+            println!("name: {}, age: {}", custom.name, custom.age),
+        _ => {}
+    }
+
+    // ...
+}
+```
+
+What rule would we break if we changed the match statements from `&foo` to
+`foo`?
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
