@@ -59,15 +59,15 @@ You have probably heard this term throughout your career.  It may confuse you
 what they are.  To understand rust, it is required you have a very simple
 understanding of the stack
 
-(write a bit of code, vec, struct, stack overflow)
+* first stack overflow
+* struct
+* struct with Vec
+* storing struct in Vec
+* storing struct with Vec in Vec
+* (whiteboard everything)
+* now talk about Option<T>
 
-(whiteboard time!)
-
-(don't forget to mention returing my_foo)
-
-(don't forget to mention Option)
-
-(for every heap allocation, there is a stack allocation)
+#### **for every heap allocation there is a stack allocation**
 
 <br />
 <br />

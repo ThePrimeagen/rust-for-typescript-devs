@@ -522,12 +522,13 @@ know when undefineds can happen
 Get them out of the way now, even if its not `Result` based.
 
 Remember:
-- If you don't understand something, this is a great time understand it better
+- If you don't understand something, this is a great time to understand it
+  better
 - If you don't understand something, guarantee the person next to you is
   struggling with the same thing
 - If you don't ask, who will?
 
-The next section is going to be harder
+The next section is going to be much more rust focused.
 
 <br />
 <br />
