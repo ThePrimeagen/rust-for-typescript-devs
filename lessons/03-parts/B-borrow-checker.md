@@ -7,6 +7,8 @@ description: "This is usually the hardest part of Rust"
 The meme's are real, but the borrow checker isn't that hard if you have the
 right foundation.
 
+<br />
+
 - we have already talked about every thing is on the `stack` with `ptr` to the
   `heap` if needed
 
@@ -174,6 +176,8 @@ add_one(item);
 
 Did you read the errors from your LSP?
 
+**Lets do a quick whiteboard memory layout**
+
 <br />
 <br />
 <br />
@@ -214,6 +218,7 @@ Did you read the errors from your LSP?
 <br />
 
 ### How do we fix this?
+(write code now)
 
 <br />
 <br />
@@ -280,6 +285,7 @@ In the main function
 * print item 0
 * call `print_all`
 * print item 0
+(you have to code this all)
 
 <br />
 <br />
@@ -300,11 +306,6 @@ In the main function
 
 ### So how did we break it?
 Try to explain why this happened, then what rule did we break?
-
-### What rule are we breaking?
-1. There can only be **one** value owner
-1. There can be **unlimited** immutable borrows (reference) with **no** mutable references
-1. There can be only **one** mutable reference and **no** immutable references
 
 <br />
 <br />
@@ -397,9 +398,6 @@ fn main() {
 <br />
 
 ### What rule are we breaking?
-1. There can only be **one** value owner
-1. There can be **unlimited** immutable borrows (reference) with **no** mutable references
-1. There can be only **one** mutable reference and **no** immutable references
 
 <br />
 <br />
