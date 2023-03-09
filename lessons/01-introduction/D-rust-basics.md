@@ -8,6 +8,8 @@ Of course not.  Learning a language that is not so different from yours is
 nice, but unless you put it into practice, you will literally forget
 everything.
 
+<br />
+
 We will be putting these into practice, i just wanted to get through this as
 fast as possible to get to the fun parts.
 
@@ -31,9 +33,13 @@ fast as possible to get to the fun parts.
 ### Basics on Rust
 Just some basics so we can understand things going forward
 
+<br />
+
 When you are starting out using rust you should see
 1. `unwrap`s
 1. `clone`s
+
+<br />
 
 That is totally normal, completely fine.  understanding, at least for me, comes
 in waves.  The more I understand, the more I realize I understand less.
@@ -220,6 +226,44 @@ bar(a);
 <br />
 <br />
 <br />
+
+### Structs
+```rust
+struct MyStruct {
+    x: usize,
+    y: usize,
+    z: usize,
+}
+
+fn bar(MyStruct { y, z, .. }: MyStruct) -> bool {
+    return y * z < 100;
+}
+
+fn main() {
+
+    let foo = MyStruct {
+        x: 69,
+        y: 420,
+        z: 1337,
+    };
+
+    let MyStruct { x, .. } = foo;
+    let MyStruct { y, z, .. } = foo;
+    let MyStruct { x, y, z } = foo;
+
+    if let MyStruct { x, .. } = foo {
+        println!("things about x {}", x)
+    }
+
+}
+```
+
+You can solve such crazy problems with pattern matching
+
+<br />
+<br />
+<br />
+<br />
 <br />
 <br />
 <br />
@@ -254,12 +298,12 @@ These are things that only exist within Rust and may be a bit confusing.
 <br />
 
 ### TODO:
-I particularly like this as it allows for me to do `// TODO:`
-
-i know for a fact i have to handle it before i am done with what i am working
-on
+I particularly like this as it allows for me to do `// TODO:` but i am forced
+to handle it in rust
 
 Lets show an example
+
+(code time)
 
 <br />
 <br />
@@ -285,6 +329,8 @@ think of it like an assert statement.
 
 lets do a quick example
 
+(code time)
+
 <br />
 <br />
 <br />
@@ -305,8 +351,10 @@ lets do a quick example
 ### Unwrap
 when you are new to rust, `unwrap`s are your friend.  You will end up using
 them a lot because you don't know the language / tools available to you yet.
-are starting out.  Often you feel like you don't know how to handle some basic
-operations and unwrap can be your friend.
+Often you feel like you don't know how to handle some basic operations and
+unwrap can be your friend.
+
+You learn by doing, you learn better by doing wrong
 
 But!!! if you unwrap an Error or an undefined, your program crashes... so...
 don't do it.

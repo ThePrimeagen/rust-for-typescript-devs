@@ -6,6 +6,34 @@ description: "The introduction to this course."
 ### Rust for TypeScript devs
 i hope you are ready, we will be moving fast today.
 
+<br />
+<br />
+
+#### **Schedule**
+* Vector, the basic data structure
+* Iterators
+* Enums - Result / Option focus
+* Traits
+* Light touch on memory
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### An ass out of you and i
 **ASSUMPTION**
 * I think you are a bad programmer
   - its ok, i am a bad programmer, too.  everyone is, except John Carmack.
@@ -60,24 +88,38 @@ function explodePromise<T>(): Promiseable<T> {
 There are a bunch of reasons, practically speaking, but for me there are two
 things that particularly speak to me.
 
-#### Ergonomics
+
+<br />
+<br />
+
+#### **Ergonomics**
+
 This seems like every tweeter thread is mentions something with developer
 ergonomics.  but what in the world are they always talking about?
 
 For me, ergonomics is defined on two axes, one quickly being able to write
 software with low unexpected behavior, and two, maintain software longer
 
-#### JavaScripts(TS) vs Rust design decisions
+<br />
+<br />
+
+#### **JavaScripts(TS) vs Rust design decisions**
 
 - Specify Readonly vs Specify Mutability
 - undefined/null vs Option
 - errors being thrown vs being returned
 
-#### Skill gap
+<br />
+<br />
+
+#### **Skill gap**
 
 Yes skill gap.  What do i mean by this?
 
-#### JavaScript / TypeScript
+<br />
+<br />
+
+#### **JavaScript / TypeScript**
 JavaScript itself is a rather simple language.  To become proficient in it is
 rather small task comparatively.  The place you spend most of your time is
 learning how to use libraries and dealing with oddities.
@@ -88,9 +130,13 @@ that isn't typesafe.
 I find that it can be hard to refactor larger typescript libraries as their
 typings become inherently complex
 
+<br />
 ---
 
-#### Rust
+<br />
+<br />
+
+#### **Rust**
 There are many deep topics within the language itself that it takes
 significantly more time to master each of these.  To me this makes me excited
 because there are a lot of ways you can improve how you write software
@@ -123,18 +169,23 @@ very cool things.
 My goal today is that you end with enough knowledge to be able to google your
 way through a small to mid sized cli application in rust
 
-* We will go over the core concepts you need to know about
-  * Vectors, Results, Options, Enums in general
-  * Structs and traits
-  * Rcs
-  * Interior mutability
-  * Project layout
+#### **What we wont cover**
+* Errors - creating your own types
+* Wasm / UI
+* async
+* smart pointers and interior mutability
+* lifetimes - WHY NOT??
+* macros, both proc macros and declarative macros
+  - these truly make rust amazing
 
----
-
-* We wont go over async
-* We wont go deep into memory, what's happening under the hood
-* We wont go into ways to conditionally build parts of your project
+```rust
+// ------v that is a macro!!!
+return view! {
+    <div>
+        <MyCustomComponent name="hello" />
+    </div>
+};
+```
 
 I want you to be able to _use_ rust.  You can learn the deep concepts on your
 own.
@@ -157,7 +208,8 @@ own.
 <br />
 
 ### Who am I?
-I am best known for my role at TheStartup™, which is CEO, CEO, CEO, and CEO.
+I am best known for my role at TheStartup™, which is CEO, CEO, CEO, CEO, and
+Chairmen of the board.
 
 ![Youtube](./images/youtube.png)
 ![Twitch](./images/twitch.png)

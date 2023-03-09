@@ -3,11 +3,15 @@ title: "The Basics: Syntax"
 description: "An important second lesson"
 ---
 
-### No need to memorize
+### The Basics
 remember my **ASSUMPTIONS**?  Time to make good on that...
+
+<br />
 
 We are going to spend a short period of time just going over differences
 between the two languages and some specific rust only features.
+
+<br />
 
 So there is going to be no programming, its meant to get you familiar with
 words and ideas.
@@ -336,7 +340,9 @@ impl Foo {
     // these are instance methods
     fn this(&self)...
     fn this(&mut self)...
-    fn this(self)...
+
+    // public instance methods
+    pub fn this(self)...
 }
 ```
 

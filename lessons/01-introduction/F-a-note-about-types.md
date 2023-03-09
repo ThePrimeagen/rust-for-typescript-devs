@@ -1,16 +1,22 @@
 ---
-title: "Rust Types"
+title: "One last thing before we proceed"
 description: "Value, Reference, Mutable Reference"
 ---
 
 ### One more thing about rust
-You will here me say the following words
+You will hear me say the following words
+
+<br />
 
 * value
 * mutable reference or mutable borrow
 * immutable reference or immutable borrow
 
+<br />
+
 This isn't something that as a JS dev you think about.
+
+<br />
 
 So what is a reference (probably heard the term)?
 What is a mutable reference? (probably never heard this)?

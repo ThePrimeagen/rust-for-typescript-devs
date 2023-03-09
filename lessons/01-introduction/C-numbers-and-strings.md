@@ -60,8 +60,14 @@ In rust they are more complicated because rust needs to know the _size_.
 Rust you have to specify the types `<NUMBER>` = power of two
 
 `i<NUMBER>` = an integer that can be negative or positive (signed)
+
 `u<NUMBER>` = an integer that can be positive only (unsigned)
+
 `f<NUMBER>` = a number that requires decimal point
+
+`usize` = a `u<NUMBER>` where `<NUMBER>` is your system arch. (64bit = u64)
+
+`isize` = a `i<NUMBER>` where `<NUMBER>` is your system arch. (64bit = i64)
 
 ```rust
 4 / 3 = 1
@@ -108,17 +114,23 @@ straight forward.
 Yes, you will see there are two types of strings you commonly run into.  So
 what are they?
 
-#### String
-* Well `String` is a heap allocated (heap may be a foreign word to you)
-* String is mutable
+<br />
 
-#### &str
+#### **String**
+* Well `String` is a heap allocated (heap may be a foreign word to you)
+* String can be mutable
+
+<br />
+
+#### **&str**
 * this points to a sequence of utf-8 characters.  Its commonly called a slice.
-  Its a view into a data structure
+  Its a view into a `String`
 * its immutable
+* its analogous to `&[u8]`
 
 
 So if i say String, i mean `String` and if i say stir i mean `&str`
+(quick whiteboarding)
 
 <br />
 <br />
