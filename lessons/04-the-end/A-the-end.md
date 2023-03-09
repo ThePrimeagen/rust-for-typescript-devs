@@ -13,6 +13,17 @@ the door.  You cannot become great at anything in 8 hours.
 * async
 * smart pointers and interior mutability
 * lifetimes
+* macros, both proc macros and declarative macros
+  - these truly make rust amazing
+
+```rust
+// ------v that is a macro!!!
+return view! {
+    <div>
+        <MyCustomComponent name="hello" />
+    </div>
+};
+```
 
 The hard part is each one of these topics is seriously a deep dive and its hard
 to fit everything in!

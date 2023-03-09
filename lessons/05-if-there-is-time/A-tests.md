@@ -5,10 +5,12 @@ description: "The testing library is _in_ rust"
 
 ### Unit tests
 Hate them
+
 Love them
+
 Whatever
 
-They are a fundamental part of rust which makes it convenient
+What matters to me is that the language has first class support for them
 
 <br/>
 <br/>
@@ -59,36 +61,29 @@ They are a fundamental part of rust which makes it convenient
 ### Complete Code
 
 ```rust
-pub mod rect;
-pub mod circle;
-pub mod area;
-pub mod collisions;
-
 #[cfg(test)]
 mod test {
-    use super::{circle::Circle, collisions::Collidable};
+    use crate::shapes::collisions::Collidable;
 
+    use super::Circle;
 
     #[test]
-    fn test_cicle_circle() {
-        let a = Circle {
-            x: 0f64,
-            y: 0f64,
-            radius: 3f64,
+    fn test_circle_collide() {
+        let c1 = Circle {
+            x: 0.0,
+            y: 0.0,
+            radius: 1.0,
         };
 
-        let mut b = Circle {
-            x: 3.1f64,
-            y: 0f64,
-            radius: 3f64,
+        let c2 = Circle {
+            x: 1.5,
+            y: 1.5,
+            radius: 4.0,
         };
 
-        assert!(!a.collide(&b));
-
-        b.x = 3f64;
-        assert!(a.collide(&b));
+        assert!(!c1.collide(&c2), "expect c1 to not collide with c2");
+        assert!(c2.collide(&c1), "expect c2 to collide with c1");
     }
-
 }
 ```
 

@@ -4,7 +4,7 @@ description: "How is rust code organized"
 ---
 
 ### There are lots of ways to organize your code
-Lets just create some projects and check out some code
+So i'll show you some of the ways to organize your code
 
 <br />
 <br />
@@ -71,7 +71,7 @@ lets create a module, lets go over things one at a time
 <br />
 
 ### Monorepos!
-Yes rust has built in support of mono repos
+Yes rust has built in support of monorepos
 
 * lets create small library that just prints "foo"
 * upgrade our Cargo.toml to have `workspace` members and `dependency` foofoo
@@ -94,6 +94,9 @@ Yes rust has built in support of mono repos
 <br />
 
 ### Pretty rad?
+* supports tests
+* supports individual project building
+* makes build times better
 
 <br />
 <br />

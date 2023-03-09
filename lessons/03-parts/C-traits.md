@@ -3,6 +3,37 @@ title: "Rust Traits"
 description: "Perhaps one of the best things about rust"
 ---
 
+### Check point
+We have talked about:
+* Iterators
+* Enums
+    - Options
+    - Results
+* Borrow Checker
+
+We another big concept we need to go over to "complete" our tour of rust
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
 ### Traits, they are like interfaces
 You can define most of rust's behavior, from addition, equality checks,
 hashing, parsing strings, to being displayed via traits.
@@ -10,8 +41,8 @@ hashing, parsing strings, to being displayed via traits.
 Traits are effectively Interfaces but how they are used are a bit different,
 and how the language lets you specify them is different.
 
-What traits allow you to do cannot be done in JS.  The language doesn't have the
-ability to do the same thing.
+What traits allow you to do cannot be directly done in JS.  The language
+doesn't have the ability to do the same thing.
 
 <br/>
 <br/>
@@ -182,6 +213,10 @@ class Rectangle { // i declare rect
 ### Lets see how rusts does this.
 first, lets implement the structs `Rectangle` and `Cicle`.
 
+```rust
+x: f64
+```
+
 <br/>
 <br/>
 <br/>
@@ -310,7 +345,7 @@ fn main() {
 ### Lets... try something else
 Lets use this `Area` trait/interface, but lets make a very small change.
 
-Lets move the definition to another file.
+Lets move the `Rect` and `Circle` definition to another file, `src/shapes.rs`
 
 <br/>
 <br/>
@@ -335,11 +370,6 @@ Lets move the definition to another file.
 
 ### Complete Code
 
-src/main.rs
-```rust
-pub mod shapes;
-```
-
 src/shapes.rs
 ```rust
 pub struct Rectangle {
@@ -356,7 +386,7 @@ pub struct Circle {
 }
 ```
 
-src/bin/test.rs
+src/main.rs
 ```rust
 use std::f64::consts::PI;
 
@@ -437,6 +467,8 @@ fn main() {
     println!("area: {}", 6.9.area());
 }
 ```
+
+WAIT, THIS IS DANGEROUS, THESE ARE POLYFILLS!!! GLOBAL STATE CHANGE IS BAD!!!
 
 <br/>
 <br/>
@@ -566,7 +598,7 @@ In Rust, its only for files that import the trait
 25
 ```
 
-So lets fix the error in rust
+So lets fix the error in rust, lets import `Area`
 
 <br/>
 <br/>
@@ -590,6 +622,7 @@ So lets fix the error in rust
 <br/>
 
 ### Tell me that is not cool.
+(we are not done yet...)
 
 <br/>
 <br/>
@@ -656,6 +689,8 @@ src/
 <br/>
 
 ### Lets further break up the rust files
+Move each related code to each file
+
 ```
 src/
   shapes/
@@ -665,6 +700,38 @@ src/
     area.rs
   main.rs
 ```
+
+mod.rs
+```
+pub mod rect;
+pub mod circle;
+pub mod area;
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Lets create a Rectangle!
+To prove we have everything working, lets create a `Rectangle` in our main
+file.
 
 <br/>
 <br/>
@@ -692,14 +759,14 @@ src/
 ```rust
 mod shapes;
 
-use shapes::Rectangle;
+use shapes::rect::Rectangle;
 
 fn main() {
     let rect = Rectangle {
-        height: 10f64,
-        width: 10f64,
-        x: 0f64,
-        y: 0f64,
+        height: 10.0,
+        width: 10.0,
+        x: 0.0,
+        y: 0.0,
     };
 }
 ```
@@ -815,9 +882,9 @@ fn main() {
 <br/>
 <br/>
 
-### I just want....
-to print out the rectangle now... but i don't want `Debug` print out, i want my
-_own_ printout!
+### The point's are _in_ the Rectangle?
+I want to be able to print out the rectangle now... but i don't want `Debug`
+print out, i want my _own_ printout!
 
 I want this...
 ```rust
@@ -832,7 +899,7 @@ fn main() {
 }
 ```
 
-Can someone tell me what error do you see?
+Lets type this in, and see if someone can tell me what the error is.
 
 <br/>
 <br/>
@@ -857,6 +924,8 @@ Can someone tell me what error do you see?
 
 ### Ok... so implement display?
 Lets try it out!
+
+I'll give you one moment.  Btw, its `std::fmt::Display`.
 
 <br/>
 <br/>
@@ -1043,10 +1112,24 @@ rust and that is what we are going for
 
 ### Iterator
 An iterator isn't just something we interact with, its something we can also
-use!
+create!
 
-Lets talk about iterators (whiteboard)
-Lets implement an iterator for `Rectangle`
+Lets talk about how iterators are implemented (whiteboard)
+
+Lets implement an iterator for `Rectangle`.  It will iterate over the four
+points
+
+src/shapes/rect.rs
+* struct `RectIter` with a `points: Vec<(f64, f64)>` and `idx: usize`
+* implement `Iterator` for `RectIter`
+* implement `IntoIterator` for `Rectangle`
+
+src/main.rs
+* create a rect
+* iterate over a rect `for point in rect` printing out each point
+* print out the entire rectangle via the `Display` trait
+
+I'll give you a moment to try it a bit yourself
 
 <br/>
 <br/>
@@ -1092,7 +1175,7 @@ fn main() {
 src/shapes/rect.rs
 ```rust
 pub struct RectIter {
-    points: [(f64, f64); 4],
+    points: Vec<(f64, f64)>,
     idx: usize,
 }
 
@@ -1108,6 +1191,98 @@ impl Iterator for RectIter {
         self.idx += 1;
 
         return Some(point);
+    }
+}
+
+impl IntoIterator for Rectangle {
+    type Item = (f64, f64);
+
+    type IntoIter = RectIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        return RectIter {
+            points: vec![
+                (self.x, self.y),
+                (self.x + self.width, self.y),
+                (self.x, self.y + self.height),
+                (self.x + self.width, self.y + self.height),
+            ],
+            idx: 0,
+        }
+    }
+}
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### IntoIterator
+It _consumes_ the thing you give it.  We need to give it something to consume
+that wont consume our original struct!
+
+Lets do a quick example in main with `Vec` and a `for` loop to show the
+consuming vs non consuming.
+
+So what do we do?
+(make simple fix)
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Complete Code
+
+```rust
+impl IntoIterator for Rectangle {
+    type Item = (f64, f64);
+
+    type IntoIter = RectIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        return RectIter {
+            points: [
+                (self.x, self.y),
+                (self.x + self.width, self.y),
+                (self.x, self.y + self.height),
+                (self.x + self.width, self.y + self.height),
+            ],
+            idx: 0,
+        }
     }
 }
 
@@ -1151,40 +1326,12 @@ impl IntoIterator for &Rectangle {
 <br/>
 <br/>
 
-### IntoIterator
-It _consumes_ the thing you give it.  We need to give it something to consume
-that wont consume our original struct!
-
-* we want to be able to consume, if we choose (think of `Vec`)
-* we want to be able to not consume
-
-So what do we do?
-(make simple fix)
-
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-
 ### I hate duplicating code
+Notice that they are the _same_ code, just different types.  One is the _value_
+`Rectangle` and the other is a reference to `Rectangle`
+
 * lets implement a constructor
-* lets do it the trait way
+* lets do it the trait way (`From`)
 
 <br/>
 <br/>
@@ -1220,7 +1367,7 @@ pub struct RectIter {
 impl From<&Rectangle> for RectIter {
     fn from(rect: &Rectangle) -> Self {
         return RectIter {
-            points: [
+            points: vec![
                 (rect.x, rect.y),
                 (rect.x + rect.width, rect.y),
                 (rect.x, rect.y + rect.height),
@@ -1282,6 +1429,9 @@ Lets talk about collisions (don't worry we will stay out of complicated math)
   easy to test and show off some _really_ cool features.  So just deal with it
   my game programmers that are in the audience.
 
+* its Not really collision, its more checking to see if any `point` exists
+  within
+
 ```
 src/
   shapes/
@@ -1296,8 +1446,16 @@ pub mod collisions;
 
 First lets white board our two algorithms for `Rectangle` and `Circle`
 
-Also, i am going to shortcut the `Circle` collision algorithm because its easy
-and `Circle` against `AABB` (`Rectangle`) is a complicated formula.
+* implement trait `Collidable<T>` with fn `collide(&self, &T)` and
+  `collides(&self, &[T])`
+
+* implement `contains_point` for `Rectangle` and `Circle`
+* implement `Collidable<Rectangle>` for `Rectangle`
+* implement `Collidable<Circle>` for `Rectangle`
+* implement `Collidable<Circle>` for `Circle`
+* implement `Collidable<Rectangle>` for `Circle`
+
+we are only looking for `point` inclusion
 
 <br/>
 <br/>
@@ -1325,7 +1483,7 @@ and `Circle` against `AABB` (`Rectangle`) is a complicated formula.
 src/shapes/rect.rs
 ```rust
 impl Rectangle {
-    fn contains_point(&self, (x, y): (f64, f64)) -> bool {
+    pub fn contains_point(&self, (x, y): (f64, f64)) -> bool {
         return x >= self.x && x <= self.x + self.width &&
             y >= self.y && y <= self.y + self.height;
     }
@@ -1352,7 +1510,7 @@ impl Collidable<Rectangle> for Rectangle {
 src/shapes/circle.rs
 ```rust
 impl Circle {
-    fn contains_point(&self, (x, y): (f64, f64)) -> bool {
+    pub fn contains_point(&self, (x, y): (f64, f64)) -> bool {
         let dx = self.x - x;
         let dy = self.y - y;
 
@@ -1367,7 +1525,7 @@ impl Collidable<Rectangle> for Circle {
                 return true;
             }
         }
-        return true;
+        return false;
     }
 }
 
@@ -1400,8 +1558,9 @@ impl Collidable<Circle> for Circle {
 <br/>
 <br/>
 
-### Is the code a bit... similar?
-Lets pull out yet another trick with traits
+### Is the code a bit... similar and... ugly?
+Circular references??  Repetitive???  This just isn't the way.  If only there
+was something we could do...  wait... could traits help?  how serendipitous!
 
 <br/>
 <br/>
@@ -1425,13 +1584,15 @@ Lets pull out yet another trick with traits
 <br/>
 
 ### Lets try something different
+* create a `PointIter` that has a `Vec<(f64, f64)>` and `idx`
+* create a convenient method to take Vec<(f64, f64)> and convert it `into`
+  `PointIter`
+* implement `Iterator` for `PointIter`
 * create a `Points` trait that has one method, `points`, that returns an
-  `Iterator<Item = (f64, f64)>`
-
+  `PointIter`
 * create a `Contains` trait that has one method, `contains_point`, that returns
   `bool` if the point is contained within the geometry
-
-* implement `Iterator` for `Points`, requires `PointIter` struct
+* all of this in `src/shapes/collisions.rs`
 
 <br/>
 <br/>
@@ -1518,8 +1679,29 @@ pub trait Contains {
 
 ### So why did we do this?
 Lets relook at our `Collidable` implementation.  We can now do a "blanket"
-implementation.  This allows us to define a generic implemenation using trait
-combinations!!!
+implementation.  This allows us to define a generic implemenation over generic
+trait combinations!!!
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
 You> "i know all these words individually, but when you put them together like
 that..."
@@ -1584,7 +1766,16 @@ impl<T> Collidable<T> for T where T: Contains + Points {
 <br/>
 
 ### So what does this give us?
-You are probably confused as to what this even means... Let me show you
+Well, now we need to rework our `Rectangle` and `Circle` implementation a bit.
+
+* We don't need `RectIter`, we have `PointIter` now.  So everything associated
+  with `RectIter`, including `Rectangle` `IntoIterator` can be removed
+* implement `Points` for `Rectangle`
+* implement `Contains` for `Rectangle`
+  - we already have that implemented on the `Rectangle` `impl`
+* implement `Points` for `Circle`
+* implement `Contains` for `Circle`
+  - we already have that implemented on the `Circle` `impl`
 
 <br/>
 <br/>
@@ -1648,6 +1839,26 @@ impl Contains for Rectangle {
 }
 ```
 
+src/shapes/circle.rs
+```rust
+impl Contains for Circle {
+    fn contains_point(&self, (x, y): (f64, f64)) -> bool {
+        let dx = self.x - x;
+        let dy = self.y - y;
+
+        return dx * dx + dy * dy <= self.radius * self.radius;
+    }
+}
+
+impl Points for Circle {
+    fn points(&self) -> super::collisions::PointIter {
+        return vec![
+            (self.x, self.y),
+        ].into();
+    }
+}
+```
+
 <br/>
 <br/>
 <br/>
@@ -1669,7 +1880,153 @@ impl Contains for Rectangle {
 <br/>
 <br/>
 
-### What if we wanted to read from a file?
+### Lets try it out in our main file
+* create 2 `Rectangle`s
+* create 2 `Circle`s
+* test "`Collision`s"
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### Why doesn't this work?
+
+src/main.rs
+```rust
+mod shapes;
+
+use shapes::{circle::Circle, collisions::Collidable};
+
+use crate::shapes::rect::Rectangle;
+
+fn main() {
+    let rect = Rectangle::default();
+    let rect2 = Rectangle::default();
+
+    let circ = Circle {
+        radius: 3.0,
+        x: 1.0,
+        y: 1.0,
+    };
+
+    let circ2 = Circle {
+        radius: 2.0,
+        x: 1.0,
+        y: 1.0,
+    };
+
+    rect.collide(&rect2);
+    circ.collide(&circ2);
+    circ.collide(&rect);
+}
+```
+
+Lets go look at our `Collidable` definition, perhaps we can see something wrong
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+### Complete Code
+
+```rust
+impl<T, V> Collidable<T> for V
+where T: Points,
+      V: Contains
+{
+    fn collide(&self, other: &T) -> bool {
+        for point in other.points() {
+            if self.contains_point(point) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### That ... was a lot
+Questions?
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### What if we wanted to read our shapes from a file?
 `FromStr` allows for a `&str` to become a `Type` through the method `parse`
 
 You may remember from earlier, this code
@@ -1772,16 +2129,11 @@ impl FromStr for Rectangle {
             return Err(anyhow::anyhow!("Invalid number of parts"));
         }
 
-        let x = parts[0].parse::<f64>()?;
-        let y = parts[1].parse::<f64>()?;
-        let width = parts[2].parse::<f64>()?;
-        let height = parts[3].parse::<f64>()?;
-
         return Ok(Rectangle {
-            x,
-            y,
-            width,
-            height,
+            x: parts[0].parse()?,
+            y: parts[1].parse()?,
+            width: parts[2].parse()?,
+            height: parts[3].parse()?,
         });
     }
 }
@@ -1798,14 +2150,10 @@ impl FromStr for Circle {
             return Err(anyhow::anyhow!("Invalid number of parts"));
         }
 
-        let x = parts[0].parse::<f64>()?;
-        let y = parts[1].parse::<f64>()?;
-        let radius = parts[2].parse::<f64>()?;
-
         return Ok(Circle {
-            x,
-            y,
-            radius,
+            x: parts[0].parse()?,
+            y: parts[1].parse()?,
+            radius: parts[2].parse()?,
         });
     }
 }
@@ -1847,8 +2195,8 @@ rect 10 10 10 10
 
 Requires
 * reading a file (we have done)
-* read each line and perhaps use `split_once` (recommend using pattern matching)
 * create an enum to store either a `Circle` or `Rect` in
+* read each line and perhaps use `split_once` (recommend using pattern matching)
 * find any _adjancent_ collision
 
 You have done most of this so far throughout the day, lets see if you can do

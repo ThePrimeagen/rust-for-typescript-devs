@@ -33,5 +33,36 @@ What is a mutable reference? (probably never heard this)?
 <br />
 <br />
 
+### () is a unit
+`()` is called "unit."  Effectively it is "nothing" value.
 
+```rust
+if true {
+    println!("foo");
+}
+
+
+// I could write this
+// --v this has type ()
+let foo = if true {
+    println!("foo");
+}
+```
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
