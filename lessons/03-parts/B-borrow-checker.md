@@ -13,6 +13,10 @@ right foundation.
   `heap` if needed
 
 <br />
+
+(quick example)
+
+<br />
 <br />
 <br />
 <br />
@@ -31,8 +35,11 @@ right foundation.
 
 #### Types of values
 (code time)
+
 value
+
 reference
+
 mutable reference
 
 <br />
@@ -548,7 +555,8 @@ println!("{:?}", item.age); // borrow of moved value (item moved to other)
 let mut items = vec![Item { age: 1 }, Item { age: 2 }];
 
 let items2: &Vec<Item> = &items; // immutable borrow occurs here
-let items3: &mut Vec<Item> = &mut items; // cannot borrow mutably with immutable references out
+let items3: &mut Vec<Item> = &mut items; // cannot borrow mutably with
+                                         // immutable references out
 
 items2.get(0); // item3 is mutably borrowed
 ```
@@ -671,6 +679,26 @@ fn main() {
 
 What rule would we break if we changed the match statements from `&foo` to
 `foo`?
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Questions
+I am sure you have a question or two... i can borrow
 
 <br />
 <br />

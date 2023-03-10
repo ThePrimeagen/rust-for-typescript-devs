@@ -148,6 +148,7 @@ interface Area {
     area(): number;
 }
 
+// added Area for fun
 class Rectangle implements Area {
     constructor(
         public x: number,
@@ -257,7 +258,9 @@ struct Circle {
 fn main() { }
 ```
 
-Now create & implement the `Area` trait.
+Now create & implement the `Area` trait.  Then in main function create a
+`Circle` and a `Rectangle` and get its area.
+
 (i'll help)
 
 <br/>
@@ -584,7 +587,10 @@ Why does this error?  Didn't we implement `Area` for `f64`
 <br/>
 <br/>
 
-### Traits must be imported to work
+### BIG TAKE AWAY 1.
+
+**Traits must be imported to work**
+
 This means there is no global polyfills...  In JavaScript you edit the
 `prototype` and now you have this function, but it exists for the whole project
 
@@ -597,8 +603,6 @@ In Rust, its only for files that import the trait
 > (5).area()
 25
 ```
-
-So lets fix the error in rust, lets import `Area`
 
 <br/>
 <br/>
@@ -623,6 +627,8 @@ So lets fix the error in rust, lets import `Area`
 
 ### Tell me that is not cool.
 (we are not done yet...)
+
+**i must fail to succeed**
 
 <br/>
 <br/>
@@ -1420,6 +1426,30 @@ impl IntoIterator for &Rectangle {
 <br/>
 <br/>
 
+### Questions
+We are in some heavy stuff now
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
 ### What about our own traits?
 Lets create our own amazing trait!
 
@@ -1443,8 +1473,6 @@ Don't forget to add it to `mod.rs`
 ```rust
 pub mod collisions;
 ```
-
-First lets white board our two algorithms for `Rectangle` and `Circle`
 
 * implement trait `Collidable<T>` with fn `collide(&self, &T)` and
   `collides(&self, &[T])`
@@ -1584,6 +1612,7 @@ was something we could do...  wait... could traits help?  how serendipitous!
 <br/>
 
 ### Lets try something different
+**in the collisions.rs**
 * create a `PointIter` that has a `Vec<(f64, f64)>` and `idx`
 * create a convenient method to take Vec<(f64, f64)> and convert it `into`
   `PointIter`
@@ -2033,7 +2062,8 @@ You may remember from earlier, this code
 
 ```rust
 // -------v
-let foo: usize = "5".parse(); // <-- parse infers the usize parse due to type
+let foo: usize = "5".parse(); // <-- parse infers the usize parse
+                              // due to type
 ```
 
 <br/>
