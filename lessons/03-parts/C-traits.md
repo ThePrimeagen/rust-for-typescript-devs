@@ -990,7 +990,6 @@ impl Display for Rectangle {
         return write!(
             f,
             "Rectangle({}, {}), {}x{}",
-
             self.x, self.y, self.width, self.height
         );
     }
