@@ -989,7 +989,7 @@ impl Display for Rectangle {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         return write!(
             f,
-            "Rectangle {{ x: {}, y: {}, width: {}, height: {} }}",
+            "Rectangle({}, {}), {}x{}",
             self.x, self.y, self.width, self.height
         );
     }
