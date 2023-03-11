@@ -1,4 +1,5 @@
 import fs from "fs/promises";
+import nodeFs from 'fs';
 import path from "path";
 import { convertArrayToCSV } from "convert-array-to-csv";
 import { getLessons } from "../data/lesson.js";
@@ -38,9 +39,17 @@ async function start() {
   }
 
   const csv = convertArrayToCSV(lessons);
+  const filePath = config.csvPath
 
-  await fs.writeFile(config.csvPath, csv);
-  console.log(`wrote ${lessons.length} rows to ${config.csvPath}`);
+  // If CSV path does not exist, create it
+  if (!nodeFs.existsSync(filePath)) {
+    nodeFs.mkdirSync(filePath, { recursive: true })
+    nodeFs.rmSync(filePath, { recursive: true })
+    nodeFs.closeSync(nodeFs.openSync(filePath, 'w'));
+  }
+
+  await fs.writeFile(filePath, csv);
+  console.log(`wrote ${lessons.length} rows to ${filePath}`);
 }
 
 start();
