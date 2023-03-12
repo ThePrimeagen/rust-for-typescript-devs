@@ -1,0 +1,17 @@
+order,sectionTitle,lessonTitle,slug,sectionIcon,filePath,description
+01A,Introduction,Introduction,introduction/intro,info-circle,/lessons/introduction/intro,The introduction to this course.
+01B,Introduction,The Basics: Syntax,introduction/basic-diff,info-circle,/lessons/introduction/basic-diff,An important second lesson
+01C,Introduction,Rust Numbers and Strings,introduction/numbers-and-strings,info-circle,/lessons/introduction/numbers-and-strings,The part of javascript that is completely simplified
+01D,Introduction,Rust Basics,introduction/rust-basics,info-circle,/lessons/introduction/rust-basics,Some basics about rust.  Vectors & unwrap
+01E,Introduction,Install Rust,introduction/installation,info-circle,/lessons/introduction/installation,Lets install rust and the typescript items
+01F,Introduction,One last thing before we proceed,introduction/a-note-about-types,info-circle,/lessons/introduction/a-note-about-types,"Value, Reference, Mutable Reference"
+02A,Learn Rust,Iterators,learn-rust/iterators,info-circle,/lessons/learn-rust/iterators,Iterators in rust are sooo much better.
+02B,Learn Rust,Rust Enums,learn-rust/is-for-enums,info-circle,/lessons/learn-rust/is-for-enums,Rust enums are the greatest thing you have ever seen
+02C,Learn Rust,options,learn-rust/options,info-circle,/lessons/learn-rust/options,an introduction of option
+02D,Learn Rust,Learn Rustlang Results,learn-rust/results,info-circle,/lessons/learn-rust/results,Lets go deep on results.
+03A,Parts,The Heap vs The Stack,parts/a-light-intro-to-heap,info-circle,/lessons/parts/a-light-intro-to-heap,What is the heap vs what is the stack
+03B,Parts,Rust's Borrow Checker,parts/borrow-checker,info-circle,/lessons/parts/borrow-checker,This is usually the hardest part of Rust
+03C,Parts,Rust Traits,parts/traits,info-circle,/lessons/parts/traits,Perhaps one of the best things about rust
+04A,The End,"Rust, farewell",the-end/the-end,info-circle,/lessons/the-end/the-end,Is this going to be forever
+05A,If There Is Time,Testing in Rust,if-there-is-time/tests,info-circle,/lessons/if-there-is-time/tests,The testing library is _in_ rust
+05B,If There Is Time,Project Structure,if-there-is-time/project-structure,info-circle,/lessons/if-there-is-time/project-structure,How is rust code organized
