@@ -3,8 +3,9 @@ title: "The Basics: Syntax"
 description: "An important second lesson"
 ---
 
-### The Basics
-remember my **ASSUMPTIONS**?  Time to make good on that...
+## The Basics
+
+remember my **ASSUMPTIONS**? Time to make good on that...
 
 <br />
 
@@ -33,12 +34,13 @@ words and ideas.
 <br />
 <br />
 
-### Variable
+## Variable
+
 ```typescript
 const foo = 5; // sort of constant
 let foo = 5; // definitely not constant
 const foo = [] as const; // const pointer to a constant..
-                         // i understand if you don't c the joke
+// i understand if you don't c the joke
 ```
 
 ```rust
@@ -63,7 +65,8 @@ let mut foo = 5; // mutable
 <br />
 <br />
 
-#### Shadowing
+## Shadowing
+
 ```typescript
 const foo = [...];
 const foo = someMethod(foo);
@@ -75,6 +78,7 @@ let foo = someMethod(foo); // I am of Type B - YA! perfectly fine
 ```
 
 #### Why though?
+
 One thing that makes shadowing amazing is that you can change types.
 
 ```typescript
@@ -100,7 +104,8 @@ let foo = tokenize_and_do_things_to_string(foo); // Vec<String>
 <br />
 <br />
 
-### If
+## If
+
 ```typescript
 if (condition && second || this_one) {
     ...
@@ -132,12 +137,13 @@ else ...
 <br />
 <br />
 
+## Loops
 
-### Loops
 ### For
+
 ```typescript
 for (let i = 0; i < 10; ++i) {
-    // ...
+  // ...
 }
 ```
 
@@ -151,9 +157,10 @@ for i in 0..=10 {
 ```
 
 ### While
+
 ```typescript
 while (true) {
-    // ...
+  // ...
 }
 ```
 
@@ -163,9 +170,11 @@ while true {
 ```
 
 ### For ever?
+
 ```typescript
-for (;;) { // while (true) {
-    // ...
+for (;;) {
+  // while (true) {
+  // ...
 }
 ```
 
@@ -175,15 +184,16 @@ loop {
 ```
 
 ### Collections?
+
 ```typescript
 for (const [key, value] of Object.entries(obj)) {
-    // ...
+  // ...
 }
 for (const value of [1, 2, 3]) {
-    // ...
+  // ...
 }
 for (const idx in [1, 2, 3]) {
-    // ...
+  // ...
 }
 
 // array#map // copies
@@ -191,7 +201,6 @@ for (const idx in [1, 2, 3]) {
 // array#forEach // iterates
 // array#reduce // always a bad decision
 // map#forEach // weird interface
-
 ```
 
 #### Rust
@@ -226,11 +235,10 @@ vec![1, 2, 3]
 <br />
 <br />
 
-### Functions
+## Functions
 
 ```typescript
-function foo() {
-}
+function foo() {}
 ```
 
 ```rust
@@ -238,10 +246,10 @@ fn foo() {
 }
 ```
 
-#### Parameters
+### Parameters
+
 ```typescript
-function foo(arg1: number, arg2: number) {
-}
+function foo(arg1: number, arg2: number) {}
 ```
 
 ```rust
@@ -250,13 +258,15 @@ fn foo(arg1: f64, arg2: f64) {
 }
 ```
 
-#### Return
-This is interesting in typescript.  You may have to change some habbits
+### Return
+
+This is interesting in typescript. You may have to change some habbits
+
 ```typescript
 // The return type is based on the code below
 // function foo(): number {
 function foo() {
-    return 5;
+  return 5;
 }
 ```
 
@@ -267,13 +277,14 @@ fn foo() -> usize {
 ```
 
 ### Closures
+
 ```typescript
 (x) => {
-    return x;
-}
+  return x;
+};
 
 // or auto return x + 1 like
-(x) => x + 1
+(x) => x + 1;
 ```
 
 ```rust
@@ -301,7 +312,8 @@ fn foo() -> usize {
 <br />
 <br />
 
-### Class and Methods
+## Class and Methods
+
 This one is where the truest magic happens
 
 ```typescript
@@ -321,6 +333,7 @@ class Foo {
 ```
 
 Pay real close attention
+
 ```rust
 
 struct Foo {
@@ -346,7 +359,7 @@ impl Foo {
 }
 ```
 
-* What stuck out to you?
+- What stuck out to you?
 
 <br />
 <br />
@@ -365,15 +378,16 @@ impl Foo {
 <br />
 <br />
 
-#### Interfaces
+## Interfaces
+
 ```typescript
 interface Foo {
-    properties: type; //gross
-    method(): retType;
+  properties: type; //gross
+  method(): retType;
 }
 
 interface Foo {
-    hey_another_method(); // i feel many things about this
+  hey_another_method(); // i feel many things about this
 }
 ```
 
@@ -390,9 +404,9 @@ impl Foo for MyStruct {
 }
 ```
 
-* traits compose
-this may not sound big, but its AMAZING effectively prevents the need for
-inheritance
+- traits compose
+  this may not sound big, but its AMAZING effectively prevents the need for
+  inheritance
 
 <br />
 <br />
@@ -410,4 +424,3 @@ inheritance
 <br />
 <br />
 <br />
-

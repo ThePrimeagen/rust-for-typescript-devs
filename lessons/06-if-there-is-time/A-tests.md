@@ -3,7 +3,8 @@ title: "Testing in Rust"
 description: "The testing library is _in_ rust"
 ---
 
-### Unit tests
+## Unit tests
+
 Hate them
 
 Love them
@@ -33,7 +34,8 @@ What matters to me is that the language has first class support for them
 <br/>
 <br/>
 
-### Lets create a test for our Rect and Circle
+## Lets create a test for our Rect and Circle
+
 1. create a `test` in mod.rs
 1. test `Circle` vs `Circle`
 
@@ -58,7 +60,7 @@ What matters to me is that the language has first class support for them
 <br/>
 <br/>
 
-### Complete Code
+## Complete Code
 
 ```rust
 #[cfg(test)]
@@ -107,4 +109,3 @@ mod test {
 <br/>
 <br/>
 <br/>
-

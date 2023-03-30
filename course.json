@@ -5,13 +5,13 @@
   },
   "title": "Rust For Typescript Devs",
   "subtitle": "for Frontend Masters",
-  "frontendMastersLink": "https://frontendmasters.com/workshops/rust-typescript-devs/",
+  "frontendMastersLink": "https://frontendmasters.com/courses/rust-typescript/",
   "social": {
     "twitch": "theprimeagen",
     "github": "theprimeagen",
     "twitter": "theprimeagen"
   },
-  "description": "The greatest course you will ever take on rust for a typescript dev.",
+  "description": "The greatest course you will ever take on Rust for a TypeScript Developer.",
   "keywords": ["Rust", "Rustlang", "Typescript", "JavaScript"],
   "productionBaseUrl": "/rust-for-typescript-devs",
   "csvPath": "./out/lessons.csv"

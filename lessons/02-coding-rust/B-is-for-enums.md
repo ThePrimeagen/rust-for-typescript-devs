@@ -3,7 +3,8 @@ title: "Rust Enums"
 description: "Rust enums are the greatest thing you have ever seen"
 ---
 
-### Enums in TypeScript
+## Enums in TypeScript
+
 ![Enums are bad](./images/enums-bad.png)
 
 And I agree
@@ -31,7 +32,8 @@ So... why are we learning enums?
 <br/>
 <br/>
 
-### Rust enums are incredible
+## Rust enums are incredible
+
 They are nothing like TypeScript's enums, and a reason why rust, for a static
 typed language, is so good.
 
@@ -60,7 +62,8 @@ So lets go over a basic set of examples
 <br/>
 <br/>
 
-### TypeScript
+## TypeScript
+
 - Create an enum `Color` with `Red`, `Blue`, and `Green` fields.
 - Create a `printColor` method that prints out "red" for `Red`, ...
 
@@ -85,27 +88,27 @@ So lets go over a basic set of examples
 <br/>
 <br/>
 
-### Full Code
+## Full Code
 
 ```typescript
 enum Color {
-    Red,
-    Green,
-    Blue,
+  Red,
+  Green,
+  Blue,
 }
 
 function printColor(color: Color) {
-    switch (color) {
-        case Color.Red:
-            console.log("red");
-            break;
-        case Color.Green:
-            console.log("green");
-            break;
-        case Color.Blue:
-            console.log("blue");
-            break;
-    }
+  switch (color) {
+    case Color.Red:
+      console.log("red");
+      break;
+    case Color.Green:
+      console.log("green");
+      break;
+    case Color.Blue:
+      console.log("blue");
+      break;
+  }
 }
 
 printColor(Color.Green);
@@ -132,7 +135,8 @@ printColor(Color.Green);
 <br/>
 <br/>
 
-### Lets do the same thing in Rust
+## Lets do the same thing in Rust
+
 Exact same thing
 
 1. the syntax for an equivalent enum in rust is 100% identical to ts
@@ -161,7 +165,8 @@ i'll give you ~2 minutes, then i'll start
 <br/>
 <br/>
 
-### Complete Code
+## Complete Code
+
 ```rust
 enum Color {
     Red,
@@ -203,7 +208,8 @@ fn main() {
 <br/>
 <br/>
 
-### ok...?
+## ok...?
+
 They seem the same...
 
 Ok... lets extend our original example
@@ -235,33 +241,35 @@ I'll give you a moment with `TypeScript`
 <br/>
 <br/>
 
-### Complete Code
+## Complete Code
+
 ```typescript
 enum Color {
-    Red,
-    Yellow,
-    Green,
-    Blue,
+  Red,
+  Yellow,
+  Green,
+  Blue,
 }
 
 function printColor(color: Color) {
-    switch (color) {
-        case Color.Red:
-            console.log("red");
-            break;
-        case Color.Green:
-            console.log("green");
-            break;
-        case Color.Blue:
-            console.log("blue");
-            break;
-    }
+  switch (color) {
+    case Color.Red:
+      console.log("red");
+      break;
+    case Color.Green:
+      console.log("green");
+      break;
+    case Color.Blue:
+      console.log("blue");
+      break;
+  }
 }
 
 printColor(Color.Green);
 ```
 
-### Rust's turn
+## Rust's turn
+
 Upgrade the enum in rust.
 
 <br/>
@@ -285,7 +293,8 @@ Upgrade the enum in rust.
 <br/>
 <br/>
 
-### Complete Code
+## Complete Code
+
 ```rust
 enum Color {
     Red,
@@ -329,7 +338,8 @@ fn main() {
 <br/>
 <br/>
 
-### Ok...
+## Ok...
+
 I still think enums suck.. I mean technically it was the `match` statement that
 made rust so good, not the enum itself. <br/>
 
@@ -356,11 +366,13 @@ Lets take enum's to another level
 <br/>
 <br/>
 
-### Lets create some helpers!
+## Lets create some helpers!
+
 Lets create two methods
-* is_green
+
+- is_green
   - return true for green
-* is_green_parts
+- is_green_parts
   - return true for blue and yellow
 
 first, lets create this only in Rust. I'll give you a couple moments to try on
@@ -388,7 +400,7 @@ learnings!)
 <br/>
 <br/>
 
-### Next complete code
+## Next complete code
 
 ```rust
 enum Color {
@@ -451,8 +463,9 @@ fn main() {
 <br/>
 <br/>
 
-### Ok... are you impressed yet?
-well, you shouldn't be.  this isn't awesome yet
+## Ok... are you impressed yet?
+
+well, you shouldn't be. this isn't awesome yet
 
 <br/>
 <br/>
@@ -475,13 +488,14 @@ well, you shouldn't be.  this isn't awesome yet
 <br/>
 <br/>
 
-### One small argument
+## One small argument
+
 Most of what rust can do, javascript can do, but differently.
 
 You could imagen that a javascript module exists for `Color` where the function
-`is_green` and `is_green_parts` are defined and exported.  But i would argue
+`is_green` and `is_green_parts` are defined and exported. But i would argue
 that having to peruse through a module to know what operations are supported is
-not nearly as nice as having them hang off the struct itself.  And in this
+not nearly as nice as having them hang off the struct itself. And in this
 case, the enum
 
 ```javascript
@@ -490,7 +504,7 @@ import Color, { is_green } from "./colors";
 // this is simply not as convenient as green.is_green();
 const green = Color.Green;
 if (is_green(green)) {
-    console.log("i am green");
+  console.log("i am green");
 }
 ```
 
@@ -515,16 +529,18 @@ if (is_green(green)) {
 <br/>
 <br/>
 
-### You may get offended...
+## You may get offended...
+
 First, lets start with typescript
 
-* create a custom type called `Custom`
+- create a custom type called `Custom`
+
   - it should have 2 fields, `age: number`, and `name: string`
 
-* create a union type `Item` that is `number | string | Custom`
-* create a method `append` to take in a list of `Item`s and push in the string `"Hello Fem!"`
-* create an `Item`s array (doesn't matter if its empty or not)
-* pass it to `append`
+- create a union type `Item` that is `number | string | Custom`
+- create a method `append` to take in a list of `Item`s and push in the string `"Hello Fem!"`
+- create an `Item`s array (doesn't matter if its empty or not)
+- pass it to `append`
 
 <br/>
 <br/>
@@ -547,19 +563,20 @@ First, lets start with typescript
 <br/>
 <br/>
 
-### Complete Code
+## Complete Code
 
 TypeScript
+
 ```typescript
 type Custom = {
-    name: string,
-    age: number,
-}
+  name: string;
+  age: number;
+};
 
 type Item = number | Custom | string;
 
 function append(items: Item[]) {
-    items.push("hello fem");
+  items.push("hello fem");
 }
 
 const items: Item[] = [];
@@ -589,8 +606,9 @@ console.log(items);
 <br/>
 <br/>
 
-### One more task
-* create a list of `number` and pass it to `append`
+## One more task
+
+- create a list of `number` and pass it to `append`
 
 <br/>
 <br/>
@@ -613,7 +631,8 @@ console.log(items);
 <br/>
 <br/>
 
-### How do you feel?
+## How do you feel?
+
 Do you feel you have been lied to?
 
 <br/>
@@ -637,19 +656,22 @@ Do you feel you have been lied to?
 <br/>
 <br/>
 
-### The rust way
+## The rust way
+
 Lets do the same thing, but this time the rust way, and we will do it together.
 
 #### Instructions (in case you forgot)
-* create a custom struct called `Custom`
+
+- create a custom struct called `Custom`
+
   - it should have 2 fields, `age: number`, and `name: string`
 
-* create a union type `Item` that is `number | string | Custom`
-* create a method `append` to take in a list of `Item`s and push in the string `"Hello Fem!"`
-* create an `Item`s array (doesn't matter if its empty or not)
-* pass it to `append`
-* create a `Vec<usize>`
-* try to pass it to `append`
+- create a union type `Item` that is `number | string | Custom`
+- create a method `append` to take in a list of `Item`s and push in the string `"Hello Fem!"`
+- create an `Item`s array (doesn't matter if its empty or not)
+- pass it to `append`
+- create a `Vec<usize>`
+- try to pass it to `append`
 
 <br/>
 <br/>
@@ -671,9 +693,9 @@ Lets do the same thing, but this time the rust way, and we will do it together.
 <br/>
 <br/>
 <br/>
-
 
 Rust
+
 ```rust
 struct Custom {
     name: String,
@@ -720,7 +742,8 @@ fn main() {
 <br/>
 <br/>
 
-### Pretty dang cool?
+## Pretty dang cool?
+
 This means no more
 
 ```typescript
@@ -738,12 +761,13 @@ if ("bar" in x) {
 ```
 
 So no more "magic" checking for types, you get named types and this works very
-well with non type discriminated unions (what we made).  This is because the
+well with non type discriminated unions (what we made). This is because the
 discrimination exists at a language level, not a `type: string` level
 
 #### its not all magic
+
 Sometimes code can become a bit more verbose because of this, and that isn't as
-nice to write.  But at the same time, it prevents easy errors where you forgot
+nice to write. But at the same time, it prevents easy errors where you forgot
 to handle cases.
 
 <br/>
@@ -767,8 +791,9 @@ to handle cases.
 <br/>
 <br/>
 
-### Lets talk about Pattern Matching
-Its incredible, and you can DO a lot.  Check this out
+## Lets talk about Pattern Matching
+
+Its incredible, and you can DO a lot. Check this out
 
 ```rust
 struct Custom {
@@ -842,7 +867,8 @@ wild.
 <br/>
 <br/>
 
-### Questions?
+## Questions?
+
 Do you understand how pattern matching works?
 
 <br/>
@@ -869,4 +895,3 @@ Do you understand how pattern matching works?
 <br/>
 <br/>
 <br/>
-

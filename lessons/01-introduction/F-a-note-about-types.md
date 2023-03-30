@@ -3,14 +3,15 @@ title: "One last thing before we proceed"
 description: "Value, Reference, Mutable Reference"
 ---
 
-### One more thing about rust
+## One more thing about rust
+
 You will hear me say the following words
 
 <br />
 
-* value
-* mutable reference or mutable borrow
-* immutable reference or immutable borrow
+- value
+- mutable reference or mutable borrow
+- immutable reference or immutable borrow
 
 <br />
 
@@ -39,8 +40,9 @@ What is a mutable reference? (probably never heard this)?
 <br />
 <br />
 
-### () is a unit
-`()` is called "unit."  Effectively it is "nothing" value.
+## () is a unit
+
+`()` is called "unit." Effectively it is "nothing" value.
 
 ```rust
 if true {
@@ -71,4 +73,3 @@ let foo = if true {
 <br />
 <br />
 <br />
-

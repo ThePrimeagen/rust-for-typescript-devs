@@ -3,16 +3,17 @@ title: "The Heap vs The Stack"
 description: "What is the heap vs what is the stack"
 ---
 
-### Hopefully you "understand" rust now
-The selling point of rust should become more clear now.  Why people _love_ it.
+## Hopefully you "understand" rust now
+
+The selling point of rust should become more clear now. Why people _love_ it.
 `Option`, `Result`, and `Iterator`s are a foundation of the items you work with
 and allow for highly optimized code with great readability
 
 <br />
 
-But there is one more concept that we need to go over.  The Borrow Checker.
+But there is one more concept that we need to go over. The Borrow Checker.
 This is the item that everyone always talks about when it comes to Rust and
-difficulty.  I would argue its not that difficult.  What you just got done
+difficulty. I would argue its not that difficult. What you just got done
 learning is more difficult.
 
 <br />
@@ -32,9 +33,10 @@ learning is more difficult.
 <br />
 <br />
 
-### But first
+## But first
+
 These next parts are teaching you some of the rust fundamentals that just don't
-have a typescript side by side.  To be able to use rust effectively, we need to
+have a typescript side by side. To be able to use rust effectively, we need to
 cover these
 
 <br />
@@ -54,18 +56,19 @@ cover these
 <br />
 <br />
 
-### Stack vs Heap?
-You have probably heard this term throughout your career.  It may confuse you
-what they are.  To understand rust, it is required you have a very simple
+## Stack vs Heap?
+
+You have probably heard this term throughout your career. It may confuse you
+what they are. To understand rust, it is required you have a very simple
 understanding of the stack
 
-* first stack overflow
-* struct
-* struct with Vec
-* storing struct in Vec
-* storing struct with Vec in Vec
-* (whiteboard everything)
-* now talk about Option<T>
+- first stack overflow
+- struct
+- struct with Vec
+- storing struct in Vec
+- storing struct with Vec in Vec
+- (whiteboard everything)
+- now talk about Option<T>
 
 #### **for every heap allocation there is a stack allocation**
 
@@ -86,7 +89,8 @@ understanding of the stack
 <br />
 <br />
 
-### Questions?
+## Questions?
+
 Do you have questions about this?
 
 <br />
@@ -105,4 +109,3 @@ Do you have questions about this?
 <br />
 <br />
 <br />
-

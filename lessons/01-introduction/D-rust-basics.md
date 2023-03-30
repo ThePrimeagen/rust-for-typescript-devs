@@ -3,8 +3,9 @@ title: "Rust Basics"
 description: "Some basics about rust.  Vectors & unwrap"
 ---
 
-### Did you remember everything I just said?
-Of course not.  Learning a language that is not so different from yours is
+## Did you remember everything I just said?
+
+Of course not. Learning a language that is not so different from yours is
 nice, but unless you put it into practice, you will literally forget
 everything.
 
@@ -30,19 +31,21 @@ fast as possible to get to the fun parts.
 <br />
 <br />
 
-### Basics on Rust
+## Basics on Rust
+
 Just some basics so we can understand things going forward
 
 <br />
 
 When you are starting out using rust you should see
+
 1. `unwrap`s
 1. `clone`s
 
 <br />
 
-That is totally normal, completely fine.  understanding, at least for me, comes
-in waves.  The more I understand, the more I realize I understand less.
+That is totally normal, completely fine. understanding, at least for me, comes
+in waves. The more I understand, the more I realize I understand less.
 
 <br />
 <br />
@@ -61,11 +64,13 @@ in waves.  The more I understand, the more I realize I understand less.
 <br />
 <br />
 
-### Lets start learning!  Starting with a Vector
-`Vec` (rust) and `[]` (typescript) are very similar.  Their behaviors are near
+## Lets start learning! Starting with a Vector
+
+`Vec` (rust) and `[]` (typescript) are very similar. Their behaviors are near
 identical.
 
 these two are functionally equivalent
+
 ```typescript
 const a = [1, 2, 3, 4, 5] as const;
 ```
@@ -91,7 +96,7 @@ let a = vec![1, 2, 3, 4, 5];
 <br />
 <br />
 
-### Mutation
+## Mutation
 
 ```typescript
 const a = [1, 2, 3, 4, 5];
@@ -107,9 +112,8 @@ let mut a = a;
 a.push(6); //  [1, 2, 3, 4, 5, 6] // does not return size
 ```
 
-
 ```typescript
-const a = [1, 2, 3, 4, 5]
+const a = [1, 2, 3, 4, 5];
 a.pop(); // [1, 2, 3, 4] undefined or T
 ```
 
@@ -135,7 +139,8 @@ a.pop(); //  [1, 2, 3, 4] Option<T>
 <br />
 <br />
 
-### Accessing Data
+## Accessing Data
+
 ```typescript
 const a = [1, 2, 3, 4, 5] as const;
 const item = a[2];
@@ -147,7 +152,7 @@ let item = a[2]; // does work, but if out of bounds, panic
 let item = a.get(2); // better, returns Option<T> where T can be i32
 ```
 
-An `Option<T>` is a possible undefined value.  All things could be undefined,
+An `Option<T>` is a possible undefined value. All things could be undefined,
 must be specified with an `Option`
 
 we will talk about enums and Options in depth shortly
@@ -169,7 +174,8 @@ we will talk about enums and Options in depth shortly
 <br />
 <br />
 
-### Gentle Reminder: Now you will forget everything we just said
+## Gentle Reminder: Now you will forget everything we just said
+
 But to help you not forget, we will start doing some exercises soon.
 
 <br />
@@ -189,7 +195,8 @@ But to help you not forget, we will start doing some exercises soon.
 <br />
 <br />
 
-### Tuple
+## Tuple
+
 This doesn't really have a similarity in javascript.
 
 ```rust
@@ -203,6 +210,7 @@ const a = [5, "hello"];
 ```
 
 You can pattern match (think destructuring) tuples.
+
 ```rust
 let a = (5, String::from("hello")); // this type is (i32, String)
 
@@ -212,6 +220,7 @@ let (my_num, my_str) = a;
 ```
 
 You can even pattern match in a function
+
 ```rust
 let a = (5, String::from("hello")); // this type is (i32, String)
 
@@ -227,7 +236,8 @@ bar(a);
 <br />
 <br />
 
-### Structs
+## Structs
+
 ```rust
 struct MyStruct {
     x: usize,
@@ -277,7 +287,8 @@ You can solve such crazy problems with pattern matching
 <br />
 <br />
 
-### unwrap, todo, and unreachables
+## unwrap, todo, and unreachables
+
 These are things that only exist within Rust and may be a bit confusing.
 
 <br />
@@ -297,7 +308,8 @@ These are things that only exist within Rust and may be a bit confusing.
 <br />
 <br />
 
-### TODO:
+## TODO:
+
 I particularly like this as it allows for me to do `// TODO:` but i am forced
 to handle it in rust
 
@@ -322,7 +334,8 @@ Lets show an example
 <br />
 <br />
 
-### Unreachable
+## Unreachable
+
 This unsures that the program behaves properly.
 
 think of it like an assert statement.
@@ -348,8 +361,9 @@ lets do a quick example
 <br />
 <br />
 
-### Unwrap
-when you are new to rust, `unwrap`s are your friend.  You will end up using
+## Unwrap
+
+when you are new to rust, `unwrap`s are your friend. You will end up using
 them a lot because you don't know the language / tools available to you yet.
 Often you feel like you don't know how to handle some basic operations and
 unwrap can be your friend.
@@ -377,4 +391,3 @@ Let me give you a quick example of that.
 <br />
 <br />
 <br />
-

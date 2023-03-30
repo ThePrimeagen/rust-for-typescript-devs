@@ -3,7 +3,8 @@ title: "Rust's Borrow Checker"
 description: "This is usually the hardest part of Rust"
 ---
 
-### Its time to introduce The Borrow Checker
+## Its time to introduce The Borrow Checker
+
 The meme's are real, but the borrow checker isn't that hard if you have the
 right foundation.
 
@@ -33,7 +34,8 @@ right foundation.
 <br />
 <br />
 
-#### Types of values
+## Types of values
+
 (code time)
 
 value
@@ -59,13 +61,15 @@ mutable reference
 <br />
 <br />
 
-### Terminology
+## Terminology
+
 Dropped - releasing memory
 
 <br />
 <br />
 
 ### There are THREE rules you must have in your head at all times.
+
 1. There can only be **one** value owner
 1. There can be **unlimited** immutable borrows (reference) with **no** mutable references
 1. There can be only **one** mutable reference and **no** immutable references
@@ -74,12 +78,14 @@ Dropped - releasing memory
 <br />
 
 ### There is one rule for Lifetimes
+
 1. A reference cannot outlive its value
 
 <br />
 <br />
 
 #### Stated differently
+
 One var owns the the data
 
 One var can change the data
@@ -107,7 +113,7 @@ You cannot refer to something that has been dropped (released in memory)
 <br />
 <br />
 
-### Test
+## Test
 
 1. create a new struct `Item`, derives `Debug`, with one property, `count`, that is an `usize`.
 1. create a new `fn`, `add_one` that takes in an `Item` and adds 1 to it.
@@ -117,6 +123,7 @@ You cannot refer to something that has been dropped (released in memory)
 1. Print out `item` again.
 
 #### Derives Debug
+
 allows for printing of the struct.
 
 ```rust
@@ -150,7 +157,8 @@ fn main() {
 <br />
 <br />
 
-### First, what is causing the error?
+## First, what is causing the error?
+
 What is causing the error?
 
 ```rust
@@ -172,11 +180,13 @@ fn main() {
 ```
 
 Let me ask you this question, who owns `Item` on this line?
+
 ```rust
 let item = Item { count: 0 };
 ```
 
 What about this line?
+
 ```rust
 add_one(item);
 ```
@@ -202,7 +212,8 @@ Did you read the errors from your LSP?
 <br />
 <br />
 
-### What rule are we breaking?
+## What rule are we breaking?
+
 1. There can only be **one** value owner
 1. There can be **unlimited** immutable borrows (reference) with **no** mutable references
 1. There can be only **one** mutable reference and **no** immutable references
@@ -224,7 +235,8 @@ Did you read the errors from your LSP?
 <br />
 <br />
 
-### How do we fix this?
+## How do we fix this?
+
 (write code now)
 
 <br />
@@ -244,7 +256,8 @@ Did you read the errors from your LSP?
 <br />
 <br />
 
-### Complete code
+## Complete code
+
 ```rust
 
 #[derive(Debug)]
@@ -281,18 +294,21 @@ fn main() {
 <br />
 <br />
 
-### Lets make the borrow checker angry again!
+## Lets make the borrow checker angry again!
+
 To do this,
-* create a function called `print_all` that takes in an immutable borrow
+
+- create a function called `print_all` that takes in an immutable borrow
   (reference) to `items` and prints each item, one at a time
 
 In the main function
-* create a vector of `Item`s called `items`
-* grab a **mutable** reference to item 0 (`get_mut`)
-* print item 0
-* call `print_all`
-* print item 0
-(you have to code this all)
+
+- create a vector of `Item`s called `items`
+- grab a **mutable** reference to item 0 (`get_mut`)
+- print item 0
+- call `print_all`
+- print item 0
+  (you have to code this all)
 
 <br />
 <br />
@@ -311,7 +327,8 @@ In the main function
 <br />
 <br />
 
-### So how did we break it?
+## So how did we break it?
+
 Try to explain why this happened, then what rule did we break?
 
 <br />
@@ -331,7 +348,8 @@ Try to explain why this happened, then what rule did we break?
 <br />
 <br />
 
-### Complete Code
+## Complete Code
+
 ```rust
 #[derive(Debug)]
 struct Item {
@@ -381,30 +399,11 @@ fn main() {
 <br />
 <br />
 
-### One more time
+## One more time
 
-* get a mutable reference named `one`, `get_mut(0)`
-* get a mutable reference named `two`, `get_mut(1)`
-* `println!("{:?}", one)`
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-
-### What rule are we breaking?
+- get a mutable reference named `one`, `get_mut(0)`
+- get a mutable reference named `two`, `get_mut(1)`
+- `println!("{:?}", one)`
 
 <br />
 <br />
@@ -423,7 +422,27 @@ fn main() {
 <br />
 <br />
 
-### Complete Code
+## What rule are we breaking?
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+## Complete Code
+
 ```rust
 
 #[derive(Debug)]
@@ -462,7 +481,7 @@ fn main() {
 <br />
 <br />
 
-### does this error?
+## does this error?
 
 ```rust
 #[derive(Debug)]
@@ -503,7 +522,7 @@ Why or why not?
 <br />
 <br />
 
-### Now, with all of your knowledge why does this error?
+## Now, with all of your knowledge why does this error?
 
 ```rust
 fn main() {
@@ -534,9 +553,10 @@ lets talk about why this happens!
 <br />
 <br />
 
-### Quick Recap: The big three rules
+## Quick Recap: The big three rules
 
 #### There can only be one value owner
+
 ```rust
 let item = Item { age: 10 };
 let other = item; // value moved here
@@ -551,6 +571,7 @@ println!("{:?}", item.age); // borrow of moved value (item moved to other)
 <br />
 
 #### There can be 0 mutable borrows when there are 1 or more immutable borrows
+
 ```rust
 let mut items = vec![Item { age: 1 }, Item { age: 2 }];
 
@@ -567,6 +588,7 @@ items2.get(0); // item3 is mutably borrowed
 <br />
 
 #### There can only be 1 mutable borrow
+
 ```rust
 let mut items = vec![Item { age: 1 }, Item { age: 2 }];
 
@@ -593,9 +615,10 @@ items2.push(Item { age: 3 }); // nope!
 <br />
 <br />
 
-### Applications of the rules
+## Applications of the rules
 
 #### There is a "flow" to references
+
 Since `items2` was not used when `items3` mutable borrow out, this is ok
 
 ```rust
@@ -613,7 +636,7 @@ items3.push(Item { age: 3 }); // still ok!
 <br />
 <br />
 
-### References cannot outlive their associated values
+## References cannot outlive their associated values
 
 ```rust
 let y: &usize;
@@ -642,7 +665,8 @@ println!("ooh no! {}", y);
 <br />
 <br />
 
-### Test
+## Test
+
 Remember this code from the `enum` section?
 
 ```rust
@@ -697,7 +721,8 @@ What rule would we break if we changed the match statements from `&foo` to
 <br />
 <br />
 
-### Questions
+## Questions
+
 I am sure you have a question or two... i can borrow
 
 <br />
@@ -716,4 +741,3 @@ I am sure you have a question or two... i can borrow
 <br />
 <br />
 <br />
-
