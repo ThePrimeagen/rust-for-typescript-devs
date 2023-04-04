@@ -1,0 +1,23 @@
+order,sectionTitle,lessonTitle,slug,sectionIcon,filePath,description
+01A,Introduction,Introduction,introduction/intro,info-circle,/lessons/introduction/intro,The introduction to this course.
+01B,Introduction,The Basics: Syntax,introduction/basic-diff,info-circle,/lessons/introduction/basic-diff,An important second lesson
+01C,Introduction,Rust Numbers and Strings,introduction/numbers-and-strings,info-circle,/lessons/introduction/numbers-and-strings,The part of javascript that is completely simplified
+01D,Introduction,Rust Basics,introduction/rust-basics,info-circle,/lessons/introduction/rust-basics,Some basics about rust.  Vectors & unwrap
+01E,Introduction,Install Rust,introduction/installation,info-circle,/lessons/introduction/installation,Lets install rust and the typescript items
+01F,Introduction,One last thing before we proceed,introduction/a-note-about-types,info-circle,/lessons/introduction/a-note-about-types,"Value, Reference, Mutable Reference"
+02A,Coding Rust,Iterators,coding-rust/iterators,info-circle,/lessons/coding-rust/iterators,Iterators in rust are sooo much better.
+02B,Coding Rust,Rust Enums,coding-rust/is-for-enums,info-circle,/lessons/coding-rust/is-for-enums,Rust enums are the greatest thing you have ever seen
+02C,Coding Rust,options,coding-rust/options,info-circle,/lessons/coding-rust/options,an introduction of option
+02D,Coding Rust,Learn Rustlang Results,coding-rust/results,info-circle,/lessons/coding-rust/results,Lets go deep on results.
+03A,Borrow Checker,The Heap vs The Stack,borrow-checker/a-light-intro-to-heap,info-circle,/lessons/borrow-checker/a-light-intro-to-heap,What is the heap vs what is the stack
+03B,Borrow Checker,Rust's Borrow Checker,borrow-checker/borrow-checker,info-circle,/lessons/borrow-checker/borrow-checker,This is usually the hardest part of Rust
+04A,Traits,Traits vs Interfaces,traits/traits-interfaces,info-circle,/lessons/traits/traits-interfaces,""
+04B,Traits,Creating Modules,traits/creating-modules,info-circle,/lessons/traits/creating-modules,""
+04C,Traits,Creating Iterators,traits/creating-iterators,info-circle,/lessons/traits/creating-iterators,""
+04D,Traits,Custom Traits,traits/custom-traits,info-circle,/lessons/traits/custom-traits,""
+04E,Traits,Generic Trait Implementation,traits/generic-types,info-circle,/lessons/traits/generic-types,""
+04F,Traits,Refactor Rectangle & Circle,traits/refactor-rectangle-circle,info-circle,/lessons/traits/refactor-rectangle-circle,""
+04G,Traits,Reading Shapes from a File,traits/reading-from-file,info-circle,/lessons/traits/reading-from-file,""
+05A,The End,"Rust, farewell",the-end/the-end,info-circle,/lessons/the-end/the-end,Is this going to be forever
+06A,If There Is Time,Testing in Rust,if-there-is-time/tests,info-circle,/lessons/if-there-is-time/tests,The testing library is _in_ rust
+06B,If There Is Time,Project Structure,if-there-is-time/project-structure,info-circle,/lessons/if-there-is-time/project-structure,How is rust code organized

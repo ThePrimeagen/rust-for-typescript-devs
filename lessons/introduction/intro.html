@@ -1,0 +1,210 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><link rel="apple-touch-icon" sizes="180x180" href="/rust-for-typescript-devs/images/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/rust-for-typescript-devs/images/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/x-icon" href="/rust-for-typescript-devs/images/favicon.ico"/><title>Introduction – Rust For Typescript Devs</title><meta name="description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:title" content="Introduction – Rust For Typescript Devs"/><meta name="og:image" content="/rust-for-typescript-devs/images/social-share-cover.jpg"/><meta name="twitter:card" content="summary_large_image"/><meta name="next-head-count" content="13"/><link rel="preload" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" as="style"/><link rel="stylesheet" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/rust-for-typescript-devs/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/rust-for-typescript-devs/_next/static/chunks/webpack-96df002cefccd98a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/framework-4556c45dd113b893.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/main-6607c1a1abd42fdc.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/_app-450f2eef7687996a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/lessons/%5Bsection%5D/%5Bslug%5D-1a57ac5cb3cfea2d.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_buildManifest.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_ssgManifest.js" defer=""></script></head><body><div id="__next"><div class="remix-app"><header class="navbar"><h1 class="navbar-brand"><a href="/rust-for-typescript-devs">Rust For Typescript Devs</a></h1><div class="navbar-info"><a href="https://frontendmasters.com/courses/rust-ts-devs/" class="cta-btn">Watch on Frontend Masters</a></div></header><div class="content-container"><div class="main"><div class="lesson-container"><div class="lesson"><div class="lesson-content"><h2 id="rust-for-typescript-devs">Rust for TypeScript devs</h2>
+<p>i hope you are ready, we will be moving fast today.</p>
+<br />
+<br />
+
+<h4 id="schedule"><strong>Schedule</strong></h4>
+<ul>
+<li>Vector, the basic data structure</li>
+<li>Iterators</li>
+<li>Enums - Result / Option focus</li>
+<li>Traits</li>
+<li>Light touch on memory</li>
+</ul>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="an-ass-out-of-you-and-i">An ass out of you and i</h2>
+<p><strong>ASSUMPTION</strong></p>
+<ul>
+<li>I think you are a bad programmer<ul>
+<li>its ok, i am a bad programmer, too. everyone is, except John Carmack.</li>
+</ul>
+</li>
+<li>You can program TypeScript with relative ease.</li>
+<li>You know types, maybe no wizard, but you know types.</li>
+</ul>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// I assume everyone here can easily read this and understand what is happening</span>
+<span class="hljs-comment">// here just by type definitions</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Promiseable</span>&lt;T&gt; = {
+  <span class="hljs-attr">promise</span>: <span class="hljs-title class_">Promise</span>&lt;T&gt;;
+  <span class="hljs-attr">resolve</span>: <span class="hljs-function">(<span class="hljs-params">value: T</span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">reject</span>: <span class="hljs-function">(<span class="hljs-params">reason: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+};
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">PromiseFactory</span>&lt;T&gt; = <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promiseable</span>&lt;T&gt;;
+
+<span class="hljs-keyword">function</span> explodePromise&lt;T&gt;(): <span class="hljs-title class_">Promiseable</span>&lt;T&gt; {
+  <span class="hljs-comment">// technically there would be some errors here, but just ignore that :)</span>
+  <span class="hljs-keyword">let</span> resolve, reject;
+  <span class="hljs-keyword">let</span> promise = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">res, rej</span>) =&gt;</span> {
+    resolve = res;
+    reject = rej;
+  });
+
+  <span class="hljs-keyword">return</span> {
+    promise,
+    resolve,
+    reject,
+  };
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="why-rust">Why Rust?</h2>
+<p>There are a bunch of reasons, practically speaking, but for me there are two
+things that particularly speak to me.</p>
+<br />
+<br />
+
+<h4 id="ergonomics"><strong>Ergonomics</strong></h4>
+<p>This seems like every tweeter thread is mentions something with developer
+ergonomics. but what in the world are they always talking about?</p>
+<p>For me, ergonomics is defined on two axes, one quickly being able to write
+software with low unexpected behavior, and two, maintain software longer</p>
+<br />
+<br />
+
+<h4 id="javascriptsts-vs-rust-design-decisions"><strong>JavaScripts(TS) vs Rust design decisions</strong></h4>
+<ul>
+<li>Specify Readonly vs Specify Mutability</li>
+<li>undefined/null vs Option</li>
+<li>errors being thrown vs being returned</li>
+</ul>
+<br />
+<br />
+
+<h4 id="skill-gap"><strong>Skill gap</strong></h4>
+<p>Yes skill gap. What do i mean by this?</p>
+<br />
+<br />
+
+<h4 id="javascript--typescript"><strong>JavaScript / TypeScript</strong></h4>
+<p>JavaScript itself is a rather simple language. To become proficient in it is
+rather small task comparatively. The place you spend most of your time is
+learning how to use libraries and dealing with oddities.</p>
+<p>When it comes to TypeScript you have a very complex (intentional) typesystem
+that isn&#39;t typesafe.</p>
+<p>I find that it can be hard to refactor larger typescript libraries as their
+typings become inherently complex</p>
+<h2 id=""><br /></h2>
+<br />
+<br />
+
+<h4 id="rust"><strong>Rust</strong></h4>
+<p>There are many deep topics within the language itself that it takes
+significantly more time to master each of these. To me this makes me excited
+because there are a lot of ways you can improve how you write software</p>
+<p>I have explicitly planned one such of these adventures to show some of the
+power of knowing rusts std and traits</p>
+<p>The language is simply deeper itself, not just use of libraries. You have
+complete control over where and how memory is used, and this can lead to some
+very cool things.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="goals-for-today">Goals for today</h2>
+<p>My goal today is that you end with enough knowledge to be able to google your
+way through a small to mid sized cli application in rust</p>
+<h4 id="what-we-wont-cover"><strong>What we wont cover</strong></h4>
+<ul>
+<li>Errors - creating your own types</li>
+<li>Wasm / UI</li>
+<li>async</li>
+<li>smart pointers and interior mutability</li>
+<li>lifetimes - WHY NOT??</li>
+<li>macros, both proc macros and declarative macros<ul>
+<li>these truly make rust amazing</li>
+</ul>
+</li>
+</ul>
+<pre><code class="hljs language-rust"><span class="hljs-comment">// ------v that is a macro!!!</span>
+<span class="hljs-keyword">return</span> view! {
+    &lt;div&gt;
+        &lt;MyCustomComponent name=<span class="hljs-string">&quot;hello&quot;</span> /&gt;
+    &lt;/div&gt;
+};
+</code></pre>
+<p>I want you to be able to <em>use</em> rust. You can learn the deep concepts on your
+own.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="who-am-i">Who am I?</h2>
+<p>I am best known for my role at TheStartup™, which is CEO, CEO, CEO, CEO, and
+Chairmen of the board.</p>
+<p><img src="/rust-for-typescript-devs/./images/youtube.png" alt="Youtube">
+<img src="/rust-for-typescript-devs/./images/twitch.png" alt="Twitch"></p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div><div class="lesson-links"><a href="/rust-for-typescript-devs/lessons/introduction/basic-diff" class="next">Next →</a></div></div><div class="details-bg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="154" height="154" viewBox="0 0 154 154"><defs><clipPath id="clip-path"><rect id="Rectangle_2238" data-name="Rectangle 2238" width="154" height="154" transform="translate(9467 350)" fill="#fff" stroke="#707070" stroke-width="1"></rect></clipPath><clipPath id="clip-corner-image-active"><rect width="154" height="154"></rect></clipPath></defs><g id="corner-image-active" clip-path="url(#clip-corner-image-active)"><g id="Corner-image-active-2" data-name="Corner-image-active" transform="translate(-9467 -350)" clip-path="url(#clip-path)"><path id="Subtraction_34" data-name="Subtraction 34" d="M-3857.365,1740.766h0l-7.07-7.07,12.89-12.89v14.142l-5.818,5.818Zm-14.142-14.142h0l-7.071-7.07,27.033-27.033v14.143l-19.96,19.96Zm-14.143-14.143h0l-7.07-7.069,41.175-41.175v14.142Zm-14.142-14.142h0l-7.07-7.069,55.317-55.317v14.142Zm-14.142-14.142h0l-7.07-7.069,69.459-69.459v14.142Zm-14.142-14.142h0l-7.07-7.069,76.739-76.739h6.862v7.28Zm-14.143-14.143h0l-7.07-7.069,62.6-62.6h14.142Zm-14.142-14.142h0l-7.07-7.069,48.454-48.454h14.142Zm-14.142-14.142h0l-7.07-7.069,34.312-34.312h14.142Zm-14.142-14.142h0l-7.07-7.069,20.17-20.17h14.142Zm-14.142-14.142h0l-7.071-7.071,6.027-6.027h14.144l-13.1,13.1Zm367.24-56.114v-.909l.455.455-.453.453Z" transform="translate(13472.546 -1236.766)" fill="var(--corner-fill)"></path></g></g></svg></div></div></div></div><footer class="footer"><ul class="socials"><li class="social"><a href="https://twitter.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="32" viewBox="0 0 40 32"><defs><clipPath id="clip-twitter-social"><rect width="40" height="32"></rect></clipPath></defs><g id="twitter-social" clip-path="url(#clip-twitter-social)"><g id="Group_269" data-name="Group 269" transform="translate(-230.23 -1140.849)"><path id="Path_419" data-name="Path 419" d="M266.12,1148.861v1.035a23.092,23.092,0,0,1-1.507,8.1,24.08,24.08,0,0,1-4.475,7.381,22.175,22.175,0,0,1-7.306,5.4,24.129,24.129,0,0,1-10,2.07,23.7,23.7,0,0,1-6.667-.945,22.83,22.83,0,0,1-5.936-2.655q.959.091,1.963.09a16.518,16.518,0,0,0,5.434-.9,17.111,17.111,0,0,0,4.749-2.52,8.275,8.275,0,0,1-4.749-1.643,7.8,7.8,0,0,1-2.877-3.983,8.268,8.268,0,0,0,1.507.135,8.58,8.58,0,0,0,2.146-.27,8.16,8.16,0,0,1-5.685-4.344,8.326,8.326,0,0,1-.89-3.578v-.135a7.775,7.775,0,0,0,3.744,1.035,8.183,8.183,0,0,1-2.671-2.9,7.817,7.817,0,0,1-.982-3.848,7.948,7.948,0,0,1,1.1-4.05,23.53,23.53,0,0,0,16.895,8.46,9.221,9.221,0,0,1-.183-1.845,7.787,7.787,0,0,1,1.1-4.05,8.216,8.216,0,0,1,2.991-2.948,7.991,7.991,0,0,1,4.087-1.1,8.184,8.184,0,0,1,5.982,2.566,16.087,16.087,0,0,0,5.205-1.98,7.784,7.784,0,0,1-1.393,2.588,8.4,8.4,0,0,1-2.215,1.913,16.856,16.856,0,0,0,4.749-1.305A17.032,17.032,0,0,1,266.12,1148.861Z" fill="var(--footer-icons)"></path></g></g></svg></a></li><li class="social"><a href="https://github.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32"><defs><clipPath id="clip-github-social"><rect width="32" height="32"></rect></clipPath></defs><g id="github-social" clip-path="url(#clip-github-social)"><g id="Group_272" data-name="Group 272" transform="translate(13522.5 -6994)"><path id="Subtraction_33" data-name="Subtraction 33" d="M-24967.5,8041a15.9,15.9,0,0,1-11.312-4.688A15.893,15.893,0,0,1-24983.5,8025a15.893,15.893,0,0,1,4.689-11.315A15.894,15.894,0,0,1-24967.5,8009a15.894,15.894,0,0,1,11.313,4.686A15.893,15.893,0,0,1-24951.5,8025a15.893,15.893,0,0,1-4.689,11.313A15.9,15.9,0,0,1-24967.5,8041Zm-3.781-4.571h0v3.918h7.895v-6.665a1.836,1.836,0,0,0-1.2-1.718c5.1-.617,7.467-2.975,7.467-7.424a7.176,7.176,0,0,0-1.637-4.728,6.74,6.74,0,0,0,.275-1.812,4.34,4.34,0,0,0-.52-2.452.574.574,0,0,0-.359-.1c-1.061,0-3.465,1.411-3.936,1.694a16.644,16.644,0,0,0-4.2-.489,16.379,16.379,0,0,0-3.969.445c-.846-.5-2.91-1.649-3.859-1.649a.566.566,0,0,0-.354.095,4.3,4.3,0,0,0-.521,2.452,6.7,6.7,0,0,0,.244,1.718,7.346,7.346,0,0,0-1.6,4.822,7.263,7.263,0,0,0,1.533,4.985c1.193,1.359,3.115,2.165,5.871,2.464a1.826,1.826,0,0,0-1.129,1.693v.5h0l-.006,0a7.121,7.121,0,0,1-2.033.363,2.608,2.608,0,0,1-.965-.158,4.438,4.438,0,0,1-1.836-1.881,2.361,2.361,0,0,0-1.248-1.091,3.472,3.472,0,0,0-1.217-.3.584.584,0,0,0-.545.224.282.282,0,0,0,.027.367,1.875,1.875,0,0,0,.447.307,4.732,4.732,0,0,1,.561.355,10.726,10.726,0,0,1,1.682,2.755c.043.092.078.163.105.217a3.876,3.876,0,0,0,2.42,1.185,6.036,6.036,0,0,0,.607.025c.875,0,1.988-.124,2-.125Z" transform="translate(11461 -1015)" fill="var(--footer-icons)"></path><g id="Ellipse_670" data-name="Ellipse 670" transform="translate(-13522.5 6994)" fill="none" stroke="var(--footer-icons)" stroke-width="1"><circle cx="16" cy="16" r="16" stroke="none"></circle><circle cx="16" cy="16" r="15.5" fill="none"></circle></g></g></g></svg></a></li><li class="social"><a href="https://twitch.tv/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45"><path d="M2.149 0l-1.612 4.119v16.836h5.731v3.045h3.245l3.045-3.045h4.657l6.269-6.269v-14.686h-21.314zm19.164 13.612l-3.582 3.582h-5.731l-3.045 3.045v-3.045h-4.836v-15.045h17.194v11.463zm-3.582-7.343v6.262h-2.149v-6.262h2.149zm-5.731 0v6.262h-2.149v-6.262h2.149z" fill-rule="evenodd" clip-rule="evenodd"></path></svg></a></li><li class="social"><div class="terms"><p>Content Licensed Under CC-BY-NC-4.0</p><p>Code Samples and Excercises Licensed Under Apache 2.0</p><p>Site Designed by<!-- --> <a href="https://www.alexdanielson.com/">Alex Danielson</a></p></div></li></ul></footer></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"post":{"attributes":{"title":"Introduction","description":"The introduction to this course."},"html":"\u003ch2 id=\"rust-for-typescript-devs\"\u003eRust for TypeScript devs\u003c/h2\u003e\n\u003cp\u003ei hope you are ready, we will be moving fast today.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"schedule\"\u003e\u003cstrong\u003eSchedule\u003c/strong\u003e\u003c/h4\u003e\n\u003cul\u003e\n\u003cli\u003eVector, the basic data structure\u003c/li\u003e\n\u003cli\u003eIterators\u003c/li\u003e\n\u003cli\u003eEnums - Result / Option focus\u003c/li\u003e\n\u003cli\u003eTraits\u003c/li\u003e\n\u003cli\u003eLight touch on memory\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"an-ass-out-of-you-and-i\"\u003eAn ass out of you and i\u003c/h2\u003e\n\u003cp\u003e\u003cstrong\u003eASSUMPTION\u003c/strong\u003e\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eI think you are a bad programmer\u003cul\u003e\n\u003cli\u003eits ok, i am a bad programmer, too. everyone is, except John Carmack.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eYou can program TypeScript with relative ease.\u003c/li\u003e\n\u003cli\u003eYou know types, maybe no wizard, but you know types.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-comment\"\u003e// I assume everyone here can easily read this and understand what is happening\u003c/span\u003e\n\u003cspan class=\"hljs-comment\"\u003e// here just by type definitions\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003ePromiseable\u003c/span\u003e\u0026lt;T\u0026gt; = {\n  \u003cspan class=\"hljs-attr\"\u003epromise\u003c/span\u003e: \u003cspan class=\"hljs-title class_\"\u003ePromise\u003c/span\u003e\u0026lt;T\u0026gt;;\n  \u003cspan class=\"hljs-attr\"\u003eresolve\u003c/span\u003e: \u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003evalue: T\u003c/span\u003e) =\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-built_in\"\u003evoid\u003c/span\u003e;\n  \u003cspan class=\"hljs-attr\"\u003ereject\u003c/span\u003e: \u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003ereason: \u003cspan class=\"hljs-built_in\"\u003eany\u003c/span\u003e\u003c/span\u003e) =\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-built_in\"\u003evoid\u003c/span\u003e;\n};\n\u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003ePromiseFactory\u003c/span\u003e\u0026lt;T\u0026gt; = \u003cspan class=\"hljs-function\"\u003e() =\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003ePromiseable\u003c/span\u003e\u0026lt;T\u0026gt;;\n\n\u003cspan class=\"hljs-keyword\"\u003efunction\u003c/span\u003e explodePromise\u0026lt;T\u0026gt;(): \u003cspan class=\"hljs-title class_\"\u003ePromiseable\u003c/span\u003e\u0026lt;T\u0026gt; {\n  \u003cspan class=\"hljs-comment\"\u003e// technically there would be some errors here, but just ignore that :)\u003c/span\u003e\n  \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e resolve, reject;\n  \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e promise = \u003cspan class=\"hljs-keyword\"\u003enew\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003ePromise\u003c/span\u003e(\u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003eres, rej\u003c/span\u003e) =\u0026gt;\u003c/span\u003e {\n    resolve = res;\n    reject = rej;\n  });\n\n  \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e {\n    promise,\n    resolve,\n    reject,\n  };\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"why-rust\"\u003eWhy Rust?\u003c/h2\u003e\n\u003cp\u003eThere are a bunch of reasons, practically speaking, but for me there are two\nthings that particularly speak to me.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"ergonomics\"\u003e\u003cstrong\u003eErgonomics\u003c/strong\u003e\u003c/h4\u003e\n\u003cp\u003eThis seems like every tweeter thread is mentions something with developer\nergonomics. but what in the world are they always talking about?\u003c/p\u003e\n\u003cp\u003eFor me, ergonomics is defined on two axes, one quickly being able to write\nsoftware with low unexpected behavior, and two, maintain software longer\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"javascriptsts-vs-rust-design-decisions\"\u003e\u003cstrong\u003eJavaScripts(TS) vs Rust design decisions\u003c/strong\u003e\u003c/h4\u003e\n\u003cul\u003e\n\u003cli\u003eSpecify Readonly vs Specify Mutability\u003c/li\u003e\n\u003cli\u003eundefined/null vs Option\u003c/li\u003e\n\u003cli\u003eerrors being thrown vs being returned\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"skill-gap\"\u003e\u003cstrong\u003eSkill gap\u003c/strong\u003e\u003c/h4\u003e\n\u003cp\u003eYes skill gap. What do i mean by this?\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"javascript--typescript\"\u003e\u003cstrong\u003eJavaScript / TypeScript\u003c/strong\u003e\u003c/h4\u003e\n\u003cp\u003eJavaScript itself is a rather simple language. To become proficient in it is\nrather small task comparatively. The place you spend most of your time is\nlearning how to use libraries and dealing with oddities.\u003c/p\u003e\n\u003cp\u003eWhen it comes to TypeScript you have a very complex (intentional) typesystem\nthat isn\u0026#39;t typesafe.\u003c/p\u003e\n\u003cp\u003eI find that it can be hard to refactor larger typescript libraries as their\ntypings become inherently complex\u003c/p\u003e\n\u003ch2 id=\"\"\u003e\u003cbr /\u003e\u003c/h2\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"rust\"\u003e\u003cstrong\u003eRust\u003c/strong\u003e\u003c/h4\u003e\n\u003cp\u003eThere are many deep topics within the language itself that it takes\nsignificantly more time to master each of these. To me this makes me excited\nbecause there are a lot of ways you can improve how you write software\u003c/p\u003e\n\u003cp\u003eI have explicitly planned one such of these adventures to show some of the\npower of knowing rusts std and traits\u003c/p\u003e\n\u003cp\u003eThe language is simply deeper itself, not just use of libraries. You have\ncomplete control over where and how memory is used, and this can lead to some\nvery cool things.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"goals-for-today\"\u003eGoals for today\u003c/h2\u003e\n\u003cp\u003eMy goal today is that you end with enough knowledge to be able to google your\nway through a small to mid sized cli application in rust\u003c/p\u003e\n\u003ch4 id=\"what-we-wont-cover\"\u003e\u003cstrong\u003eWhat we wont cover\u003c/strong\u003e\u003c/h4\u003e\n\u003cul\u003e\n\u003cli\u003eErrors - creating your own types\u003c/li\u003e\n\u003cli\u003eWasm / UI\u003c/li\u003e\n\u003cli\u003easync\u003c/li\u003e\n\u003cli\u003esmart pointers and interior mutability\u003c/li\u003e\n\u003cli\u003elifetimes - WHY NOT??\u003c/li\u003e\n\u003cli\u003emacros, both proc macros and declarative macros\u003cul\u003e\n\u003cli\u003ethese truly make rust amazing\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-comment\"\u003e// ------v that is a macro!!!\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e view! {\n    \u0026lt;div\u0026gt;\n        \u0026lt;MyCustomComponent name=\u003cspan class=\"hljs-string\"\u003e\u0026quot;hello\u0026quot;\u003c/span\u003e /\u0026gt;\n    \u0026lt;/div\u0026gt;\n};\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eI want you to be able to \u003cem\u003euse\u003c/em\u003e rust. You can learn the deep concepts on your\nown.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"who-am-i\"\u003eWho am I?\u003c/h2\u003e\n\u003cp\u003eI am best known for my role at TheStartup™, which is CEO, CEO, CEO, CEO, and\nChairmen of the board.\u003c/p\u003e\n\u003cp\u003e\u003cimg src=\"/rust-for-typescript-devs/./images/youtube.png\" alt=\"Youtube\"\u003e\n\u003cimg src=\"/rust-for-typescript-devs/./images/twitch.png\" alt=\"Twitch\"\u003e\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n","slug":"intro","title":"Introduction","section":"Introduction","icon":"info-circle","filePath":"/home/runner/work/rust-for-typescript-devs/rust-for-typescript-devs/lessons/01-introduction/A-intro.md","nextSlug":"/rust-for-typescript-devs/lessons/introduction/basic-diff","prevSlug":null}},"__N_SSG":true},"page":"/lessons/[section]/[slug]","query":{"section":"introduction","slug":"intro"},"buildId":"80Kch6YahQPprgQ870uS5","assetPrefix":"/rust-for-typescript-devs","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>

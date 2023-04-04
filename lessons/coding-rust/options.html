@@ -1,0 +1,699 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><link rel="apple-touch-icon" sizes="180x180" href="/rust-for-typescript-devs/images/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/rust-for-typescript-devs/images/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/x-icon" href="/rust-for-typescript-devs/images/favicon.ico"/><title>options – Rust For Typescript Devs</title><meta name="description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:title" content="options – Rust For Typescript Devs"/><meta name="og:image" content="/rust-for-typescript-devs/images/social-share-cover.jpg"/><meta name="twitter:card" content="summary_large_image"/><meta name="next-head-count" content="13"/><link rel="preload" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" as="style"/><link rel="stylesheet" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/rust-for-typescript-devs/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/rust-for-typescript-devs/_next/static/chunks/webpack-96df002cefccd98a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/framework-4556c45dd113b893.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/main-6607c1a1abd42fdc.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/_app-450f2eef7687996a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/lessons/%5Bsection%5D/%5Bslug%5D-1a57ac5cb3cfea2d.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_buildManifest.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_ssgManifest.js" defer=""></script></head><body><div id="__next"><div class="remix-app"><header class="navbar"><h1 class="navbar-brand"><a href="/rust-for-typescript-devs">Rust For Typescript Devs</a></h1><div class="navbar-info"><a href="https://frontendmasters.com/courses/rust-ts-devs/" class="cta-btn">Watch on Frontend Masters</a></div></header><div class="content-container"><div class="main"><div class="lesson-container"><div class="lesson"><div class="lesson-content"><h2 id="option">Option</h2>
+<p><code>Option</code> is the answer to typescript&#39;s undefined / null problem.</p>
+<p><code>Option</code> is an enum</p>
+<br />
+<br />
+
+<p>The thing about null / undefined is that you get different answers for why you
+should use what or the other...</p>
+<p><code>null</code>: <code>undefined</code> on purpose</p>
+<p><code>undefined</code>: we have no reasonable guarantee it will be there...</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="fun-challenge">Fun Challenge</h2>
+<p>is this valid TS?</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Foo</span> = {
+  bar?: <span class="hljs-built_in">string</span>;
+};
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">item</span>: <span class="hljs-title class_">Foo</span> = {};
+<span class="hljs-keyword">const</span> <span class="hljs-attr">item2</span>: <span class="hljs-title class_">Foo</span> = { <span class="hljs-attr">bar</span>: <span class="hljs-string">&quot;&quot;</span> };
+<span class="hljs-keyword">const</span> <span class="hljs-attr">item3</span>: <span class="hljs-title class_">Foo</span> = { <span class="hljs-attr">bar</span>: <span class="hljs-literal">undefined</span> }; <span class="hljs-comment">// &lt;-- is this valid?</span>
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="depends-on-your-tsconfig">Depends on your TSConfig</h2>
+<p><code>exactOptionalPropertyTypes</code> requires that bar either be <em>not specified</em> or a
+string.</p>
+<br />
+
+<p>Why is <code>item3</code> not technically valid</p>
+<br />
+
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Foo</span> = {
+  bar?: <span class="hljs-built_in">string</span>;
+};
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">item3</span>: <span class="hljs-title class_">Foo</span> = { <span class="hljs-attr">bar</span>: <span class="hljs-literal">undefined</span> };
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="rust-handles-it-different-and-better">Rust handles it different and better</h2>
+<p>At first, this may seem annoying, but once you get use to them, it grows on you
+a ton</p>
+<ol>
+<li>the ENUM definition of Option</li>
+</ol>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Option</span>&lt;T&gt; { <span class="hljs-comment">// yes, generics can be used in enums, again, cool</span>
+    <span class="hljs-literal">None</span>
+    <span class="hljs-title function_ invoke__">Some</span>(T),
+}
+</code></pre>
+<p>That means we can create Options with any inner value.</p>
+<ol start="2">
+<li>Rust also recognizes that they will be used so much that they made them
+first class citizens.</li>
+</ol>
+<pre><code class="hljs language-rust"><span class="hljs-comment">// notice i don&#x27;t have to do Option::Some(...)</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-number">5</span>);
+<span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-string">&quot;different type&quot;</span>);
+<span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-title function_ invoke__">Some</span>(Custom { age: <span class="hljs-number">69</span>, name: <span class="hljs-string">&quot;ThePrimeagen&quot;</span> });
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="but-why">But why?</h2>
+<p>Why do we need <code>Option</code>s in rust? The answer is memory. If you might or might
+not return an item from a function, rust needs to be able to allocate that
+memory on the stack. (we will talk about this more shortly)</p>
+<p>This happens in JS too, it is just behind the scenes in the engine</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="working-with-option">Working with Option</h2>
+<p>They are enums, so <code>match</code>/<code>if let</code> pattern matching works, but there is more
+because there are plenty of convenient methods.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="lets-start-with-a-small-exercise">Lets start with a small exercise</h2>
+<p>You can erase all the code you have written thus far and lets start with
+TypeScript.</p>
+<p>I want you to write a function with the following:</p>
+<ul>
+<li>signature takes in a <code>number</code> or <code>undefined</code> and returns a <code>number</code></li>
+<li>if the value is <code>undefined</code>, return 0</li>
+<li>else multiply the value by <code>5</code></li>
+<li>the signature cannot use <code>?</code> as that doesn&#39;t mean you <em>have to pass in
+undefined</em>.</li>
+</ul>
+<p>I think you can do this pretty quick, i&#39;ll give you one minute.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="complete-code">Complete Code</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">multiply</span>(<span class="hljs-params">num: <span class="hljs-built_in">number</span> | <span class="hljs-literal">undefined</span></span>): <span class="hljs-built_in">number</span> {
+  <span class="hljs-keyword">return</span> (num ?? <span class="hljs-number">0</span>) * <span class="hljs-number">5</span>;
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="lets-do-the-same-thing-with-rust">Lets do the same thing with rust</h2>
+<p>Remember, repetition and small exercises are a great way to learn, so make sure
+you are participating!</p>
+<p>Requirements</p>
+<ul>
+<li>signature takes in a <code>number</code> or <code>undefined</code> and returns a <code>number</code></li>
+<li>if the value is <code>undefined</code>, return 0</li>
+<li>else multiply the value by <code>5</code></li>
+</ul>
+<p>I&#39;ll give you a couple moments to try yourself
+(don&#39;t just code, scroll down (note to me))</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="how-i-started">How I started</h2>
+<p>When you first start with rust, it looks pretty ugly, so let me show you how i
+would have completed this.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="complete-code-how-i-would-have">Complete Code (How I would have)</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">multiply</span>(num: <span class="hljs-type">Option</span>&lt;<span class="hljs-type">usize</span>&gt;) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">usize</span> {
+    <span class="hljs-keyword">if</span> num.<span class="hljs-title function_ invoke__">is_some</span>() {
+        <span class="hljs-keyword">return</span> num.<span class="hljs-title function_ invoke__">unwrap</span>() * <span class="hljs-number">5</span>; <span class="hljs-comment">// unwrap a None causes a panic</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="how-i-would-now">How I would now</h2>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="much-nicer">Much nicer</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">multiply</span>(num: <span class="hljs-type">Option</span>&lt;<span class="hljs-type">usize</span>&gt;) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">usize</span> {
+    <span class="hljs-keyword">return</span> num.<span class="hljs-title function_ invoke__">unwrap_or</span>(<span class="hljs-number">0</span>) * <span class="hljs-number">5</span>;
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="lets-change-up-the-rules-a-bit">Lets change up the rules a bit</h2>
+<p>Start with TypeScript<br/>
+instead of returing 0, if <code>undefined</code> is provided, return <code>undefined</code> else
+multiply by 5</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="complete-code-1">Complete Code</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">multiply</span>(<span class="hljs-params">num: <span class="hljs-built_in">number</span> | <span class="hljs-literal">undefined</span></span>): <span class="hljs-literal">undefined</span> | <span class="hljs-built_in">number</span> {
+  <span class="hljs-keyword">return</span> num === <span class="hljs-literal">undefined</span> ? <span class="hljs-literal">undefined</span> : num * <span class="hljs-number">5</span>;
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="can-rust-help-us">Can Rust help us?</h2>
+<p>yes it can! We ackshually have 2 different ways we can accomplish this</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="method-1-map">Method 1: map</h2>
+<p><code>Option#map</code> keeps the box value (<code>Option</code>) while giving you a chance to deal
+with the inner value, which for us is a number.</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-number">5</span>);
+<span class="hljs-comment">//-----------------v is a {integer}!</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = foo.<span class="hljs-title function_ invoke__">map</span>(|x| {...})
+<span class="hljs-comment">//---^ is now Option&lt;Return type of map&gt;</span>
+</code></pre>
+<p>Go a head, give it a shot, and upgrade our previous example. The new signature
+should look like <code>fn multiply(num: Option&lt;usize&gt;) -&gt; Option&lt;usize&gt; {...</code></p>
+<br/>
+
+<p>i&#39;ll give you a moment to try it out</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="complete-code-2">Complete Code</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">multiply</span>(num: <span class="hljs-type">Option</span>&lt;<span class="hljs-type">usize</span>&gt;) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Option</span>&lt;<span class="hljs-type">usize</span>&gt; {
+    <span class="hljs-keyword">return</span> num.<span class="hljs-title function_ invoke__">map</span>(|x| x * <span class="hljs-number">5</span>); <span class="hljs-comment">// remains as an option</span>
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="version-2--operator">Version 2, ? operator</h2>
+<p>When you have a function that returns an <code>Option</code> you can automagically unwrap
+the value.</p>
+<br/>
+
+<p>That might sound confusing, let me show you what its doing</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">test</span>() <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Option</span>&lt;<span class="hljs-type">usize</span>&gt; {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-number">5</span>);
+
+    <span class="hljs-comment">// --------v Option&lt;usize&gt;</span>
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = foo?;
+    <span class="hljs-comment">//---^ usize</span>
+}
+</code></pre>
+<p>This expands out to</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">test</span>() <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Option</span>&lt;<span class="hljs-type">usize</span>&gt; {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-number">5</span>);
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-keyword">match</span> foo {
+        <span class="hljs-title function_ invoke__">Some</span>(x) =&gt; x,
+        <span class="hljs-literal">None</span> =&gt; <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+    };
+}
+</code></pre>
+<p>See if you can change your <code>.map</code> example to use <code>?</code></p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="complete-code-3">Complete Code</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">multiply</span>(num: <span class="hljs-type">Option</span>&lt;<span class="hljs-type">usize</span>&gt;) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Option</span>&lt;<span class="hljs-type">usize</span>&gt; {
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Some</span>(num? * <span class="hljs-number">5</span>);
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="lets-do-a-little-exercise">Lets do a little exercise</h2>
+<p>lets do a moment of practice!</p>
+<br />
+
+<h2 id="small-program">Small program</h2>
+<ul>
+<li><p>write a function, call it <code>practice</code>, that takes in <code>nums</code> of <code>Vec&lt;usize&gt;</code>
+and an <code>index: usize</code></p>
+</li>
+<li><p>Return one of the following</p>
+<ul>
+<li>if value exists at <code>index</code> in <code>nums</code>, return it multiplied by 5</li>
+<li>if there is no value, return <code>index</code> multiplied by 5</li>
+</ul>
+</li>
+</ul>
+<p>First typescript (i&#39;ll give you a moment)!</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="complete-code-4">Complete Code</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">practice</span>(<span class="hljs-params">list: <span class="hljs-built_in">number</span>[], idx: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+  <span class="hljs-keyword">return</span> (list.<span class="hljs-property">length</span> &gt; idx ? list[idx] : idx) * <span class="hljs-number">5</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">practice2</span>(<span class="hljs-params">list: <span class="hljs-built_in">number</span>[], idx: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+  <span class="hljs-keyword">if</span> (idx &gt;= list.<span class="hljs-property">length</span>) {
+    <span class="hljs-keyword">return</span> idx * <span class="hljs-number">5</span>;
+  }
+  <span class="hljs-keyword">return</span> list[idx] * <span class="hljs-number">5</span>;
+}
+
+<span class="hljs-keyword">const</span> list = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">practice</span>(list, <span class="hljs-number">4</span>));
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="now-to-the-rust-version">Now to the rust version!</h2>
+<p>I&#39;ll give you a moment.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="complete-version">Complete Version</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">practice</span>(items: <span class="hljs-type">Vec</span>&lt;<span class="hljs-type">usize</span>&gt;, idx: <span class="hljs-type">usize</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">usize</span> {
+    <span class="hljs-keyword">return</span> items.<span class="hljs-title function_ invoke__">get</span>(idx).<span class="hljs-title function_ invoke__">unwrap_or</span>(&amp;idx) * <span class="hljs-number">5</span>;
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">vec</span> = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>];
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;value: {}&quot;</span>, <span class="hljs-title function_ invoke__">practice</span>(vec, <span class="hljs-number">0</span>));
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="would-you-look-at-it">Would you look at it?</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">return</span> (list.<span class="hljs-property">length</span> &gt; idx ? list[idx] : idx) * <span class="hljs-number">5</span>;
+</code></pre>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">return</span> list.<span class="hljs-title function_ invoke__">get</span>(idx).<span class="hljs-title function_ invoke__">unwrap_or</span>(&amp;idx) * <span class="hljs-number">5</span>;
+</code></pre>
+<p>Rust as a language is hard. But there are TONS of utilities that make it
+really easy to work with. This is just one example. The Option<T> interface</p>
+<br />
+
+<p>Rusts take on the &quot;Billion&quot; dollar mistake i think is the right move.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="a-quick-thing-about-vectors">A quick thing about Vectors</h2>
+<ul>
+<li><p>What&#39;s the difference between <code>[]</code> and <code>.get(x)</code>?</p>
+<ul>
+<li><code>[]</code> directly accesses the element, if its not there, its like accessing
+undefined.</li>
+<li><code>.get(x)</code> safely handles out of bounds values</li>
+</ul>
+</li>
+<li><p>why <code>unwrap_or(&amp;idx)</code>?</p>
+<ul>
+<li><code>.get(x)</code> returns Option&lt;&amp;T&gt;</li>
+<li><code>unwrap_or</code> must maintain the <em>same</em> type</li>
+</ul>
+</li>
+</ul>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="somequestions">Some(Questions)?</h2>
+<p>... maybe that joke is a bit nerdy</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div><div class="lesson-links"><a href="/rust-for-typescript-devs/lessons/coding-rust/is-for-enums" class="prev">← Previous</a><a href="/rust-for-typescript-devs/lessons/coding-rust/results" class="next">Next →</a></div></div><div class="details-bg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="154" height="154" viewBox="0 0 154 154"><defs><clipPath id="clip-path"><rect id="Rectangle_2238" data-name="Rectangle 2238" width="154" height="154" transform="translate(9467 350)" fill="#fff" stroke="#707070" stroke-width="1"></rect></clipPath><clipPath id="clip-corner-image-active"><rect width="154" height="154"></rect></clipPath></defs><g id="corner-image-active" clip-path="url(#clip-corner-image-active)"><g id="Corner-image-active-2" data-name="Corner-image-active" transform="translate(-9467 -350)" clip-path="url(#clip-path)"><path id="Subtraction_34" data-name="Subtraction 34" d="M-3857.365,1740.766h0l-7.07-7.07,12.89-12.89v14.142l-5.818,5.818Zm-14.142-14.142h0l-7.071-7.07,27.033-27.033v14.143l-19.96,19.96Zm-14.143-14.143h0l-7.07-7.069,41.175-41.175v14.142Zm-14.142-14.142h0l-7.07-7.069,55.317-55.317v14.142Zm-14.142-14.142h0l-7.07-7.069,69.459-69.459v14.142Zm-14.142-14.142h0l-7.07-7.069,76.739-76.739h6.862v7.28Zm-14.143-14.143h0l-7.07-7.069,62.6-62.6h14.142Zm-14.142-14.142h0l-7.07-7.069,48.454-48.454h14.142Zm-14.142-14.142h0l-7.07-7.069,34.312-34.312h14.142Zm-14.142-14.142h0l-7.07-7.069,20.17-20.17h14.142Zm-14.142-14.142h0l-7.071-7.071,6.027-6.027h14.144l-13.1,13.1Zm367.24-56.114v-.909l.455.455-.453.453Z" transform="translate(13472.546 -1236.766)" fill="var(--corner-fill)"></path></g></g></svg></div></div></div></div><footer class="footer"><ul class="socials"><li class="social"><a href="https://twitter.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="32" viewBox="0 0 40 32"><defs><clipPath id="clip-twitter-social"><rect width="40" height="32"></rect></clipPath></defs><g id="twitter-social" clip-path="url(#clip-twitter-social)"><g id="Group_269" data-name="Group 269" transform="translate(-230.23 -1140.849)"><path id="Path_419" data-name="Path 419" d="M266.12,1148.861v1.035a23.092,23.092,0,0,1-1.507,8.1,24.08,24.08,0,0,1-4.475,7.381,22.175,22.175,0,0,1-7.306,5.4,24.129,24.129,0,0,1-10,2.07,23.7,23.7,0,0,1-6.667-.945,22.83,22.83,0,0,1-5.936-2.655q.959.091,1.963.09a16.518,16.518,0,0,0,5.434-.9,17.111,17.111,0,0,0,4.749-2.52,8.275,8.275,0,0,1-4.749-1.643,7.8,7.8,0,0,1-2.877-3.983,8.268,8.268,0,0,0,1.507.135,8.58,8.58,0,0,0,2.146-.27,8.16,8.16,0,0,1-5.685-4.344,8.326,8.326,0,0,1-.89-3.578v-.135a7.775,7.775,0,0,0,3.744,1.035,8.183,8.183,0,0,1-2.671-2.9,7.817,7.817,0,0,1-.982-3.848,7.948,7.948,0,0,1,1.1-4.05,23.53,23.53,0,0,0,16.895,8.46,9.221,9.221,0,0,1-.183-1.845,7.787,7.787,0,0,1,1.1-4.05,8.216,8.216,0,0,1,2.991-2.948,7.991,7.991,0,0,1,4.087-1.1,8.184,8.184,0,0,1,5.982,2.566,16.087,16.087,0,0,0,5.205-1.98,7.784,7.784,0,0,1-1.393,2.588,8.4,8.4,0,0,1-2.215,1.913,16.856,16.856,0,0,0,4.749-1.305A17.032,17.032,0,0,1,266.12,1148.861Z" fill="var(--footer-icons)"></path></g></g></svg></a></li><li class="social"><a href="https://github.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32"><defs><clipPath id="clip-github-social"><rect width="32" height="32"></rect></clipPath></defs><g id="github-social" clip-path="url(#clip-github-social)"><g id="Group_272" data-name="Group 272" transform="translate(13522.5 -6994)"><path id="Subtraction_33" data-name="Subtraction 33" d="M-24967.5,8041a15.9,15.9,0,0,1-11.312-4.688A15.893,15.893,0,0,1-24983.5,8025a15.893,15.893,0,0,1,4.689-11.315A15.894,15.894,0,0,1-24967.5,8009a15.894,15.894,0,0,1,11.313,4.686A15.893,15.893,0,0,1-24951.5,8025a15.893,15.893,0,0,1-4.689,11.313A15.9,15.9,0,0,1-24967.5,8041Zm-3.781-4.571h0v3.918h7.895v-6.665a1.836,1.836,0,0,0-1.2-1.718c5.1-.617,7.467-2.975,7.467-7.424a7.176,7.176,0,0,0-1.637-4.728,6.74,6.74,0,0,0,.275-1.812,4.34,4.34,0,0,0-.52-2.452.574.574,0,0,0-.359-.1c-1.061,0-3.465,1.411-3.936,1.694a16.644,16.644,0,0,0-4.2-.489,16.379,16.379,0,0,0-3.969.445c-.846-.5-2.91-1.649-3.859-1.649a.566.566,0,0,0-.354.095,4.3,4.3,0,0,0-.521,2.452,6.7,6.7,0,0,0,.244,1.718,7.346,7.346,0,0,0-1.6,4.822,7.263,7.263,0,0,0,1.533,4.985c1.193,1.359,3.115,2.165,5.871,2.464a1.826,1.826,0,0,0-1.129,1.693v.5h0l-.006,0a7.121,7.121,0,0,1-2.033.363,2.608,2.608,0,0,1-.965-.158,4.438,4.438,0,0,1-1.836-1.881,2.361,2.361,0,0,0-1.248-1.091,3.472,3.472,0,0,0-1.217-.3.584.584,0,0,0-.545.224.282.282,0,0,0,.027.367,1.875,1.875,0,0,0,.447.307,4.732,4.732,0,0,1,.561.355,10.726,10.726,0,0,1,1.682,2.755c.043.092.078.163.105.217a3.876,3.876,0,0,0,2.42,1.185,6.036,6.036,0,0,0,.607.025c.875,0,1.988-.124,2-.125Z" transform="translate(11461 -1015)" fill="var(--footer-icons)"></path><g id="Ellipse_670" data-name="Ellipse 670" transform="translate(-13522.5 6994)" fill="none" stroke="var(--footer-icons)" stroke-width="1"><circle cx="16" cy="16" r="16" stroke="none"></circle><circle cx="16" cy="16" r="15.5" fill="none"></circle></g></g></g></svg></a></li><li class="social"><a href="https://twitch.tv/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45"><path d="M2.149 0l-1.612 4.119v16.836h5.731v3.045h3.245l3.045-3.045h4.657l6.269-6.269v-14.686h-21.314zm19.164 13.612l-3.582 3.582h-5.731l-3.045 3.045v-3.045h-4.836v-15.045h17.194v11.463zm-3.582-7.343v6.262h-2.149v-6.262h2.149zm-5.731 0v6.262h-2.149v-6.262h2.149z" fill-rule="evenodd" clip-rule="evenodd"></path></svg></a></li><li class="social"><div class="terms"><p>Content Licensed Under CC-BY-NC-4.0</p><p>Code Samples and Excercises Licensed Under Apache 2.0</p><p>Site Designed by<!-- --> <a href="https://www.alexdanielson.com/">Alex Danielson</a></p></div></li></ul></footer></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"post":{"attributes":{"title":"options","description":"an introduction of option"},"html":"\u003ch2 id=\"option\"\u003eOption\u003c/h2\u003e\n\u003cp\u003e\u003ccode\u003eOption\u003c/code\u003e is the answer to typescript\u0026#39;s undefined / null problem.\u003c/p\u003e\n\u003cp\u003e\u003ccode\u003eOption\u003c/code\u003e is an enum\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eThe thing about null / undefined is that you get different answers for why you\nshould use what or the other...\u003c/p\u003e\n\u003cp\u003e\u003ccode\u003enull\u003c/code\u003e: \u003ccode\u003eundefined\u003c/code\u003e on purpose\u003c/p\u003e\n\u003cp\u003e\u003ccode\u003eundefined\u003c/code\u003e: we have no reasonable guarantee it will be there...\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"fun-challenge\"\u003eFun Challenge\u003c/h2\u003e\n\u003cp\u003eis this valid TS?\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eFoo\u003c/span\u003e = {\n  bar?: \u003cspan class=\"hljs-built_in\"\u003estring\u003c/span\u003e;\n};\n\n\u003cspan class=\"hljs-keyword\"\u003econst\u003c/span\u003e \u003cspan class=\"hljs-attr\"\u003eitem\u003c/span\u003e: \u003cspan class=\"hljs-title class_\"\u003eFoo\u003c/span\u003e = {};\n\u003cspan class=\"hljs-keyword\"\u003econst\u003c/span\u003e \u003cspan class=\"hljs-attr\"\u003eitem2\u003c/span\u003e: \u003cspan class=\"hljs-title class_\"\u003eFoo\u003c/span\u003e = { \u003cspan class=\"hljs-attr\"\u003ebar\u003c/span\u003e: \u003cspan class=\"hljs-string\"\u003e\u0026quot;\u0026quot;\u003c/span\u003e };\n\u003cspan class=\"hljs-keyword\"\u003econst\u003c/span\u003e \u003cspan class=\"hljs-attr\"\u003eitem3\u003c/span\u003e: \u003cspan class=\"hljs-title class_\"\u003eFoo\u003c/span\u003e = { \u003cspan class=\"hljs-attr\"\u003ebar\u003c/span\u003e: \u003cspan class=\"hljs-literal\"\u003eundefined\u003c/span\u003e }; \u003cspan class=\"hljs-comment\"\u003e// \u0026lt;-- is this valid?\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"depends-on-your-tsconfig\"\u003eDepends on your TSConfig\u003c/h2\u003e\n\u003cp\u003e\u003ccode\u003eexactOptionalPropertyTypes\u003c/code\u003e requires that bar either be \u003cem\u003enot specified\u003c/em\u003e or a\nstring.\u003c/p\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eWhy is \u003ccode\u003eitem3\u003c/code\u003e not technically valid\u003c/p\u003e\n\u003cbr /\u003e\n\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eFoo\u003c/span\u003e = {\n  bar?: \u003cspan class=\"hljs-built_in\"\u003estring\u003c/span\u003e;\n};\n\n\u003cspan class=\"hljs-keyword\"\u003econst\u003c/span\u003e \u003cspan class=\"hljs-attr\"\u003eitem3\u003c/span\u003e: \u003cspan class=\"hljs-title class_\"\u003eFoo\u003c/span\u003e = { \u003cspan class=\"hljs-attr\"\u003ebar\u003c/span\u003e: \u003cspan class=\"hljs-literal\"\u003eundefined\u003c/span\u003e };\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"rust-handles-it-different-and-better\"\u003eRust handles it different and better\u003c/h2\u003e\n\u003cp\u003eAt first, this may seem annoying, but once you get use to them, it grows on you\na ton\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003ethe ENUM definition of Option\u003c/li\u003e\n\u003c/ol\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003eenum\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eOption\u003c/span\u003e\u0026lt;T\u0026gt; { \u003cspan class=\"hljs-comment\"\u003e// yes, generics can be used in enums, again, cool\u003c/span\u003e\n    \u003cspan class=\"hljs-literal\"\u003eNone\u003c/span\u003e\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eSome\u003c/span\u003e(T),\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThat means we can create Options with any inner value.\u003c/p\u003e\n\u003col start=\"2\"\u003e\n\u003cli\u003eRust also recognizes that they will be used so much that they made them\nfirst class citizens.\u003c/li\u003e\n\u003c/ol\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-comment\"\u003e// notice i don\u0026#x27;t have to do Option::Some(...)\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-title function_ invoke__\"\u003eSome\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e);\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-title function_ invoke__\"\u003eSome\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;different type\u0026quot;\u003c/span\u003e);\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-title function_ invoke__\"\u003eSome\u003c/span\u003e(Custom { age: \u003cspan class=\"hljs-number\"\u003e69\u003c/span\u003e, name: \u003cspan class=\"hljs-string\"\u003e\u0026quot;ThePrimeagen\u0026quot;\u003c/span\u003e });\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"but-why\"\u003eBut why?\u003c/h2\u003e\n\u003cp\u003eWhy do we need \u003ccode\u003eOption\u003c/code\u003es in rust? The answer is memory. If you might or might\nnot return an item from a function, rust needs to be able to allocate that\nmemory on the stack. (we will talk about this more shortly)\u003c/p\u003e\n\u003cp\u003eThis happens in JS too, it is just behind the scenes in the engine\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"working-with-option\"\u003eWorking with Option\u003c/h2\u003e\n\u003cp\u003eThey are enums, so \u003ccode\u003ematch\u003c/code\u003e/\u003ccode\u003eif let\u003c/code\u003e pattern matching works, but there is more\nbecause there are plenty of convenient methods.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"lets-start-with-a-small-exercise\"\u003eLets start with a small exercise\u003c/h2\u003e\n\u003cp\u003eYou can erase all the code you have written thus far and lets start with\nTypeScript.\u003c/p\u003e\n\u003cp\u003eI want you to write a function with the following:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003esignature takes in a \u003ccode\u003enumber\u003c/code\u003e or \u003ccode\u003eundefined\u003c/code\u003e and returns a \u003ccode\u003enumber\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003eif the value is \u003ccode\u003eundefined\u003c/code\u003e, return 0\u003c/li\u003e\n\u003cli\u003eelse multiply the value by \u003ccode\u003e5\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003ethe signature cannot use \u003ccode\u003e?\u003c/code\u003e as that doesn\u0026#39;t mean you \u003cem\u003ehave to pass in\nundefined\u003c/em\u003e.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eI think you can do this pretty quick, i\u0026#39;ll give you one minute.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"complete-code\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003efunction\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emultiply\u003c/span\u003e(\u003cspan class=\"hljs-params\"\u003enum: \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e | \u003cspan class=\"hljs-literal\"\u003eundefined\u003c/span\u003e\u003c/span\u003e): \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e {\n  \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e (num ?? \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e) * \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e;\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"lets-do-the-same-thing-with-rust\"\u003eLets do the same thing with rust\u003c/h2\u003e\n\u003cp\u003eRemember, repetition and small exercises are a great way to learn, so make sure\nyou are participating!\u003c/p\u003e\n\u003cp\u003eRequirements\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003esignature takes in a \u003ccode\u003enumber\u003c/code\u003e or \u003ccode\u003eundefined\u003c/code\u003e and returns a \u003ccode\u003enumber\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003eif the value is \u003ccode\u003eundefined\u003c/code\u003e, return 0\u003c/li\u003e\n\u003cli\u003eelse multiply the value by \u003ccode\u003e5\u003c/code\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eI\u0026#39;ll give you a couple moments to try yourself\n(don\u0026#39;t just code, scroll down (note to me))\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"how-i-started\"\u003eHow I started\u003c/h2\u003e\n\u003cp\u003eWhen you first start with rust, it looks pretty ugly, so let me show you how i\nwould have completed this.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"complete-code-how-i-would-have\"\u003eComplete Code (How I would have)\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emultiply\u003c/span\u003e(num: \u003cspan class=\"hljs-type\"\u003eOption\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e\u0026gt;) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e num.\u003cspan class=\"hljs-title function_ invoke__\"\u003eis_some\u003c/span\u003e() {\n        \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e num.\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap\u003c/span\u003e() * \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e; \u003cspan class=\"hljs-comment\"\u003e// unwrap a None causes a panic\u003c/span\u003e\n    }\n    \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e;\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"how-i-would-now\"\u003eHow I would now\u003c/h2\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"much-nicer\"\u003eMuch nicer\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emultiply\u003c/span\u003e(num: \u003cspan class=\"hljs-type\"\u003eOption\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e\u0026gt;) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e num.\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap_or\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e) * \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e;\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"lets-change-up-the-rules-a-bit\"\u003eLets change up the rules a bit\u003c/h2\u003e\n\u003cp\u003eStart with TypeScript\u003cbr/\u003e\ninstead of returing 0, if \u003ccode\u003eundefined\u003c/code\u003e is provided, return \u003ccode\u003eundefined\u003c/code\u003e else\nmultiply by 5\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"complete-code-1\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003efunction\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emultiply\u003c/span\u003e(\u003cspan class=\"hljs-params\"\u003enum: \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e | \u003cspan class=\"hljs-literal\"\u003eundefined\u003c/span\u003e\u003c/span\u003e): \u003cspan class=\"hljs-literal\"\u003eundefined\u003c/span\u003e | \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e {\n  \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e num === \u003cspan class=\"hljs-literal\"\u003eundefined\u003c/span\u003e ? \u003cspan class=\"hljs-literal\"\u003eundefined\u003c/span\u003e : num * \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e;\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"can-rust-help-us\"\u003eCan Rust help us?\u003c/h2\u003e\n\u003cp\u003eyes it can! We ackshually have 2 different ways we can accomplish this\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"method-1-map\"\u003eMethod 1: map\u003c/h2\u003e\n\u003cp\u003e\u003ccode\u003eOption#map\u003c/code\u003e keeps the box value (\u003ccode\u003eOption\u003c/code\u003e) while giving you a chance to deal\nwith the inner value, which for us is a number.\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-title function_ invoke__\"\u003eSome\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e);\n\u003cspan class=\"hljs-comment\"\u003e//-----------------v is a {integer}!\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = foo.\u003cspan class=\"hljs-title function_ invoke__\"\u003emap\u003c/span\u003e(|x| {...})\n\u003cspan class=\"hljs-comment\"\u003e//---^ is now Option\u0026lt;Return type of map\u0026gt;\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eGo a head, give it a shot, and upgrade our previous example. The new signature\nshould look like \u003ccode\u003efn multiply(num: Option\u0026lt;usize\u0026gt;) -\u0026gt; Option\u0026lt;usize\u0026gt; {...\u003c/code\u003e\u003c/p\u003e\n\u003cbr/\u003e\n\n\u003cp\u003ei\u0026#39;ll give you a moment to try it out\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"complete-code-2\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emultiply\u003c/span\u003e(num: \u003cspan class=\"hljs-type\"\u003eOption\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e\u0026gt;) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eOption\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e\u0026gt; {\n    \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e num.\u003cspan class=\"hljs-title function_ invoke__\"\u003emap\u003c/span\u003e(|x| x * \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e); \u003cspan class=\"hljs-comment\"\u003e// remains as an option\u003c/span\u003e\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"version-2--operator\"\u003eVersion 2, ? operator\u003c/h2\u003e\n\u003cp\u003eWhen you have a function that returns an \u003ccode\u003eOption\u003c/code\u003e you can automagically unwrap\nthe value.\u003c/p\u003e\n\u003cbr/\u003e\n\n\u003cp\u003eThat might sound confusing, let me show you what its doing\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003etest\u003c/span\u003e() \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eOption\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e\u0026gt; {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-title function_ invoke__\"\u003eSome\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e);\n\n    \u003cspan class=\"hljs-comment\"\u003e// --------v Option\u0026lt;usize\u0026gt;\u003c/span\u003e\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = foo?;\n    \u003cspan class=\"hljs-comment\"\u003e//---^ usize\u003c/span\u003e\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis expands out to\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003etest\u003c/span\u003e() \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eOption\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e\u0026gt; {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-title function_ invoke__\"\u003eSome\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e);\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e foo {\n        \u003cspan class=\"hljs-title function_ invoke__\"\u003eSome\u003c/span\u003e(x) =\u0026gt; x,\n        \u003cspan class=\"hljs-literal\"\u003eNone\u003c/span\u003e =\u0026gt; \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-literal\"\u003eNone\u003c/span\u003e\n    };\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eSee if you can change your \u003ccode\u003e.map\u003c/code\u003e example to use \u003ccode\u003e?\u003c/code\u003e\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"complete-code-3\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emultiply\u003c/span\u003e(num: \u003cspan class=\"hljs-type\"\u003eOption\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e\u0026gt;) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eOption\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e\u0026gt; {\n    \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-title function_ invoke__\"\u003eSome\u003c/span\u003e(num? * \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e);\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"lets-do-a-little-exercise\"\u003eLets do a little exercise\u003c/h2\u003e\n\u003cp\u003elets do a moment of practice!\u003c/p\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"small-program\"\u003eSmall program\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cp\u003ewrite a function, call it \u003ccode\u003epractice\u003c/code\u003e, that takes in \u003ccode\u003enums\u003c/code\u003e of \u003ccode\u003eVec\u0026lt;usize\u0026gt;\u003c/code\u003e\nand an \u003ccode\u003eindex: usize\u003c/code\u003e\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\u003cp\u003eReturn one of the following\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eif value exists at \u003ccode\u003eindex\u003c/code\u003e in \u003ccode\u003enums\u003c/code\u003e, return it multiplied by 5\u003c/li\u003e\n\u003cli\u003eif there is no value, return \u003ccode\u003eindex\u003c/code\u003e multiplied by 5\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eFirst typescript (i\u0026#39;ll give you a moment)!\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"complete-code-4\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003efunction\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003epractice\u003c/span\u003e(\u003cspan class=\"hljs-params\"\u003elist: \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e[], idx: \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e\u003c/span\u003e): \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e {\n  \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e (list.\u003cspan class=\"hljs-property\"\u003elength\u003c/span\u003e \u0026gt; idx ? list[idx] : idx) * \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e;\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efunction\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003epractice2\u003c/span\u003e(\u003cspan class=\"hljs-params\"\u003elist: \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e[], idx: \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e\u003c/span\u003e): \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e {\n  \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e (idx \u0026gt;= list.\u003cspan class=\"hljs-property\"\u003elength\u003c/span\u003e) {\n    \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e idx * \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e;\n  }\n  \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e list[idx] * \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e;\n}\n\n\u003cspan class=\"hljs-keyword\"\u003econst\u003c/span\u003e list = [\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e];\n\n\u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(\u003cspan class=\"hljs-title function_\"\u003epractice\u003c/span\u003e(list, \u003cspan class=\"hljs-number\"\u003e4\u003c/span\u003e));\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"now-to-the-rust-version\"\u003eNow to the rust version!\u003c/h2\u003e\n\u003cp\u003eI\u0026#39;ll give you a moment.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"complete-version\"\u003eComplete Version\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003epractice\u003c/span\u003e(items: \u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e\u0026gt;, idx: \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e items.\u003cspan class=\"hljs-title function_ invoke__\"\u003eget\u003c/span\u003e(idx).\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap_or\u003c/span\u003e(\u0026amp;idx) * \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e;\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003evec\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e4\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e];\n\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;value: {}\u0026quot;\u003c/span\u003e, \u003cspan class=\"hljs-title function_ invoke__\"\u003epractice\u003c/span\u003e(vec, \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e));\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"would-you-look-at-it\"\u003eWould you look at it?\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e (list.\u003cspan class=\"hljs-property\"\u003elength\u003c/span\u003e \u0026gt; idx ? list[idx] : idx) * \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e;\n\u003c/code\u003e\u003c/pre\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e list.\u003cspan class=\"hljs-title function_ invoke__\"\u003eget\u003c/span\u003e(idx).\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap_or\u003c/span\u003e(\u0026amp;idx) * \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e;\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eRust as a language is hard. But there are TONS of utilities that make it\nreally easy to work with. This is just one example. The Option\u003cT\u003e interface\u003c/p\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eRusts take on the \u0026quot;Billion\u0026quot; dollar mistake i think is the right move.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"a-quick-thing-about-vectors\"\u003eA quick thing about Vectors\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cp\u003eWhat\u0026#39;s the difference between \u003ccode\u003e[]\u003c/code\u003e and \u003ccode\u003e.get(x)\u003c/code\u003e?\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003e[]\u003c/code\u003e directly accesses the element, if its not there, its like accessing\nundefined.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003e.get(x)\u003c/code\u003e safely handles out of bounds values\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\u003cp\u003ewhy \u003ccode\u003eunwrap_or(\u0026amp;idx)\u003c/code\u003e?\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003e.get(x)\u003c/code\u003e returns Option\u0026lt;\u0026amp;T\u0026gt;\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003eunwrap_or\u003c/code\u003e must maintain the \u003cem\u003esame\u003c/em\u003e type\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"somequestions\"\u003eSome(Questions)?\u003c/h2\u003e\n\u003cp\u003e... maybe that joke is a bit nerdy\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n","slug":"options","title":"options","section":"Coding Rust","icon":"info-circle","filePath":"/home/runner/work/rust-for-typescript-devs/rust-for-typescript-devs/lessons/02-coding-rust/C-options.md","nextSlug":"/rust-for-typescript-devs/lessons/coding-rust/results","prevSlug":"/rust-for-typescript-devs/lessons/coding-rust/is-for-enums"}},"__N_SSG":true},"page":"/lessons/[section]/[slug]","query":{"section":"coding-rust","slug":"options"},"buildId":"80Kch6YahQPprgQ870uS5","assetPrefix":"/rust-for-typescript-devs","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>

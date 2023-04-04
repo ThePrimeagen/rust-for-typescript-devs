@@ -1,0 +1,659 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><link rel="apple-touch-icon" sizes="180x180" href="/rust-for-typescript-devs/images/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/rust-for-typescript-devs/images/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/x-icon" href="/rust-for-typescript-devs/images/favicon.ico"/><title>Rust&#x27;s Borrow Checker – Rust For Typescript Devs</title><meta name="description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:title" content="Rust&#x27;s Borrow Checker – Rust For Typescript Devs"/><meta name="og:image" content="/rust-for-typescript-devs/images/social-share-cover.jpg"/><meta name="twitter:card" content="summary_large_image"/><meta name="next-head-count" content="13"/><link rel="preload" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" as="style"/><link rel="stylesheet" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/rust-for-typescript-devs/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/rust-for-typescript-devs/_next/static/chunks/webpack-96df002cefccd98a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/framework-4556c45dd113b893.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/main-6607c1a1abd42fdc.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/_app-450f2eef7687996a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/lessons/%5Bsection%5D/%5Bslug%5D-1a57ac5cb3cfea2d.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_buildManifest.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_ssgManifest.js" defer=""></script></head><body><div id="__next"><div class="remix-app"><header class="navbar"><h1 class="navbar-brand"><a href="/rust-for-typescript-devs">Rust For Typescript Devs</a></h1><div class="navbar-info"><a href="https://frontendmasters.com/courses/rust-ts-devs/" class="cta-btn">Watch on Frontend Masters</a></div></header><div class="content-container"><div class="main"><div class="lesson-container"><div class="lesson"><div class="lesson-content"><h2 id="its-time-to-introduce-the-borrow-checker">Its time to introduce The Borrow Checker</h2>
+<p>The meme&#39;s are real, but the borrow checker isn&#39;t that hard if you have the
+right foundation.</p>
+<br />
+
+<ul>
+<li>we have already talked about every thing is on the <code>stack</code> with <code>ptr</code> to the
+<code>heap</code> if needed</li>
+</ul>
+<br />
+
+<p>(quick example)</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="types-of-values">Types of values</h2>
+<p>(code time)</p>
+<p>value</p>
+<p>reference</p>
+<p>mutable reference</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="terminology">Terminology</h2>
+<p>Dropped - releasing memory</p>
+<br />
+<br />
+
+<h3 id="there-are-three-rules-you-must-have-in-your-head-at-all-times">There are THREE rules you must have in your head at all times.</h3>
+<ol>
+<li>There can only be <strong>one</strong> value owner</li>
+<li>There can be <strong>unlimited</strong> immutable borrows (reference) with <strong>no</strong> mutable references</li>
+<li>There can be only <strong>one</strong> mutable reference and <strong>no</strong> immutable references</li>
+</ol>
+<br />
+<br />
+
+<h3 id="there-is-one-rule-for-lifetimes">There is one rule for Lifetimes</h3>
+<ol>
+<li>A reference cannot outlive its value</li>
+</ol>
+<br />
+<br />
+
+<h4 id="stated-differently">Stated differently</h4>
+<p>One var owns the the data</p>
+<p>One var can change the data</p>
+<p>Many vars can look at the data</p>
+<p>You cannot look and change the data simultaneously</p>
+<p>You cannot refer to something that has been dropped (released in memory)</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="test">Test</h2>
+<ol>
+<li>create a new struct <code>Item</code>, derives <code>Debug</code>, with one property, <code>count</code>, that is an <code>usize</code>.</li>
+<li>create a new <code>fn</code>, <code>add_one</code> that takes in an <code>Item</code> and adds 1 to it.</li>
+<li>In the main function, create <code>item</code> of type <code>Item</code></li>
+<li>Print out <code>item</code> (with Debug print)</li>
+<li>pass <code>item</code> to <code>add_one</code>.</li>
+<li>Print out <code>item</code> again.</li>
+</ol>
+<h4 id="derives-debug">Derives Debug</h4>
+<p>allows for printing of the struct.</p>
+<pre><code class="hljs language-rust"><span class="hljs-meta">#[derive(Debug)]</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Item</span> {...}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">item</span> = Item { .. };
+    <span class="hljs-comment">// --------v debug print</span>
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, item);
+    <span class="hljs-comment">// Item {</span>
+    <span class="hljs-comment">//    count: 69</span>
+    <span class="hljs-comment">// }</span>
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="first-what-is-causing-the-error">First, what is causing the error?</h2>
+<p>What is causing the error?</p>
+<pre><code class="hljs language-rust"><span class="hljs-meta">#[derive(Debug)]</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Item</span> {
+    count: <span class="hljs-type">isize</span>,
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">add_one</span>(<span class="hljs-keyword">mut</span> item: Item) {
+    item.count += <span class="hljs-number">1</span>;
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">item</span> = Item { count: <span class="hljs-number">0</span> };
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;item {:?}&quot;</span>, item);
+    <span class="hljs-title function_ invoke__">add_one</span>(item);
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;item {:?}&quot;</span>, item); <span class="hljs-comment">// &lt;--- why does this error</span>
+}
+</code></pre>
+<p>Let me ask you this question, who owns <code>Item</code> on this line?</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">item</span> = Item { count: <span class="hljs-number">0</span> };
+</code></pre>
+<p>What about this line?</p>
+<pre><code class="hljs language-rust"><span class="hljs-title function_ invoke__">add_one</span>(item);
+</code></pre>
+<p>Did you read the errors from your LSP?</p>
+<p><strong>Lets do a quick whiteboard memory layout</strong></p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="what-rule-are-we-breaking">What rule are we breaking?</h2>
+<ol>
+<li>There can only be <strong>one</strong> value owner</li>
+<li>There can be <strong>unlimited</strong> immutable borrows (reference) with <strong>no</strong> mutable references</li>
+<li>There can be only <strong>one</strong> mutable reference and <strong>no</strong> immutable references</li>
+</ol>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="how-do-we-fix-this">How do we fix this?</h2>
+<p>(write code now)</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="complete-code">Complete code</h2>
+<pre><code class="hljs language-rust">
+<span class="hljs-meta">#[derive(Debug)]</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Item</span> {
+    count: <span class="hljs-type">isize</span>,
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">add_one</span>(item: &amp;<span class="hljs-keyword">mut</span> Item) {
+    item.count += <span class="hljs-number">1</span>;
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">item</span> = Item { count: <span class="hljs-number">0</span> };
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;item {:?}&quot;</span>, item);
+    <span class="hljs-title function_ invoke__">add_one</span>(&amp;<span class="hljs-keyword">mut</span> item);
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;item {:?}&quot;</span>, item);
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="lets-make-the-borrow-checker-angry-again">Lets make the borrow checker angry again!</h2>
+<p>To do this,</p>
+<ul>
+<li>create a function called <code>print_all</code> that takes in an immutable borrow
+(reference) to <code>items</code> and prints each item, one at a time</li>
+</ul>
+<p>In the main function</p>
+<ul>
+<li>create a vector of <code>Item</code>s called <code>items</code></li>
+<li>grab a <strong>mutable</strong> reference to item 0 (<code>get_mut</code>)</li>
+<li>print item 0</li>
+<li>call <code>print_all</code></li>
+<li>print item 0
+(you have to code this all)</li>
+</ul>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="so-how-did-we-break-it">So how did we break it?</h2>
+<p>Try to explain why this happened, then what rule did we break?</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="complete-code-1">Complete Code</h2>
+<pre><code class="hljs language-rust"><span class="hljs-meta">#[derive(Debug)]</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Item</span> {
+    count: <span class="hljs-type">isize</span>,
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">add_one</span>(item: &amp;<span class="hljs-keyword">mut</span> Item) {
+    item.count += <span class="hljs-number">1</span>;
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">print_all</span>(items: &amp;<span class="hljs-type">Vec</span>&lt;Item&gt;) {
+    <span class="hljs-keyword">for</span> <span class="hljs-variable">item</span> <span class="hljs-keyword">in</span> items {
+        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;print {:?}&quot;</span>, item);
+    }
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">items</span> = <span class="hljs-built_in">vec!</span>[
+        Item { count: <span class="hljs-number">0</span> },
+        Item { count: <span class="hljs-number">0</span> },
+        Item { count: <span class="hljs-number">0</span> },
+    ];
+
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">item</span> = items.<span class="hljs-title function_ invoke__">get_mut</span>(<span class="hljs-number">0</span>).<span class="hljs-title function_ invoke__">unwrap</span>();
+    <span class="hljs-title function_ invoke__">add_one</span>(item);
+    <span class="hljs-title function_ invoke__">print_all</span>(&amp;items);
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;help {:?}&quot;</span>, item);
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="one-more-time">One more time</h2>
+<ul>
+<li>get a mutable reference named <code>one</code>, <code>get_mut(0)</code></li>
+<li>get a mutable reference named <code>two</code>, <code>get_mut(1)</code></li>
+<li><code>println!(&quot;{:?}&quot;, one)</code></li>
+</ul>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="what-rule-are-we-breaking-1">What rule are we breaking?</h2>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="complete-code-2">Complete Code</h2>
+<pre><code class="hljs language-rust">
+<span class="hljs-meta">#[derive(Debug)]</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Item</span> {
+    count: <span class="hljs-type">isize</span>,
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">items</span> = <span class="hljs-built_in">vec!</span>[
+        Item { count: <span class="hljs-number">0</span> },
+        Item { count: <span class="hljs-number">0</span> },
+        Item { count: <span class="hljs-number">0</span> },
+    ];
+
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">item</span> = items.<span class="hljs-title function_ invoke__">get_mut</span>(<span class="hljs-number">0</span>).<span class="hljs-title function_ invoke__">unwrap</span>();
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">item2</span> = items.<span class="hljs-title function_ invoke__">get_mut</span>(<span class="hljs-number">1</span>).<span class="hljs-title function_ invoke__">unwrap</span>();
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;help {:?}&quot;</span>, item);
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="does-this-error">does this error?</h2>
+<pre><code class="hljs language-rust"><span class="hljs-meta">#[derive(Debug)]</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Item</span> {
+    count: <span class="hljs-type">isize</span>,
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">items</span> = <span class="hljs-built_in">vec!</span>[
+        Item { count: <span class="hljs-number">0</span> },
+        Item { count: <span class="hljs-number">0</span> },
+        Item { count: <span class="hljs-number">0</span> },
+    ];
+
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">item</span> = items.<span class="hljs-title function_ invoke__">get_mut</span>(<span class="hljs-number">0</span>).<span class="hljs-title function_ invoke__">unwrap</span>();
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">item2</span> = items.<span class="hljs-title function_ invoke__">get_mut</span>(<span class="hljs-number">1</span>).<span class="hljs-title function_ invoke__">unwrap</span>();
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;help {:?}&quot;</span>, item2);
+}
+</code></pre>
+<p>Why or why not?</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="now-with-all-of-your-knowledge-why-does-this-error">Now, with all of your knowledge why does this error?</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">items</span> = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+        .<span class="hljs-title function_ invoke__">iter</span>()
+        .<span class="hljs-title function_ invoke__">map</span>(|x| x + <span class="hljs-number">1</span>);
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, items);
+}
+</code></pre>
+<p>lets talk about why this happens!</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="quick-recap-the-big-three-rules">Quick Recap: The big three rules</h2>
+<h4 id="there-can-only-be-one-value-owner">There can only be one value owner</h4>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">item</span> = Item { age: <span class="hljs-number">10</span> };
+<span class="hljs-keyword">let</span> <span class="hljs-variable">other</span> = item; <span class="hljs-comment">// value moved here</span>
+
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, item.age); <span class="hljs-comment">// borrow of moved value (item moved to other)</span>
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+
+<h4 id="there-can-be-0-mutable-borrows-when-there-are-1-or-more-immutable-borrows">There can be 0 mutable borrows when there are 1 or more immutable borrows</h4>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">items</span> = <span class="hljs-built_in">vec!</span>[Item { age: <span class="hljs-number">1</span> }, Item { age: <span class="hljs-number">2</span> }];
+
+<span class="hljs-keyword">let</span> <span class="hljs-variable">items2</span>: &amp;<span class="hljs-type">Vec</span>&lt;Item&gt; = &amp;items; <span class="hljs-comment">// immutable borrow occurs here</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">items3</span>: &amp;<span class="hljs-keyword">mut</span> <span class="hljs-type">Vec</span>&lt;Item&gt; = &amp;<span class="hljs-keyword">mut</span> items; <span class="hljs-comment">// cannot borrow mutably with</span>
+                                         <span class="hljs-comment">// immutable references out</span>
+
+items2.<span class="hljs-title function_ invoke__">get</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">// item3 is mutably borrowed</span>
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+
+<h4 id="there-can-only-be-1-mutable-borrow">There can only be 1 mutable borrow</h4>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">items</span> = <span class="hljs-built_in">vec!</span>[Item { age: <span class="hljs-number">1</span> }, Item { age: <span class="hljs-number">2</span> }];
+
+<span class="hljs-keyword">let</span> <span class="hljs-variable">items2</span>: &amp;<span class="hljs-keyword">mut</span> <span class="hljs-type">Vec</span>&lt;Item&gt; = &amp;<span class="hljs-keyword">mut</span> items; <span class="hljs-comment">// First mutable borrow</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">items3</span>: &amp;<span class="hljs-keyword">mut</span> <span class="hljs-type">Vec</span>&lt;Item&gt; = &amp;<span class="hljs-keyword">mut</span> items; <span class="hljs-comment">// Error occurs here</span>
+
+items2.<span class="hljs-title function_ invoke__">push</span>(Item { age: <span class="hljs-number">3</span> }); <span class="hljs-comment">// nope!</span>
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="applications-of-the-rules">Applications of the rules</h2>
+<h4 id="there-is-a-flow-to-references">There is a &quot;flow&quot; to references</h4>
+<p>Since <code>items2</code> was not used when <code>items3</code> mutable borrow out, this is ok</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">items</span> = <span class="hljs-built_in">vec!</span>[Item { age: <span class="hljs-number">1</span> }, Item { age: <span class="hljs-number">2</span> }];
+
+<span class="hljs-keyword">let</span> <span class="hljs-variable">items2</span>: &amp;<span class="hljs-keyword">mut</span> <span class="hljs-type">Vec</span>&lt;Item&gt; = &amp;<span class="hljs-keyword">mut</span> items; <span class="hljs-comment">// First mutable borrow</span>
+items2.<span class="hljs-title function_ invoke__">push</span>(Item { age: <span class="hljs-number">3</span> }); <span class="hljs-comment">// ok!</span>
+
+<span class="hljs-keyword">let</span> <span class="hljs-variable">items3</span>: &amp;<span class="hljs-keyword">mut</span> <span class="hljs-type">Vec</span>&lt;Item&gt; = &amp;<span class="hljs-keyword">mut</span> items; <span class="hljs-comment">// Second mutable borrow</span>
+items3.<span class="hljs-title function_ invoke__">push</span>(Item { age: <span class="hljs-number">3</span> }); <span class="hljs-comment">// still ok!</span>
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="references-cannot-outlive-their-associated-values">References cannot outlive their associated values</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">y</span>: &amp;<span class="hljs-type">usize</span>;
+{
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">x</span>: <span class="hljs-type">usize</span> = <span class="hljs-number">5</span>;
+    y = &amp;x;
+}
+
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;ooh no! {}&quot;</span>, y);
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="test-1">Test</h2>
+<p>Remember this code from the <code>enum</code> section?</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Custom</span> {
+    name: <span class="hljs-type">String</span>,
+    age: <span class="hljs-type">usize</span>,
+}
+
+<span class="hljs-keyword">enum</span> <span class="hljs-title class_">Item</span> {
+    <span class="hljs-title function_ invoke__">Number</span>(<span class="hljs-type">usize</span>),
+    <span class="hljs-title function_ invoke__">Custom</span>(Custom),
+    <span class="hljs-title function_ invoke__">String</span>(<span class="hljs-type">String</span>),
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = Item::<span class="hljs-title function_ invoke__">Number</span>(<span class="hljs-number">5</span>);
+
+    <span class="hljs-keyword">match</span> &amp;foo {
+        Item::<span class="hljs-title function_ invoke__">Number</span>(num) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;i am a number: {}&quot;</span>, num),
+        Item::<span class="hljs-title function_ invoke__">String</span>(<span class="hljs-type">str</span>) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;i am a string: {}&quot;</span>, <span class="hljs-type">str</span>),
+        Item::<span class="hljs-title function_ invoke__">Custom</span>(custom) =&gt;
+            <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;name: {}, age: {}&quot;</span>, custom.name, custom.age),
+    }
+
+    <span class="hljs-keyword">match</span> &amp;foo {
+        Item::<span class="hljs-title function_ invoke__">Custom</span>(custom) =&gt;
+            <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;name: {}, age: {}&quot;</span>, custom.name, custom.age),
+        _ =&gt; {}
+    }
+
+    <span class="hljs-comment">// ...</span>
+}
+</code></pre>
+<p>What rule would we break if we changed the match statements from <code>&amp;foo</code> to
+<code>foo</code>?</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="questions">Questions</h2>
+<p>I am sure you have a question or two... i can borrow</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div><div class="lesson-links"><a href="/rust-for-typescript-devs/lessons/borrow-checker/a-light-intro-to-heap" class="prev">← Previous</a><a href="/rust-for-typescript-devs/lessons/traits/traits-interfaces" class="next">Next →</a></div></div><div class="details-bg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="154" height="154" viewBox="0 0 154 154"><defs><clipPath id="clip-path"><rect id="Rectangle_2238" data-name="Rectangle 2238" width="154" height="154" transform="translate(9467 350)" fill="#fff" stroke="#707070" stroke-width="1"></rect></clipPath><clipPath id="clip-corner-image-active"><rect width="154" height="154"></rect></clipPath></defs><g id="corner-image-active" clip-path="url(#clip-corner-image-active)"><g id="Corner-image-active-2" data-name="Corner-image-active" transform="translate(-9467 -350)" clip-path="url(#clip-path)"><path id="Subtraction_34" data-name="Subtraction 34" d="M-3857.365,1740.766h0l-7.07-7.07,12.89-12.89v14.142l-5.818,5.818Zm-14.142-14.142h0l-7.071-7.07,27.033-27.033v14.143l-19.96,19.96Zm-14.143-14.143h0l-7.07-7.069,41.175-41.175v14.142Zm-14.142-14.142h0l-7.07-7.069,55.317-55.317v14.142Zm-14.142-14.142h0l-7.07-7.069,69.459-69.459v14.142Zm-14.142-14.142h0l-7.07-7.069,76.739-76.739h6.862v7.28Zm-14.143-14.143h0l-7.07-7.069,62.6-62.6h14.142Zm-14.142-14.142h0l-7.07-7.069,48.454-48.454h14.142Zm-14.142-14.142h0l-7.07-7.069,34.312-34.312h14.142Zm-14.142-14.142h0l-7.07-7.069,20.17-20.17h14.142Zm-14.142-14.142h0l-7.071-7.071,6.027-6.027h14.144l-13.1,13.1Zm367.24-56.114v-.909l.455.455-.453.453Z" transform="translate(13472.546 -1236.766)" fill="var(--corner-fill)"></path></g></g></svg></div></div></div></div><footer class="footer"><ul class="socials"><li class="social"><a href="https://twitter.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="32" viewBox="0 0 40 32"><defs><clipPath id="clip-twitter-social"><rect width="40" height="32"></rect></clipPath></defs><g id="twitter-social" clip-path="url(#clip-twitter-social)"><g id="Group_269" data-name="Group 269" transform="translate(-230.23 -1140.849)"><path id="Path_419" data-name="Path 419" d="M266.12,1148.861v1.035a23.092,23.092,0,0,1-1.507,8.1,24.08,24.08,0,0,1-4.475,7.381,22.175,22.175,0,0,1-7.306,5.4,24.129,24.129,0,0,1-10,2.07,23.7,23.7,0,0,1-6.667-.945,22.83,22.83,0,0,1-5.936-2.655q.959.091,1.963.09a16.518,16.518,0,0,0,5.434-.9,17.111,17.111,0,0,0,4.749-2.52,8.275,8.275,0,0,1-4.749-1.643,7.8,7.8,0,0,1-2.877-3.983,8.268,8.268,0,0,0,1.507.135,8.58,8.58,0,0,0,2.146-.27,8.16,8.16,0,0,1-5.685-4.344,8.326,8.326,0,0,1-.89-3.578v-.135a7.775,7.775,0,0,0,3.744,1.035,8.183,8.183,0,0,1-2.671-2.9,7.817,7.817,0,0,1-.982-3.848,7.948,7.948,0,0,1,1.1-4.05,23.53,23.53,0,0,0,16.895,8.46,9.221,9.221,0,0,1-.183-1.845,7.787,7.787,0,0,1,1.1-4.05,8.216,8.216,0,0,1,2.991-2.948,7.991,7.991,0,0,1,4.087-1.1,8.184,8.184,0,0,1,5.982,2.566,16.087,16.087,0,0,0,5.205-1.98,7.784,7.784,0,0,1-1.393,2.588,8.4,8.4,0,0,1-2.215,1.913,16.856,16.856,0,0,0,4.749-1.305A17.032,17.032,0,0,1,266.12,1148.861Z" fill="var(--footer-icons)"></path></g></g></svg></a></li><li class="social"><a href="https://github.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32"><defs><clipPath id="clip-github-social"><rect width="32" height="32"></rect></clipPath></defs><g id="github-social" clip-path="url(#clip-github-social)"><g id="Group_272" data-name="Group 272" transform="translate(13522.5 -6994)"><path id="Subtraction_33" data-name="Subtraction 33" d="M-24967.5,8041a15.9,15.9,0,0,1-11.312-4.688A15.893,15.893,0,0,1-24983.5,8025a15.893,15.893,0,0,1,4.689-11.315A15.894,15.894,0,0,1-24967.5,8009a15.894,15.894,0,0,1,11.313,4.686A15.893,15.893,0,0,1-24951.5,8025a15.893,15.893,0,0,1-4.689,11.313A15.9,15.9,0,0,1-24967.5,8041Zm-3.781-4.571h0v3.918h7.895v-6.665a1.836,1.836,0,0,0-1.2-1.718c5.1-.617,7.467-2.975,7.467-7.424a7.176,7.176,0,0,0-1.637-4.728,6.74,6.74,0,0,0,.275-1.812,4.34,4.34,0,0,0-.52-2.452.574.574,0,0,0-.359-.1c-1.061,0-3.465,1.411-3.936,1.694a16.644,16.644,0,0,0-4.2-.489,16.379,16.379,0,0,0-3.969.445c-.846-.5-2.91-1.649-3.859-1.649a.566.566,0,0,0-.354.095,4.3,4.3,0,0,0-.521,2.452,6.7,6.7,0,0,0,.244,1.718,7.346,7.346,0,0,0-1.6,4.822,7.263,7.263,0,0,0,1.533,4.985c1.193,1.359,3.115,2.165,5.871,2.464a1.826,1.826,0,0,0-1.129,1.693v.5h0l-.006,0a7.121,7.121,0,0,1-2.033.363,2.608,2.608,0,0,1-.965-.158,4.438,4.438,0,0,1-1.836-1.881,2.361,2.361,0,0,0-1.248-1.091,3.472,3.472,0,0,0-1.217-.3.584.584,0,0,0-.545.224.282.282,0,0,0,.027.367,1.875,1.875,0,0,0,.447.307,4.732,4.732,0,0,1,.561.355,10.726,10.726,0,0,1,1.682,2.755c.043.092.078.163.105.217a3.876,3.876,0,0,0,2.42,1.185,6.036,6.036,0,0,0,.607.025c.875,0,1.988-.124,2-.125Z" transform="translate(11461 -1015)" fill="var(--footer-icons)"></path><g id="Ellipse_670" data-name="Ellipse 670" transform="translate(-13522.5 6994)" fill="none" stroke="var(--footer-icons)" stroke-width="1"><circle cx="16" cy="16" r="16" stroke="none"></circle><circle cx="16" cy="16" r="15.5" fill="none"></circle></g></g></g></svg></a></li><li class="social"><a href="https://twitch.tv/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45"><path d="M2.149 0l-1.612 4.119v16.836h5.731v3.045h3.245l3.045-3.045h4.657l6.269-6.269v-14.686h-21.314zm19.164 13.612l-3.582 3.582h-5.731l-3.045 3.045v-3.045h-4.836v-15.045h17.194v11.463zm-3.582-7.343v6.262h-2.149v-6.262h2.149zm-5.731 0v6.262h-2.149v-6.262h2.149z" fill-rule="evenodd" clip-rule="evenodd"></path></svg></a></li><li class="social"><div class="terms"><p>Content Licensed Under CC-BY-NC-4.0</p><p>Code Samples and Excercises Licensed Under Apache 2.0</p><p>Site Designed by<!-- --> <a href="https://www.alexdanielson.com/">Alex Danielson</a></p></div></li></ul></footer></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"post":{"attributes":{"title":"Rust's Borrow Checker","description":"This is usually the hardest part of Rust"},"html":"\u003ch2 id=\"its-time-to-introduce-the-borrow-checker\"\u003eIts time to introduce The Borrow Checker\u003c/h2\u003e\n\u003cp\u003eThe meme\u0026#39;s are real, but the borrow checker isn\u0026#39;t that hard if you have the\nright foundation.\u003c/p\u003e\n\u003cbr /\u003e\n\n\u003cul\u003e\n\u003cli\u003ewe have already talked about every thing is on the \u003ccode\u003estack\u003c/code\u003e with \u003ccode\u003eptr\u003c/code\u003e to the\n\u003ccode\u003eheap\u003c/code\u003e if needed\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr /\u003e\n\n\u003cp\u003e(quick example)\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"types-of-values\"\u003eTypes of values\u003c/h2\u003e\n\u003cp\u003e(code time)\u003c/p\u003e\n\u003cp\u003evalue\u003c/p\u003e\n\u003cp\u003ereference\u003c/p\u003e\n\u003cp\u003emutable reference\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"terminology\"\u003eTerminology\u003c/h2\u003e\n\u003cp\u003eDropped - releasing memory\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch3 id=\"there-are-three-rules-you-must-have-in-your-head-at-all-times\"\u003eThere are THREE rules you must have in your head at all times.\u003c/h3\u003e\n\u003col\u003e\n\u003cli\u003eThere can only be \u003cstrong\u003eone\u003c/strong\u003e value owner\u003c/li\u003e\n\u003cli\u003eThere can be \u003cstrong\u003eunlimited\u003c/strong\u003e immutable borrows (reference) with \u003cstrong\u003eno\u003c/strong\u003e mutable references\u003c/li\u003e\n\u003cli\u003eThere can be only \u003cstrong\u003eone\u003c/strong\u003e mutable reference and \u003cstrong\u003eno\u003c/strong\u003e immutable references\u003c/li\u003e\n\u003c/ol\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch3 id=\"there-is-one-rule-for-lifetimes\"\u003eThere is one rule for Lifetimes\u003c/h3\u003e\n\u003col\u003e\n\u003cli\u003eA reference cannot outlive its value\u003c/li\u003e\n\u003c/ol\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"stated-differently\"\u003eStated differently\u003c/h4\u003e\n\u003cp\u003eOne var owns the the data\u003c/p\u003e\n\u003cp\u003eOne var can change the data\u003c/p\u003e\n\u003cp\u003eMany vars can look at the data\u003c/p\u003e\n\u003cp\u003eYou cannot look and change the data simultaneously\u003c/p\u003e\n\u003cp\u003eYou cannot refer to something that has been dropped (released in memory)\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"test\"\u003eTest\u003c/h2\u003e\n\u003col\u003e\n\u003cli\u003ecreate a new struct \u003ccode\u003eItem\u003c/code\u003e, derives \u003ccode\u003eDebug\u003c/code\u003e, with one property, \u003ccode\u003ecount\u003c/code\u003e, that is an \u003ccode\u003eusize\u003c/code\u003e.\u003c/li\u003e\n\u003cli\u003ecreate a new \u003ccode\u003efn\u003c/code\u003e, \u003ccode\u003eadd_one\u003c/code\u003e that takes in an \u003ccode\u003eItem\u003c/code\u003e and adds 1 to it.\u003c/li\u003e\n\u003cli\u003eIn the main function, create \u003ccode\u003eitem\u003c/code\u003e of type \u003ccode\u003eItem\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003ePrint out \u003ccode\u003eitem\u003c/code\u003e (with Debug print)\u003c/li\u003e\n\u003cli\u003epass \u003ccode\u003eitem\u003c/code\u003e to \u003ccode\u003eadd_one\u003c/code\u003e.\u003c/li\u003e\n\u003cli\u003ePrint out \u003ccode\u003eitem\u003c/code\u003e again.\u003c/li\u003e\n\u003c/ol\u003e\n\u003ch4 id=\"derives-debug\"\u003eDerives Debug\u003c/h4\u003e\n\u003cp\u003eallows for printing of the struct.\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-meta\"\u003e#[derive(Debug)]\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003estruct\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e {...}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitem\u003c/span\u003e = Item { .. };\n    \u003cspan class=\"hljs-comment\"\u003e// --------v debug print\u003c/span\u003e\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;{:?}\u0026quot;\u003c/span\u003e, item);\n    \u003cspan class=\"hljs-comment\"\u003e// Item {\u003c/span\u003e\n    \u003cspan class=\"hljs-comment\"\u003e//    count: 69\u003c/span\u003e\n    \u003cspan class=\"hljs-comment\"\u003e// }\u003c/span\u003e\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"first-what-is-causing-the-error\"\u003eFirst, what is causing the error?\u003c/h2\u003e\n\u003cp\u003eWhat is causing the error?\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-meta\"\u003e#[derive(Debug)]\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003estruct\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e {\n    count: \u003cspan class=\"hljs-type\"\u003eisize\u003c/span\u003e,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eadd_one\u003c/span\u003e(\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e item: Item) {\n    item.count += \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e;\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitem\u003c/span\u003e = Item { count: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e };\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;item {:?}\u0026quot;\u003c/span\u003e, item);\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eadd_one\u003c/span\u003e(item);\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;item {:?}\u0026quot;\u003c/span\u003e, item); \u003cspan class=\"hljs-comment\"\u003e// \u0026lt;--- why does this error\u003c/span\u003e\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eLet me ask you this question, who owns \u003ccode\u003eItem\u003c/code\u003e on this line?\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitem\u003c/span\u003e = Item { count: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e };\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eWhat about this line?\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-title function_ invoke__\"\u003eadd_one\u003c/span\u003e(item);\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eDid you read the errors from your LSP?\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eLets do a quick whiteboard memory layout\u003c/strong\u003e\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"what-rule-are-we-breaking\"\u003eWhat rule are we breaking?\u003c/h2\u003e\n\u003col\u003e\n\u003cli\u003eThere can only be \u003cstrong\u003eone\u003c/strong\u003e value owner\u003c/li\u003e\n\u003cli\u003eThere can be \u003cstrong\u003eunlimited\u003c/strong\u003e immutable borrows (reference) with \u003cstrong\u003eno\u003c/strong\u003e mutable references\u003c/li\u003e\n\u003cli\u003eThere can be only \u003cstrong\u003eone\u003c/strong\u003e mutable reference and \u003cstrong\u003eno\u003c/strong\u003e immutable references\u003c/li\u003e\n\u003c/ol\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"how-do-we-fix-this\"\u003eHow do we fix this?\u003c/h2\u003e\n\u003cp\u003e(write code now)\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"complete-code\"\u003eComplete code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\n\u003cspan class=\"hljs-meta\"\u003e#[derive(Debug)]\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003estruct\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e {\n    count: \u003cspan class=\"hljs-type\"\u003eisize\u003c/span\u003e,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eadd_one\u003c/span\u003e(item: \u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e Item) {\n    item.count += \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e;\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003eitem\u003c/span\u003e = Item { count: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e };\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;item {:?}\u0026quot;\u003c/span\u003e, item);\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eadd_one\u003c/span\u003e(\u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e item);\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;item {:?}\u0026quot;\u003c/span\u003e, item);\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"lets-make-the-borrow-checker-angry-again\"\u003eLets make the borrow checker angry again!\u003c/h2\u003e\n\u003cp\u003eTo do this,\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003ecreate a function called \u003ccode\u003eprint_all\u003c/code\u003e that takes in an immutable borrow\n(reference) to \u003ccode\u003eitems\u003c/code\u003e and prints each item, one at a time\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eIn the main function\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003ecreate a vector of \u003ccode\u003eItem\u003c/code\u003es called \u003ccode\u003eitems\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003egrab a \u003cstrong\u003emutable\u003c/strong\u003e reference to item 0 (\u003ccode\u003eget_mut\u003c/code\u003e)\u003c/li\u003e\n\u003cli\u003eprint item 0\u003c/li\u003e\n\u003cli\u003ecall \u003ccode\u003eprint_all\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003eprint item 0\n(you have to code this all)\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"so-how-did-we-break-it\"\u003eSo how did we break it?\u003c/h2\u003e\n\u003cp\u003eTry to explain why this happened, then what rule did we break?\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"complete-code-1\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-meta\"\u003e#[derive(Debug)]\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003estruct\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e {\n    count: \u003cspan class=\"hljs-type\"\u003eisize\u003c/span\u003e,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eadd_one\u003c/span\u003e(item: \u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e Item) {\n    item.count += \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e;\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eprint_all\u003c/span\u003e(items: \u0026amp;\u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;Item\u0026gt;) {\n    \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitem\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003ein\u003c/span\u003e items {\n        \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;print {:?}\u0026quot;\u003c/span\u003e, item);\n    }\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003eitems\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\n        Item { count: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e },\n        Item { count: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e },\n        Item { count: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e },\n    ];\n\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitem\u003c/span\u003e = items.\u003cspan class=\"hljs-title function_ invoke__\"\u003eget_mut\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e).\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap\u003c/span\u003e();\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eadd_one\u003c/span\u003e(item);\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eprint_all\u003c/span\u003e(\u0026amp;items);\n\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;help {:?}\u0026quot;\u003c/span\u003e, item);\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"one-more-time\"\u003eOne more time\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003eget a mutable reference named \u003ccode\u003eone\u003c/code\u003e, \u003ccode\u003eget_mut(0)\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003eget a mutable reference named \u003ccode\u003etwo\u003c/code\u003e, \u003ccode\u003eget_mut(1)\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003eprintln!(\u0026quot;{:?}\u0026quot;, one)\u003c/code\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"what-rule-are-we-breaking-1\"\u003eWhat rule are we breaking?\u003c/h2\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"complete-code-2\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\n\u003cspan class=\"hljs-meta\"\u003e#[derive(Debug)]\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003estruct\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e {\n    count: \u003cspan class=\"hljs-type\"\u003eisize\u003c/span\u003e,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003eitems\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\n        Item { count: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e },\n        Item { count: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e },\n        Item { count: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e },\n    ];\n\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitem\u003c/span\u003e = items.\u003cspan class=\"hljs-title function_ invoke__\"\u003eget_mut\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e).\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap\u003c/span\u003e();\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitem2\u003c/span\u003e = items.\u003cspan class=\"hljs-title function_ invoke__\"\u003eget_mut\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e).\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap\u003c/span\u003e();\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;help {:?}\u0026quot;\u003c/span\u003e, item);\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"does-this-error\"\u003edoes this error?\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-meta\"\u003e#[derive(Debug)]\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003estruct\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e {\n    count: \u003cspan class=\"hljs-type\"\u003eisize\u003c/span\u003e,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003eitems\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\n        Item { count: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e },\n        Item { count: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e },\n        Item { count: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e },\n    ];\n\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitem\u003c/span\u003e = items.\u003cspan class=\"hljs-title function_ invoke__\"\u003eget_mut\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e).\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap\u003c/span\u003e();\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitem2\u003c/span\u003e = items.\u003cspan class=\"hljs-title function_ invoke__\"\u003eget_mut\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e).\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap\u003c/span\u003e();\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;help {:?}\u0026quot;\u003c/span\u003e, item2);\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eWhy or why not?\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"now-with-all-of-your-knowledge-why-does-this-error\"\u003eNow, with all of your knowledge why does this error?\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitems\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e]\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003eiter\u003c/span\u003e()\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003emap\u003c/span\u003e(|x| x + \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e);\n\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;{:?}\u0026quot;\u003c/span\u003e, items);\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003elets talk about why this happens!\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"quick-recap-the-big-three-rules\"\u003eQuick Recap: The big three rules\u003c/h2\u003e\n\u003ch4 id=\"there-can-only-be-one-value-owner\"\u003eThere can only be one value owner\u003c/h4\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitem\u003c/span\u003e = Item { age: \u003cspan class=\"hljs-number\"\u003e10\u003c/span\u003e };\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eother\u003c/span\u003e = item; \u003cspan class=\"hljs-comment\"\u003e// value moved here\u003c/span\u003e\n\n\u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;{:?}\u0026quot;\u003c/span\u003e, item.age); \u003cspan class=\"hljs-comment\"\u003e// borrow of moved value (item moved to other)\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"there-can-be-0-mutable-borrows-when-there-are-1-or-more-immutable-borrows\"\u003eThere can be 0 mutable borrows when there are 1 or more immutable borrows\u003c/h4\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003eitems\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[Item { age: \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e }, Item { age: \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e }];\n\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitems2\u003c/span\u003e: \u0026amp;\u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;Item\u0026gt; = \u0026amp;items; \u003cspan class=\"hljs-comment\"\u003e// immutable borrow occurs here\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitems3\u003c/span\u003e: \u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;Item\u0026gt; = \u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e items; \u003cspan class=\"hljs-comment\"\u003e// cannot borrow mutably with\u003c/span\u003e\n                                         \u003cspan class=\"hljs-comment\"\u003e// immutable references out\u003c/span\u003e\n\nitems2.\u003cspan class=\"hljs-title function_ invoke__\"\u003eget\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e); \u003cspan class=\"hljs-comment\"\u003e// item3 is mutably borrowed\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"there-can-only-be-1-mutable-borrow\"\u003eThere can only be 1 mutable borrow\u003c/h4\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003eitems\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[Item { age: \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e }, Item { age: \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e }];\n\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitems2\u003c/span\u003e: \u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;Item\u0026gt; = \u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e items; \u003cspan class=\"hljs-comment\"\u003e// First mutable borrow\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitems3\u003c/span\u003e: \u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;Item\u0026gt; = \u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e items; \u003cspan class=\"hljs-comment\"\u003e// Error occurs here\u003c/span\u003e\n\nitems2.\u003cspan class=\"hljs-title function_ invoke__\"\u003epush\u003c/span\u003e(Item { age: \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e }); \u003cspan class=\"hljs-comment\"\u003e// nope!\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"applications-of-the-rules\"\u003eApplications of the rules\u003c/h2\u003e\n\u003ch4 id=\"there-is-a-flow-to-references\"\u003eThere is a \u0026quot;flow\u0026quot; to references\u003c/h4\u003e\n\u003cp\u003eSince \u003ccode\u003eitems2\u003c/code\u003e was not used when \u003ccode\u003eitems3\u003c/code\u003e mutable borrow out, this is ok\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003eitems\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[Item { age: \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e }, Item { age: \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e }];\n\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitems2\u003c/span\u003e: \u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;Item\u0026gt; = \u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e items; \u003cspan class=\"hljs-comment\"\u003e// First mutable borrow\u003c/span\u003e\nitems2.\u003cspan class=\"hljs-title function_ invoke__\"\u003epush\u003c/span\u003e(Item { age: \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e }); \u003cspan class=\"hljs-comment\"\u003e// ok!\u003c/span\u003e\n\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitems3\u003c/span\u003e: \u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;Item\u0026gt; = \u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e items; \u003cspan class=\"hljs-comment\"\u003e// Second mutable borrow\u003c/span\u003e\nitems3.\u003cspan class=\"hljs-title function_ invoke__\"\u003epush\u003c/span\u003e(Item { age: \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e }); \u003cspan class=\"hljs-comment\"\u003e// still ok!\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"references-cannot-outlive-their-associated-values\"\u003eReferences cannot outlive their associated values\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003ey\u003c/span\u003e: \u0026amp;\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e;\n{\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003ex\u003c/span\u003e: \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e = \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e;\n    y = \u0026amp;x;\n}\n\n\u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;ooh no! {}\u0026quot;\u003c/span\u003e, y);\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"test-1\"\u003eTest\u003c/h2\u003e\n\u003cp\u003eRemember this code from the \u003ccode\u003eenum\u003c/code\u003e section?\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003estruct\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eCustom\u003c/span\u003e {\n    name: \u003cspan class=\"hljs-type\"\u003eString\u003c/span\u003e,\n    age: \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003eenum\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e {\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eNumber\u003c/span\u003e(\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e),\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eCustom\u003c/span\u003e(Custom),\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eString\u003c/span\u003e(\u003cspan class=\"hljs-type\"\u003eString\u003c/span\u003e),\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eNumber\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e);\n\n    \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e \u0026amp;foo {\n        Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eNumber\u003c/span\u003e(num) =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;i am a number: {}\u0026quot;\u003c/span\u003e, num),\n        Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eString\u003c/span\u003e(\u003cspan class=\"hljs-type\"\u003estr\u003c/span\u003e) =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;i am a string: {}\u0026quot;\u003c/span\u003e, \u003cspan class=\"hljs-type\"\u003estr\u003c/span\u003e),\n        Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eCustom\u003c/span\u003e(custom) =\u0026gt;\n            \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;name: {}, age: {}\u0026quot;\u003c/span\u003e, custom.name, custom.age),\n    }\n\n    \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e \u0026amp;foo {\n        Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eCustom\u003c/span\u003e(custom) =\u0026gt;\n            \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;name: {}, age: {}\u0026quot;\u003c/span\u003e, custom.name, custom.age),\n        _ =\u0026gt; {}\n    }\n\n    \u003cspan class=\"hljs-comment\"\u003e// ...\u003c/span\u003e\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eWhat rule would we break if we changed the match statements from \u003ccode\u003e\u0026amp;foo\u003c/code\u003e to\n\u003ccode\u003efoo\u003c/code\u003e?\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"questions\"\u003eQuestions\u003c/h2\u003e\n\u003cp\u003eI am sure you have a question or two... i can borrow\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n","slug":"borrow-checker","title":"Rust's Borrow Checker","section":"Borrow Checker","icon":"info-circle","filePath":"/home/runner/work/rust-for-typescript-devs/rust-for-typescript-devs/lessons/03-borrow-checker/B-borrow-checker.md","nextSlug":"/rust-for-typescript-devs/lessons/traits/traits-interfaces","prevSlug":"/rust-for-typescript-devs/lessons/borrow-checker/a-light-intro-to-heap"}},"__N_SSG":true},"page":"/lessons/[section]/[slug]","query":{"section":"borrow-checker","slug":"borrow-checker"},"buildId":"80Kch6YahQPprgQ870uS5","assetPrefix":"/rust-for-typescript-devs","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><link rel="apple-touch-icon" sizes="180x180" href="/rust-for-typescript-devs/images/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/rust-for-typescript-devs/images/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/x-icon" href="/rust-for-typescript-devs/images/favicon.ico"/><title>Reading Shapes from a File – Rust For Typescript Devs</title><meta name="description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:title" content="Reading Shapes from a File – Rust For Typescript Devs"/><meta name="og:image" content="/rust-for-typescript-devs/images/social-share-cover.jpg"/><meta name="twitter:card" content="summary_large_image"/><meta name="next-head-count" content="13"/><link rel="preload" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" as="style"/><link rel="stylesheet" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/rust-for-typescript-devs/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/rust-for-typescript-devs/_next/static/chunks/webpack-96df002cefccd98a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/framework-4556c45dd113b893.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/main-6607c1a1abd42fdc.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/_app-450f2eef7687996a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/lessons/%5Bsection%5D/%5Bslug%5D-1a57ac5cb3cfea2d.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_buildManifest.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_ssgManifest.js" defer=""></script></head><body><div id="__next"><div class="remix-app"><header class="navbar"><h1 class="navbar-brand"><a href="/rust-for-typescript-devs">Rust For Typescript Devs</a></h1><div class="navbar-info"><a href="https://frontendmasters.com/courses/rust-ts-devs/" class="cta-btn">Watch on Frontend Masters</a></div></header><div class="content-container"><div class="main"><div class="lesson-container"><div class="lesson"><div class="lesson-content"><h2 id="what-if-we-wanted-to-read-our-shapes-from-a-file">What if we wanted to read our shapes from a file?</h2>
+<p><code>FromStr</code> allows for a <code>&amp;str</code> to become a <code>Type</code> through the method <code>parse</code></p>
+<p>You may remember from earlier, this code</p>
+<pre><code class="hljs language-rust"><span class="hljs-comment">// -------v</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span>: <span class="hljs-type">usize</span> = <span class="hljs-string">&quot;5&quot;</span>.<span class="hljs-title function_ invoke__">parse</span>(); <span class="hljs-comment">// &lt;-- parse infers the usize parse</span>
+                              <span class="hljs-comment">// due to type</span>
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/> 
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="before-we-implement-a-fromstr-for-both-circle-and-rect">Before we implement a FromStr for both Circle and Rect</h2>
+<p>Whenever i deal with errors in small applications, at this point I just default
+to using the <code>anyhow</code> crate. It makes working with errors very simple.</p>
+<p>execute <code>cargo add anyhow</code></p>
+<pre><code class="hljs language-bash">➜  rust-typescript git:(master) ✗ cargo add anyhow
+    Updating crates.io index
+      Adding anyhow (workspace) to dependencies.
+             Features as of v1.0.68:
+             + std
+             - backtrace
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="ok-lets-use-anyhow-and-fromstr">Ok, lets use Anyhow and FromStr</h2>
+<p>We will implement a <code>Circle</code> and <code>Rectangle</code> parse</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code">Complete Code</h2>
+<p>src/shapes/rect.rs</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">impl</span> <span class="hljs-title class_">FromStr</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">Rectangle</span> {
+    <span class="hljs-keyword">type</span> <span class="hljs-title class_">Err</span> = anyhow::Error;
+
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">from_str</span>(s: &amp;<span class="hljs-type">str</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Result</span>&lt;<span class="hljs-keyword">Self</span>, <span class="hljs-keyword">Self</span>::<span class="hljs-literal">Err</span>&gt; {
+        <span class="hljs-keyword">let</span> <span class="hljs-variable">parts</span>: <span class="hljs-type">Vec</span>&lt;&amp;<span class="hljs-type">str</span>&gt; = s.<span class="hljs-title function_ invoke__">split</span>(<span class="hljs-string">&quot; &quot;</span>).<span class="hljs-title function_ invoke__">collect</span>();
+        <span class="hljs-keyword">if</span> parts.<span class="hljs-title function_ invoke__">len</span>() != <span class="hljs-number">4</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Err</span>(anyhow::anyhow!(<span class="hljs-string">&quot;Invalid number of parts&quot;</span>));
+        }
+
+        <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Ok</span>(Rectangle {
+            x: parts[<span class="hljs-number">0</span>].<span class="hljs-title function_ invoke__">parse</span>()?,
+            y: parts[<span class="hljs-number">1</span>].<span class="hljs-title function_ invoke__">parse</span>()?,
+            width: parts[<span class="hljs-number">2</span>].<span class="hljs-title function_ invoke__">parse</span>()?,
+            height: parts[<span class="hljs-number">3</span>].<span class="hljs-title function_ invoke__">parse</span>()?,
+        });
+    }
+}
+</code></pre>
+<p>src/shapes/circle.rs</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">impl</span> <span class="hljs-title class_">FromStr</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">Circle</span> {
+    <span class="hljs-keyword">type</span> <span class="hljs-title class_">Err</span> = anyhow::Error;
+
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">from_str</span>(s: &amp;<span class="hljs-type">str</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Result</span>&lt;<span class="hljs-keyword">Self</span>, <span class="hljs-keyword">Self</span>::<span class="hljs-literal">Err</span>&gt; {
+        <span class="hljs-keyword">let</span> <span class="hljs-variable">parts</span>: <span class="hljs-type">Vec</span>&lt;&amp;<span class="hljs-type">str</span>&gt; = s.<span class="hljs-title function_ invoke__">split</span>(<span class="hljs-string">&quot; &quot;</span>).<span class="hljs-title function_ invoke__">collect</span>();
+        <span class="hljs-keyword">if</span> parts.<span class="hljs-title function_ invoke__">len</span>() != <span class="hljs-number">3</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Err</span>(anyhow::anyhow!(<span class="hljs-string">&quot;Invalid number of parts&quot;</span>));
+        }
+
+        <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Ok</span>(Circle {
+            x: parts[<span class="hljs-number">0</span>].<span class="hljs-title function_ invoke__">parse</span>()?,
+            y: parts[<span class="hljs-number">1</span>].<span class="hljs-title function_ invoke__">parse</span>()?,
+            radius: parts[<span class="hljs-number">2</span>].<span class="hljs-title function_ invoke__">parse</span>()?,
+        });
+    }
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="lets-create-a-file">Lets create a file!</h2>
+<p>We will use this file, parse out the contents, build our circle and rects, and
+test to see if any circles intesect our rect (though... its not a good
+formula).</p>
+<p><proj>/shapes</p>
+<pre><code class="hljs language-bash">rect 0 0 10 20
+circle 12 20 1
+circle 0 20 4
+rect 10 10 10 10
+</code></pre>
+<p>Requires</p>
+<ul>
+<li>reading a file (we have done)</li>
+<li>create an enum to store either a <code>Circle</code> or <code>Rect</code> in</li>
+<li>read each line and perhaps use <code>split_once</code> (recommend using pattern matching)</li>
+<li>find any <em>adjancent</em> collision</li>
+</ul>
+<p>You have done most of this so far throughout the day, lets see if you can do
+this by yourself.</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code-1">Complete Code</h2>
+<p>src/main.rs</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">mod</span> shapes;
+
+<span class="hljs-keyword">use</span> std::{<span class="hljs-type">str</span>::FromStr, fmt::Display};
+
+<span class="hljs-keyword">use</span> anyhow::<span class="hljs-type">Result</span>;
+<span class="hljs-keyword">use</span> shapes::{rect::Rectangle, circle::Circle, collisions::{Points, Contains, Collidable}};
+
+<span class="hljs-keyword">enum</span> <span class="hljs-title class_">Shape</span> {
+    <span class="hljs-title function_ invoke__">Rect</span>(Rectangle),
+    <span class="hljs-title function_ invoke__">Circ</span>(Circle),
+}
+
+<span class="hljs-keyword">impl</span> <span class="hljs-title class_">FromStr</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">Shape</span> {
+    <span class="hljs-keyword">type</span> <span class="hljs-title class_">Err</span> = anyhow::Error;
+
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">from_str</span>(s: &amp;<span class="hljs-type">str</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Result</span>&lt;<span class="hljs-keyword">Self</span>, <span class="hljs-keyword">Self</span>::<span class="hljs-literal">Err</span>&gt; {
+        <span class="hljs-keyword">let</span> (shape, data) = s.<span class="hljs-title function_ invoke__">split_once</span>(<span class="hljs-string">&quot; &quot;</span>)
+            .<span class="hljs-title function_ invoke__">ok_or</span>(anyhow::anyhow!(<span class="hljs-string">&quot;Invalid shape&quot;</span>))?;
+
+        <span class="hljs-keyword">match</span> shape {
+            <span class="hljs-string">&quot;circle&quot;</span> =&gt; <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Ok</span>(Shape::<span class="hljs-title function_ invoke__">Circ</span>(data.<span class="hljs-title function_ invoke__">parse</span>()?)),
+            <span class="hljs-string">&quot;rect&quot;</span> =&gt; <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Ok</span>(Shape::<span class="hljs-title function_ invoke__">Rect</span>(data.<span class="hljs-title function_ invoke__">parse</span>()?)),
+            _ =&gt; <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Err</span>(anyhow::anyhow!(<span class="hljs-string">&quot;Invalid shape&quot;</span>))
+        }
+    }
+}
+
+<span class="hljs-keyword">impl</span> <span class="hljs-title class_">Points</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">Shape</span> {
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">points</span>(&amp;<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> shapes::collisions::PointIter {
+        <span class="hljs-keyword">match</span> <span class="hljs-keyword">self</span> {
+            Shape::<span class="hljs-title function_ invoke__">Rect</span>(rect) =&gt; <span class="hljs-keyword">return</span> rect.<span class="hljs-title function_ invoke__">points</span>(),
+            Shape::<span class="hljs-title function_ invoke__">Circ</span>(circ) =&gt; <span class="hljs-keyword">return</span> circ.<span class="hljs-title function_ invoke__">points</span>(),
+        }
+    }
+}
+
+<span class="hljs-keyword">impl</span> <span class="hljs-title class_">Contains</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">Shape</span> {
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">contains_point</span>(&amp;<span class="hljs-keyword">self</span>, point: (<span class="hljs-type">f64</span>, <span class="hljs-type">f64</span>)) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">bool</span> {
+        <span class="hljs-keyword">match</span> <span class="hljs-keyword">self</span> {
+            Shape::<span class="hljs-title function_ invoke__">Rect</span>(rect) =&gt; <span class="hljs-keyword">return</span> rect.<span class="hljs-title function_ invoke__">contains_point</span>(point),
+            Shape::<span class="hljs-title function_ invoke__">Circ</span>(circ) =&gt; <span class="hljs-keyword">return</span> circ.<span class="hljs-title function_ invoke__">contains_point</span>(point),
+        }
+    }
+}
+
+<span class="hljs-keyword">impl</span> <span class="hljs-title class_">Display</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">Shape</span> {
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">fmt</span>(&amp;<span class="hljs-keyword">self</span>, f: &amp;<span class="hljs-keyword">mut</span> std::fmt::Formatter&lt;<span class="hljs-symbol">&#x27;_</span>&gt;) <span class="hljs-punctuation">-&gt;</span> std::fmt::<span class="hljs-type">Result</span> {
+        <span class="hljs-keyword">match</span> <span class="hljs-keyword">self</span> {
+            Shape::<span class="hljs-title function_ invoke__">Rect</span>(rect) =&gt; <span class="hljs-keyword">return</span> <span class="hljs-built_in">write!</span>(f, <span class="hljs-string">&quot;{}&quot;</span>, rect),
+            Shape::<span class="hljs-title function_ invoke__">Circ</span>(circ) =&gt; <span class="hljs-keyword">return</span> <span class="hljs-built_in">write!</span>(f, <span class="hljs-string">&quot;{}&quot;</span>, circ),
+        }
+    }
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Result</span>&lt;()&gt; {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">file</span> = std::fs::<span class="hljs-title function_ invoke__">read_to_string</span>(<span class="hljs-string">&quot;shapes&quot;</span>)?;
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">shapes</span> = file
+        .<span class="hljs-title function_ invoke__">lines</span>()
+        .<span class="hljs-title function_ invoke__">filter_map</span>(|line| line.<span class="hljs-title function_ invoke__">parse</span>().<span class="hljs-title function_ invoke__">ok</span>())
+        .collect::&lt;<span class="hljs-type">Vec</span>&lt;Shape&gt;&gt;();
+
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">collisions</span>: <span class="hljs-type">Vec</span>&lt;(&amp;Shape, &amp;Shape)&gt; = shapes
+        .<span class="hljs-title function_ invoke__">iter</span>()
+        .<span class="hljs-title function_ invoke__">skip</span>(<span class="hljs-number">1</span>)
+        .<span class="hljs-title function_ invoke__">zip</span>(shapes.<span class="hljs-title function_ invoke__">iter</span>().<span class="hljs-title function_ invoke__">take</span>(shapes.<span class="hljs-title function_ invoke__">len</span>() - <span class="hljs-number">1</span>))
+        .<span class="hljs-title function_ invoke__">filter</span>(|(a, b)| a.<span class="hljs-title function_ invoke__">collide</span>(b))
+        .<span class="hljs-title function_ invoke__">collect</span>();
+
+    <span class="hljs-title function_ invoke__">for</span> (a, b) <span class="hljs-keyword">in</span> collisions {
+        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;Collision: {} {}&quot;</span>, a, b);
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Ok</span>(());
+}
+</code></pre>
+</div><div class="lesson-links"><a href="/rust-for-typescript-devs/lessons/traits/refactor-rectangle-circle" class="prev">← Previous</a><a href="/rust-for-typescript-devs/lessons/the-end/the-end" class="next">Next →</a></div></div><div class="details-bg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="154" height="154" viewBox="0 0 154 154"><defs><clipPath id="clip-path"><rect id="Rectangle_2238" data-name="Rectangle 2238" width="154" height="154" transform="translate(9467 350)" fill="#fff" stroke="#707070" stroke-width="1"></rect></clipPath><clipPath id="clip-corner-image-active"><rect width="154" height="154"></rect></clipPath></defs><g id="corner-image-active" clip-path="url(#clip-corner-image-active)"><g id="Corner-image-active-2" data-name="Corner-image-active" transform="translate(-9467 -350)" clip-path="url(#clip-path)"><path id="Subtraction_34" data-name="Subtraction 34" d="M-3857.365,1740.766h0l-7.07-7.07,12.89-12.89v14.142l-5.818,5.818Zm-14.142-14.142h0l-7.071-7.07,27.033-27.033v14.143l-19.96,19.96Zm-14.143-14.143h0l-7.07-7.069,41.175-41.175v14.142Zm-14.142-14.142h0l-7.07-7.069,55.317-55.317v14.142Zm-14.142-14.142h0l-7.07-7.069,69.459-69.459v14.142Zm-14.142-14.142h0l-7.07-7.069,76.739-76.739h6.862v7.28Zm-14.143-14.143h0l-7.07-7.069,62.6-62.6h14.142Zm-14.142-14.142h0l-7.07-7.069,48.454-48.454h14.142Zm-14.142-14.142h0l-7.07-7.069,34.312-34.312h14.142Zm-14.142-14.142h0l-7.07-7.069,20.17-20.17h14.142Zm-14.142-14.142h0l-7.071-7.071,6.027-6.027h14.144l-13.1,13.1Zm367.24-56.114v-.909l.455.455-.453.453Z" transform="translate(13472.546 -1236.766)" fill="var(--corner-fill)"></path></g></g></svg></div></div></div></div><footer class="footer"><ul class="socials"><li class="social"><a href="https://twitter.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="32" viewBox="0 0 40 32"><defs><clipPath id="clip-twitter-social"><rect width="40" height="32"></rect></clipPath></defs><g id="twitter-social" clip-path="url(#clip-twitter-social)"><g id="Group_269" data-name="Group 269" transform="translate(-230.23 -1140.849)"><path id="Path_419" data-name="Path 419" d="M266.12,1148.861v1.035a23.092,23.092,0,0,1-1.507,8.1,24.08,24.08,0,0,1-4.475,7.381,22.175,22.175,0,0,1-7.306,5.4,24.129,24.129,0,0,1-10,2.07,23.7,23.7,0,0,1-6.667-.945,22.83,22.83,0,0,1-5.936-2.655q.959.091,1.963.09a16.518,16.518,0,0,0,5.434-.9,17.111,17.111,0,0,0,4.749-2.52,8.275,8.275,0,0,1-4.749-1.643,7.8,7.8,0,0,1-2.877-3.983,8.268,8.268,0,0,0,1.507.135,8.58,8.58,0,0,0,2.146-.27,8.16,8.16,0,0,1-5.685-4.344,8.326,8.326,0,0,1-.89-3.578v-.135a7.775,7.775,0,0,0,3.744,1.035,8.183,8.183,0,0,1-2.671-2.9,7.817,7.817,0,0,1-.982-3.848,7.948,7.948,0,0,1,1.1-4.05,23.53,23.53,0,0,0,16.895,8.46,9.221,9.221,0,0,1-.183-1.845,7.787,7.787,0,0,1,1.1-4.05,8.216,8.216,0,0,1,2.991-2.948,7.991,7.991,0,0,1,4.087-1.1,8.184,8.184,0,0,1,5.982,2.566,16.087,16.087,0,0,0,5.205-1.98,7.784,7.784,0,0,1-1.393,2.588,8.4,8.4,0,0,1-2.215,1.913,16.856,16.856,0,0,0,4.749-1.305A17.032,17.032,0,0,1,266.12,1148.861Z" fill="var(--footer-icons)"></path></g></g></svg></a></li><li class="social"><a href="https://github.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32"><defs><clipPath id="clip-github-social"><rect width="32" height="32"></rect></clipPath></defs><g id="github-social" clip-path="url(#clip-github-social)"><g id="Group_272" data-name="Group 272" transform="translate(13522.5 -6994)"><path id="Subtraction_33" data-name="Subtraction 33" d="M-24967.5,8041a15.9,15.9,0,0,1-11.312-4.688A15.893,15.893,0,0,1-24983.5,8025a15.893,15.893,0,0,1,4.689-11.315A15.894,15.894,0,0,1-24967.5,8009a15.894,15.894,0,0,1,11.313,4.686A15.893,15.893,0,0,1-24951.5,8025a15.893,15.893,0,0,1-4.689,11.313A15.9,15.9,0,0,1-24967.5,8041Zm-3.781-4.571h0v3.918h7.895v-6.665a1.836,1.836,0,0,0-1.2-1.718c5.1-.617,7.467-2.975,7.467-7.424a7.176,7.176,0,0,0-1.637-4.728,6.74,6.74,0,0,0,.275-1.812,4.34,4.34,0,0,0-.52-2.452.574.574,0,0,0-.359-.1c-1.061,0-3.465,1.411-3.936,1.694a16.644,16.644,0,0,0-4.2-.489,16.379,16.379,0,0,0-3.969.445c-.846-.5-2.91-1.649-3.859-1.649a.566.566,0,0,0-.354.095,4.3,4.3,0,0,0-.521,2.452,6.7,6.7,0,0,0,.244,1.718,7.346,7.346,0,0,0-1.6,4.822,7.263,7.263,0,0,0,1.533,4.985c1.193,1.359,3.115,2.165,5.871,2.464a1.826,1.826,0,0,0-1.129,1.693v.5h0l-.006,0a7.121,7.121,0,0,1-2.033.363,2.608,2.608,0,0,1-.965-.158,4.438,4.438,0,0,1-1.836-1.881,2.361,2.361,0,0,0-1.248-1.091,3.472,3.472,0,0,0-1.217-.3.584.584,0,0,0-.545.224.282.282,0,0,0,.027.367,1.875,1.875,0,0,0,.447.307,4.732,4.732,0,0,1,.561.355,10.726,10.726,0,0,1,1.682,2.755c.043.092.078.163.105.217a3.876,3.876,0,0,0,2.42,1.185,6.036,6.036,0,0,0,.607.025c.875,0,1.988-.124,2-.125Z" transform="translate(11461 -1015)" fill="var(--footer-icons)"></path><g id="Ellipse_670" data-name="Ellipse 670" transform="translate(-13522.5 6994)" fill="none" stroke="var(--footer-icons)" stroke-width="1"><circle cx="16" cy="16" r="16" stroke="none"></circle><circle cx="16" cy="16" r="15.5" fill="none"></circle></g></g></g></svg></a></li><li class="social"><a href="https://twitch.tv/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45"><path d="M2.149 0l-1.612 4.119v16.836h5.731v3.045h3.245l3.045-3.045h4.657l6.269-6.269v-14.686h-21.314zm19.164 13.612l-3.582 3.582h-5.731l-3.045 3.045v-3.045h-4.836v-15.045h17.194v11.463zm-3.582-7.343v6.262h-2.149v-6.262h2.149zm-5.731 0v6.262h-2.149v-6.262h2.149z" fill-rule="evenodd" clip-rule="evenodd"></path></svg></a></li><li class="social"><div class="terms"><p>Content Licensed Under CC-BY-NC-4.0</p><p>Code Samples and Excercises Licensed Under Apache 2.0</p><p>Site Designed by<!-- --> <a href="https://www.alexdanielson.com/">Alex Danielson</a></p></div></li></ul></footer></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"post":{"attributes":{"title":"Reading Shapes from a File"},"html":"\u003ch2 id=\"what-if-we-wanted-to-read-our-shapes-from-a-file\"\u003eWhat if we wanted to read our shapes from a file?\u003c/h2\u003e\n\u003cp\u003e\u003ccode\u003eFromStr\u003c/code\u003e allows for a \u003ccode\u003e\u0026amp;str\u003c/code\u003e to become a \u003ccode\u003eType\u003c/code\u003e through the method \u003ccode\u003eparse\u003c/code\u003e\u003c/p\u003e\n\u003cp\u003eYou may remember from earlier, this code\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-comment\"\u003e// -------v\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e: \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e = \u003cspan class=\"hljs-string\"\u003e\u0026quot;5\u0026quot;\u003c/span\u003e.\u003cspan class=\"hljs-title function_ invoke__\"\u003eparse\u003c/span\u003e(); \u003cspan class=\"hljs-comment\"\u003e// \u0026lt;-- parse infers the usize parse\u003c/span\u003e\n                              \u003cspan class=\"hljs-comment\"\u003e// due to type\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e \n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"before-we-implement-a-fromstr-for-both-circle-and-rect\"\u003eBefore we implement a FromStr for both Circle and Rect\u003c/h2\u003e\n\u003cp\u003eWhenever i deal with errors in small applications, at this point I just default\nto using the \u003ccode\u003eanyhow\u003c/code\u003e crate. It makes working with errors very simple.\u003c/p\u003e\n\u003cp\u003eexecute \u003ccode\u003ecargo add anyhow\u003c/code\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-bash\"\u003e➜  rust-typescript git:(master) ✗ cargo add anyhow\n    Updating crates.io index\n      Adding anyhow (workspace) to dependencies.\n             Features as of v1.0.68:\n             + std\n             - backtrace\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"ok-lets-use-anyhow-and-fromstr\"\u003eOk, lets use Anyhow and FromStr\u003c/h2\u003e\n\u003cp\u003eWe will implement a \u003ccode\u003eCircle\u003c/code\u003e and \u003ccode\u003eRectangle\u003c/code\u003e parse\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code\"\u003eComplete Code\u003c/h2\u003e\n\u003cp\u003esrc/shapes/rect.rs\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003eimpl\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eFromStr\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eRectangle\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eErr\u003c/span\u003e = anyhow::Error;\n\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003efrom_str\u003c/span\u003e(s: \u0026amp;\u003cspan class=\"hljs-type\"\u003estr\u003c/span\u003e) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eResult\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-keyword\"\u003eSelf\u003c/span\u003e, \u003cspan class=\"hljs-keyword\"\u003eSelf\u003c/span\u003e::\u003cspan class=\"hljs-literal\"\u003eErr\u003c/span\u003e\u0026gt; {\n        \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eparts\u003c/span\u003e: \u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;\u0026amp;\u003cspan class=\"hljs-type\"\u003estr\u003c/span\u003e\u0026gt; = s.\u003cspan class=\"hljs-title function_ invoke__\"\u003esplit\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot; \u0026quot;\u003c/span\u003e).\u003cspan class=\"hljs-title function_ invoke__\"\u003ecollect\u003c/span\u003e();\n        \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e parts.\u003cspan class=\"hljs-title function_ invoke__\"\u003elen\u003c/span\u003e() != \u003cspan class=\"hljs-number\"\u003e4\u003c/span\u003e {\n            \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-title function_ invoke__\"\u003eErr\u003c/span\u003e(anyhow::anyhow!(\u003cspan class=\"hljs-string\"\u003e\u0026quot;Invalid number of parts\u0026quot;\u003c/span\u003e));\n        }\n\n        \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-title function_ invoke__\"\u003eOk\u003c/span\u003e(Rectangle {\n            x: parts[\u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e].\u003cspan class=\"hljs-title function_ invoke__\"\u003eparse\u003c/span\u003e()?,\n            y: parts[\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e].\u003cspan class=\"hljs-title function_ invoke__\"\u003eparse\u003c/span\u003e()?,\n            width: parts[\u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e].\u003cspan class=\"hljs-title function_ invoke__\"\u003eparse\u003c/span\u003e()?,\n            height: parts[\u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e].\u003cspan class=\"hljs-title function_ invoke__\"\u003eparse\u003c/span\u003e()?,\n        });\n    }\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003esrc/shapes/circle.rs\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003eimpl\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eFromStr\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eCircle\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eErr\u003c/span\u003e = anyhow::Error;\n\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003efrom_str\u003c/span\u003e(s: \u0026amp;\u003cspan class=\"hljs-type\"\u003estr\u003c/span\u003e) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eResult\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-keyword\"\u003eSelf\u003c/span\u003e, \u003cspan class=\"hljs-keyword\"\u003eSelf\u003c/span\u003e::\u003cspan class=\"hljs-literal\"\u003eErr\u003c/span\u003e\u0026gt; {\n        \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eparts\u003c/span\u003e: \u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;\u0026amp;\u003cspan class=\"hljs-type\"\u003estr\u003c/span\u003e\u0026gt; = s.\u003cspan class=\"hljs-title function_ invoke__\"\u003esplit\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot; \u0026quot;\u003c/span\u003e).\u003cspan class=\"hljs-title function_ invoke__\"\u003ecollect\u003c/span\u003e();\n        \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e parts.\u003cspan class=\"hljs-title function_ invoke__\"\u003elen\u003c/span\u003e() != \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e {\n            \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-title function_ invoke__\"\u003eErr\u003c/span\u003e(anyhow::anyhow!(\u003cspan class=\"hljs-string\"\u003e\u0026quot;Invalid number of parts\u0026quot;\u003c/span\u003e));\n        }\n\n        \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-title function_ invoke__\"\u003eOk\u003c/span\u003e(Circle {\n            x: parts[\u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e].\u003cspan class=\"hljs-title function_ invoke__\"\u003eparse\u003c/span\u003e()?,\n            y: parts[\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e].\u003cspan class=\"hljs-title function_ invoke__\"\u003eparse\u003c/span\u003e()?,\n            radius: parts[\u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e].\u003cspan class=\"hljs-title function_ invoke__\"\u003eparse\u003c/span\u003e()?,\n        });\n    }\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"lets-create-a-file\"\u003eLets create a file!\u003c/h2\u003e\n\u003cp\u003eWe will use this file, parse out the contents, build our circle and rects, and\ntest to see if any circles intesect our rect (though... its not a good\nformula).\u003c/p\u003e\n\u003cp\u003e\u003cproj\u003e/shapes\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-bash\"\u003erect 0 0 10 20\ncircle 12 20 1\ncircle 0 20 4\nrect 10 10 10 10\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eRequires\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003ereading a file (we have done)\u003c/li\u003e\n\u003cli\u003ecreate an enum to store either a \u003ccode\u003eCircle\u003c/code\u003e or \u003ccode\u003eRect\u003c/code\u003e in\u003c/li\u003e\n\u003cli\u003eread each line and perhaps use \u003ccode\u003esplit_once\u003c/code\u003e (recommend using pattern matching)\u003c/li\u003e\n\u003cli\u003efind any \u003cem\u003eadjancent\u003c/em\u003e collision\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eYou have done most of this so far throughout the day, lets see if you can do\nthis by yourself.\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code-1\"\u003eComplete Code\u003c/h2\u003e\n\u003cp\u003esrc/main.rs\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003emod\u003c/span\u003e shapes;\n\n\u003cspan class=\"hljs-keyword\"\u003euse\u003c/span\u003e std::{\u003cspan class=\"hljs-type\"\u003estr\u003c/span\u003e::FromStr, fmt::Display};\n\n\u003cspan class=\"hljs-keyword\"\u003euse\u003c/span\u003e anyhow::\u003cspan class=\"hljs-type\"\u003eResult\u003c/span\u003e;\n\u003cspan class=\"hljs-keyword\"\u003euse\u003c/span\u003e shapes::{rect::Rectangle, circle::Circle, collisions::{Points, Contains, Collidable}};\n\n\u003cspan class=\"hljs-keyword\"\u003eenum\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eShape\u003c/span\u003e {\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eRect\u003c/span\u003e(Rectangle),\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eCirc\u003c/span\u003e(Circle),\n}\n\n\u003cspan class=\"hljs-keyword\"\u003eimpl\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eFromStr\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eShape\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eErr\u003c/span\u003e = anyhow::Error;\n\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003efrom_str\u003c/span\u003e(s: \u0026amp;\u003cspan class=\"hljs-type\"\u003estr\u003c/span\u003e) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eResult\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-keyword\"\u003eSelf\u003c/span\u003e, \u003cspan class=\"hljs-keyword\"\u003eSelf\u003c/span\u003e::\u003cspan class=\"hljs-literal\"\u003eErr\u003c/span\u003e\u0026gt; {\n        \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e (shape, data) = s.\u003cspan class=\"hljs-title function_ invoke__\"\u003esplit_once\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot; \u0026quot;\u003c/span\u003e)\n            .\u003cspan class=\"hljs-title function_ invoke__\"\u003eok_or\u003c/span\u003e(anyhow::anyhow!(\u003cspan class=\"hljs-string\"\u003e\u0026quot;Invalid shape\u0026quot;\u003c/span\u003e))?;\n\n        \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e shape {\n            \u003cspan class=\"hljs-string\"\u003e\u0026quot;circle\u0026quot;\u003c/span\u003e =\u0026gt; \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-title function_ invoke__\"\u003eOk\u003c/span\u003e(Shape::\u003cspan class=\"hljs-title function_ invoke__\"\u003eCirc\u003c/span\u003e(data.\u003cspan class=\"hljs-title function_ invoke__\"\u003eparse\u003c/span\u003e()?)),\n            \u003cspan class=\"hljs-string\"\u003e\u0026quot;rect\u0026quot;\u003c/span\u003e =\u0026gt; \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-title function_ invoke__\"\u003eOk\u003c/span\u003e(Shape::\u003cspan class=\"hljs-title function_ invoke__\"\u003eRect\u003c/span\u003e(data.\u003cspan class=\"hljs-title function_ invoke__\"\u003eparse\u003c/span\u003e()?)),\n            _ =\u0026gt; \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-title function_ invoke__\"\u003eErr\u003c/span\u003e(anyhow::anyhow!(\u003cspan class=\"hljs-string\"\u003e\u0026quot;Invalid shape\u0026quot;\u003c/span\u003e))\n        }\n    }\n}\n\n\u003cspan class=\"hljs-keyword\"\u003eimpl\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003ePoints\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eShape\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003epoints\u003c/span\u003e(\u0026amp;\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e shapes::collisions::PointIter {\n        \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e {\n            Shape::\u003cspan class=\"hljs-title function_ invoke__\"\u003eRect\u003c/span\u003e(rect) =\u0026gt; \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e rect.\u003cspan class=\"hljs-title function_ invoke__\"\u003epoints\u003c/span\u003e(),\n            Shape::\u003cspan class=\"hljs-title function_ invoke__\"\u003eCirc\u003c/span\u003e(circ) =\u0026gt; \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e circ.\u003cspan class=\"hljs-title function_ invoke__\"\u003epoints\u003c/span\u003e(),\n        }\n    }\n}\n\n\u003cspan class=\"hljs-keyword\"\u003eimpl\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eContains\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eShape\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003econtains_point\u003c/span\u003e(\u0026amp;\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e, point: (\u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e, \u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e)) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003ebool\u003c/span\u003e {\n        \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e {\n            Shape::\u003cspan class=\"hljs-title function_ invoke__\"\u003eRect\u003c/span\u003e(rect) =\u0026gt; \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e rect.\u003cspan class=\"hljs-title function_ invoke__\"\u003econtains_point\u003c/span\u003e(point),\n            Shape::\u003cspan class=\"hljs-title function_ invoke__\"\u003eCirc\u003c/span\u003e(circ) =\u0026gt; \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e circ.\u003cspan class=\"hljs-title function_ invoke__\"\u003econtains_point\u003c/span\u003e(point),\n        }\n    }\n}\n\n\u003cspan class=\"hljs-keyword\"\u003eimpl\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eDisplay\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eShape\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003efmt\u003c/span\u003e(\u0026amp;\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e, f: \u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e std::fmt::Formatter\u0026lt;\u003cspan class=\"hljs-symbol\"\u003e\u0026#x27;_\u003c/span\u003e\u0026gt;) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e std::fmt::\u003cspan class=\"hljs-type\"\u003eResult\u003c/span\u003e {\n        \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e {\n            Shape::\u003cspan class=\"hljs-title function_ invoke__\"\u003eRect\u003c/span\u003e(rect) =\u0026gt; \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-built_in\"\u003ewrite!\u003c/span\u003e(f, \u003cspan class=\"hljs-string\"\u003e\u0026quot;{}\u0026quot;\u003c/span\u003e, rect),\n            Shape::\u003cspan class=\"hljs-title function_ invoke__\"\u003eCirc\u003c/span\u003e(circ) =\u0026gt; \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-built_in\"\u003ewrite!\u003c/span\u003e(f, \u003cspan class=\"hljs-string\"\u003e\u0026quot;{}\u0026quot;\u003c/span\u003e, circ),\n        }\n    }\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eResult\u003c/span\u003e\u0026lt;()\u0026gt; {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efile\u003c/span\u003e = std::fs::\u003cspan class=\"hljs-title function_ invoke__\"\u003eread_to_string\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;shapes\u0026quot;\u003c/span\u003e)?;\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eshapes\u003c/span\u003e = file\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003elines\u003c/span\u003e()\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003efilter_map\u003c/span\u003e(|line| line.\u003cspan class=\"hljs-title function_ invoke__\"\u003eparse\u003c/span\u003e().\u003cspan class=\"hljs-title function_ invoke__\"\u003eok\u003c/span\u003e())\n        .collect::\u0026lt;\u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;Shape\u0026gt;\u0026gt;();\n\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003ecollisions\u003c/span\u003e: \u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;(\u0026amp;Shape, \u0026amp;Shape)\u0026gt; = shapes\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003eiter\u003c/span\u003e()\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003eskip\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e)\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003ezip\u003c/span\u003e(shapes.\u003cspan class=\"hljs-title function_ invoke__\"\u003eiter\u003c/span\u003e().\u003cspan class=\"hljs-title function_ invoke__\"\u003etake\u003c/span\u003e(shapes.\u003cspan class=\"hljs-title function_ invoke__\"\u003elen\u003c/span\u003e() - \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e))\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003efilter\u003c/span\u003e(|(a, b)| a.\u003cspan class=\"hljs-title function_ invoke__\"\u003ecollide\u003c/span\u003e(b))\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003ecollect\u003c/span\u003e();\n\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003efor\u003c/span\u003e (a, b) \u003cspan class=\"hljs-keyword\"\u003ein\u003c/span\u003e collisions {\n        \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;Collision: {} {}\u0026quot;\u003c/span\u003e, a, b);\n    }\n\n    \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-title function_ invoke__\"\u003eOk\u003c/span\u003e(());\n}\n\u003c/code\u003e\u003c/pre\u003e\n","slug":"reading-from-file","title":"Reading Shapes from a File","section":"Traits","icon":"info-circle","filePath":"/home/runner/work/rust-for-typescript-devs/rust-for-typescript-devs/lessons/04-traits/G-reading-from-file.md","nextSlug":"/rust-for-typescript-devs/lessons/the-end/the-end","prevSlug":"/rust-for-typescript-devs/lessons/traits/refactor-rectangle-circle"}},"__N_SSG":true},"page":"/lessons/[section]/[slug]","query":{"section":"traits","slug":"reading-from-file"},"buildId":"80Kch6YahQPprgQ870uS5","assetPrefix":"/rust-for-typescript-devs","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>

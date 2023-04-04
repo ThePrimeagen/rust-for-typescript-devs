@@ -1,0 +1,835 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><link rel="apple-touch-icon" sizes="180x180" href="/rust-for-typescript-devs/images/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/rust-for-typescript-devs/images/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/x-icon" href="/rust-for-typescript-devs/images/favicon.ico"/><title>Rust Enums – Rust For Typescript Devs</title><meta name="description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:title" content="Rust Enums – Rust For Typescript Devs"/><meta name="og:image" content="/rust-for-typescript-devs/images/social-share-cover.jpg"/><meta name="twitter:card" content="summary_large_image"/><meta name="next-head-count" content="13"/><link rel="preload" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" as="style"/><link rel="stylesheet" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/rust-for-typescript-devs/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/rust-for-typescript-devs/_next/static/chunks/webpack-96df002cefccd98a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/framework-4556c45dd113b893.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/main-6607c1a1abd42fdc.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/_app-450f2eef7687996a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/lessons/%5Bsection%5D/%5Bslug%5D-1a57ac5cb3cfea2d.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_buildManifest.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_ssgManifest.js" defer=""></script></head><body><div id="__next"><div class="remix-app"><header class="navbar"><h1 class="navbar-brand"><a href="/rust-for-typescript-devs">Rust For Typescript Devs</a></h1><div class="navbar-info"><a href="https://frontendmasters.com/courses/rust-ts-devs/" class="cta-btn">Watch on Frontend Masters</a></div></header><div class="content-container"><div class="main"><div class="lesson-container"><div class="lesson"><div class="lesson-content"><h2 id="enums-in-typescript">Enums in TypeScript</h2>
+<p><img src="/rust-for-typescript-devs/./images/enums-bad.png" alt="Enums are bad"></p>
+<p>And I agree</p>
+<p>So... why are we learning enums?</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="rust-enums-are-incredible">Rust enums are incredible</h2>
+<p>They are nothing like TypeScript&#39;s enums, and a reason why rust, for a static
+typed language, is so good.</p>
+<br />
+
+<p>So lets go over a basic set of examples</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="typescript">TypeScript</h2>
+<ul>
+<li>Create an enum <code>Color</code> with <code>Red</code>, <code>Blue</code>, and <code>Green</code> fields.</li>
+<li>Create a <code>printColor</code> method that prints out &quot;red&quot; for <code>Red</code>, ...</li>
+</ul>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="full-code">Full Code</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Color</span> {
+  <span class="hljs-title class_">Red</span>,
+  <span class="hljs-title class_">Green</span>,
+  <span class="hljs-title class_">Blue</span>,
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">printColor</span>(<span class="hljs-params">color: Color</span>) {
+  <span class="hljs-keyword">switch</span> (color) {
+    <span class="hljs-keyword">case</span> <span class="hljs-title class_">Color</span>.<span class="hljs-property">Red</span>:
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;red&quot;</span>);
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-title class_">Color</span>.<span class="hljs-property">Green</span>:
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;green&quot;</span>);
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-title class_">Color</span>.<span class="hljs-property">Blue</span>:
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;blue&quot;</span>);
+      <span class="hljs-keyword">break</span>;
+  }
+}
+
+<span class="hljs-title function_">printColor</span>(<span class="hljs-title class_">Color</span>.<span class="hljs-property">Green</span>);
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="lets-do-the-same-thing-in-rust">Lets do the same thing in Rust</h2>
+<p>Exact same thing</p>
+<ol>
+<li>the syntax for an equivalent enum in rust is 100% identical to ts</li>
+<li>use <code>match</code> to get <em>near</em> equivalent behavior of <code>switch</code></li>
+</ol>
+<p>i&#39;ll give you ~2 minutes, then i&#39;ll start</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code">Complete Code</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Color</span> {
+    Red,
+    Green,
+    Blue,
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">print_color</span>(color: Color) {
+    <span class="hljs-keyword">match</span> color {
+        Color::Red =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;red&quot;</span>),
+        Color::Green =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;green&quot;</span>),
+        Color::Blue =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;blue&quot;</span>),
+    }
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-title function_ invoke__">print_color</span>(Color::Green);
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="ok">ok...?</h2>
+<p>They seem the same...</p>
+<p>Ok... lets extend our original example</p>
+<p>Lets add <code>Yellow</code></p>
+<p>I&#39;ll give you a moment with <code>TypeScript</code></p>
+<p>(follow along pls and make you type out the full example)</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code-1">Complete Code</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Color</span> {
+  <span class="hljs-title class_">Red</span>,
+  <span class="hljs-title class_">Yellow</span>,
+  <span class="hljs-title class_">Green</span>,
+  <span class="hljs-title class_">Blue</span>,
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">printColor</span>(<span class="hljs-params">color: Color</span>) {
+  <span class="hljs-keyword">switch</span> (color) {
+    <span class="hljs-keyword">case</span> <span class="hljs-title class_">Color</span>.<span class="hljs-property">Red</span>:
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;red&quot;</span>);
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-title class_">Color</span>.<span class="hljs-property">Green</span>:
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;green&quot;</span>);
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-title class_">Color</span>.<span class="hljs-property">Blue</span>:
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;blue&quot;</span>);
+      <span class="hljs-keyword">break</span>;
+  }
+}
+
+<span class="hljs-title function_">printColor</span>(<span class="hljs-title class_">Color</span>.<span class="hljs-property">Green</span>);
+</code></pre>
+<h2 id="rusts-turn">Rust&#39;s turn</h2>
+<p>Upgrade the enum in rust.</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code-2">Complete Code</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Color</span> {
+    Red,
+    Yellow,
+    Green,
+    Blue,
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">print_color</span>(color: Color) {
+    <span class="hljs-keyword">match</span> color {
+        Color::Red =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;red&quot;</span>),
+        Color::Yellow =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;yellow&quot;</span>),
+        Color::Green =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;green&quot;</span>),
+        Color::Blue =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;blue&quot;</span>),
+    }
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-title function_ invoke__">print_color</span>(Color::Green);
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="ok-1">Ok...</h2>
+<p>I still think enums suck.. I mean technically it was the <code>match</code> statement that
+made rust so good, not the enum itself. <br/></p>
+<p>Lets take enum&#39;s to another level</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="lets-create-some-helpers">Lets create some helpers!</h2>
+<p>Lets create two methods</p>
+<ul>
+<li>is_green<ul>
+<li>return true for green</li>
+</ul>
+</li>
+<li>is_green_parts<ul>
+<li>return true for blue and yellow</li>
+</ul>
+</li>
+</ul>
+<p>first, lets create this only in Rust. I&#39;ll give you a couple moments to try on
+your own. (you should always try to follow along, it will deeply help with your
+learnings!)</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="next-complete-code">Next complete code</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Color</span> {
+    Red,
+    Yellow,
+    Green,
+    Blue,
+}
+
+<span class="hljs-keyword">impl</span> <span class="hljs-title class_">Color</span> {
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">is_green_parts</span>(&amp;<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">bool</span> {
+        <span class="hljs-keyword">match</span> <span class="hljs-keyword">self</span> {
+            Color::Yellow =&gt; <span class="hljs-literal">true</span>,
+            Color::Blue =&gt; <span class="hljs-literal">true</span>,
+            _ =&gt; <span class="hljs-literal">false</span>,
+        }
+    }
+
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">is_green</span>(&amp;<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">bool</span> {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-variable">Color</span>::Green = <span class="hljs-keyword">self</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">print_color</span>(color: Color) {
+    <span class="hljs-keyword">match</span> color {
+        Color::Red =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;red&quot;</span>),
+        Color::Green =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;green&quot;</span>),
+        Color::Blue =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;blue&quot;</span>),
+        Color::Yellow =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;yellow&quot;</span>),
+    }
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-title function_ invoke__">print_color</span>(Color::Red);
+    Color::Green.<span class="hljs-title function_ invoke__">is_green</span>();
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="ok-are-you-impressed-yet">Ok... are you impressed yet?</h2>
+<p>well, you shouldn&#39;t be. this isn&#39;t awesome yet</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="one-small-argument">One small argument</h2>
+<p>Most of what rust can do, javascript can do, but differently.</p>
+<p>You could imagen that a javascript module exists for <code>Color</code> where the function
+<code>is_green</code> and <code>is_green_parts</code> are defined and exported. But i would argue
+that having to peruse through a module to know what operations are supported is
+not nearly as nice as having them hang off the struct itself. And in this
+case, the enum</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Color</span>, { is_green } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./colors&quot;</span>;
+
+<span class="hljs-comment">// this is simply not as convenient as green.is_green();</span>
+<span class="hljs-keyword">const</span> green = <span class="hljs-title class_">Color</span>.<span class="hljs-property">Green</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-title function_">is_green</span>(green)) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;i am green&quot;</span>);
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="you-may-get-offended">You may get offended...</h2>
+<p>First, lets start with typescript</p>
+<ul>
+<li><p>create a custom type called <code>Custom</code></p>
+<ul>
+<li>it should have 2 fields, <code>age: number</code>, and <code>name: string</code></li>
+</ul>
+</li>
+<li><p>create a union type <code>Item</code> that is <code>number | string | Custom</code></p>
+</li>
+<li><p>create a method <code>append</code> to take in a list of <code>Item</code>s and push in the string <code>&quot;Hello Fem!&quot;</code></p>
+</li>
+<li><p>create an <code>Item</code>s array (doesn&#39;t matter if its empty or not)</p>
+</li>
+<li><p>pass it to <code>append</code></p>
+</li>
+</ul>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code-3">Complete Code</h2>
+<p>TypeScript</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Custom</span> = {
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>;
+};
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Item</span> = <span class="hljs-built_in">number</span> | <span class="hljs-title class_">Custom</span> | <span class="hljs-built_in">string</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">append</span>(<span class="hljs-params">items: Item[]</span>) {
+  items.<span class="hljs-title function_">push</span>(<span class="hljs-string">&quot;hello fem&quot;</span>);
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">items</span>: <span class="hljs-title class_">Item</span>[] = [];
+<span class="hljs-title function_">append</span>(items);
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(items);
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="one-more-task">One more task</h2>
+<ul>
+<li>create a list of <code>number</code> and pass it to <code>append</code></li>
+</ul>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="how-do-you-feel">How do you feel?</h2>
+<p>Do you feel you have been lied to?</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="the-rust-way">The rust way</h2>
+<p>Lets do the same thing, but this time the rust way, and we will do it together.</p>
+<h4 id="instructions-in-case-you-forgot">Instructions (in case you forgot)</h4>
+<ul>
+<li><p>create a custom struct called <code>Custom</code></p>
+<ul>
+<li>it should have 2 fields, <code>age: number</code>, and <code>name: string</code></li>
+</ul>
+</li>
+<li><p>create a union type <code>Item</code> that is <code>number | string | Custom</code></p>
+</li>
+<li><p>create a method <code>append</code> to take in a list of <code>Item</code>s and push in the string <code>&quot;Hello Fem!&quot;</code></p>
+</li>
+<li><p>create an <code>Item</code>s array (doesn&#39;t matter if its empty or not)</p>
+</li>
+<li><p>pass it to <code>append</code></p>
+</li>
+<li><p>create a <code>Vec&lt;usize&gt;</code></p>
+</li>
+<li><p>try to pass it to <code>append</code></p>
+</li>
+</ul>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<p>Rust</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Custom</span> {
+    name: <span class="hljs-type">String</span>,
+    age: <span class="hljs-type">usize</span>,
+}
+
+<span class="hljs-keyword">enum</span> <span class="hljs-title class_">Item</span> {
+    <span class="hljs-title function_ invoke__">Number</span>(<span class="hljs-type">usize</span>),
+    <span class="hljs-title function_ invoke__">Custom</span>(Custom),
+    <span class="hljs-title function_ invoke__">String</span>(<span class="hljs-type">String</span>),
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">append</span>(items: &amp;<span class="hljs-keyword">mut</span> <span class="hljs-type">Vec</span>&lt;Item&gt;) {
+    items.<span class="hljs-title function_ invoke__">push</span>(Item::<span class="hljs-title function_ invoke__">Number</span>(<span class="hljs-number">1</span>));
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">items</span>: <span class="hljs-type">Vec</span>&lt;Item&gt; = <span class="hljs-built_in">vec!</span>[];
+    <span class="hljs-title function_ invoke__">append</span>(&amp;<span class="hljs-keyword">mut</span> items);
+
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">just_numbers</span>: <span class="hljs-type">Vec</span>&lt;<span class="hljs-type">usize</span>&gt; = <span class="hljs-built_in">vec!</span>[];
+    <span class="hljs-title function_ invoke__">append</span>(&amp;<span class="hljs-keyword">mut</span> just_numbers); <span class="hljs-comment">// errors</span>
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="pretty-dang-cool">Pretty dang cool?</h2>
+<p>This means no more</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> x === <span class="hljs-string">&quot;number&quot;</span>) {
+    ...
+}
+</code></pre>
+<p>or</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;bar&quot;</span> <span class="hljs-keyword">in</span> x) {
+    ...
+}
+</code></pre>
+<p>So no more &quot;magic&quot; checking for types, you get named types and this works very
+well with non type discriminated unions (what we made). This is because the
+discrimination exists at a language level, not a <code>type: string</code> level</p>
+<h4 id="its-not-all-magic">its not all magic</h4>
+<p>Sometimes code can become a bit more verbose because of this, and that isn&#39;t as
+nice to write. But at the same time, it prevents easy errors where you forgot
+to handle cases.</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="lets-talk-about-pattern-matching">Lets talk about Pattern Matching</h2>
+<p>Its incredible, and you can DO a lot. Check this out</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Custom</span> {
+    name: <span class="hljs-type">String</span>,
+    age: <span class="hljs-type">usize</span>,
+}
+
+<span class="hljs-keyword">enum</span> <span class="hljs-title class_">Item</span> {
+    <span class="hljs-title function_ invoke__">Number</span>(<span class="hljs-type">usize</span>),
+    <span class="hljs-title function_ invoke__">Custom</span>(Custom),
+    <span class="hljs-title function_ invoke__">String</span>(<span class="hljs-type">String</span>),
+}
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = Item::<span class="hljs-title function_ invoke__">Number</span>(<span class="hljs-number">5</span>);
+
+    <span class="hljs-keyword">match</span> &amp;foo {
+        Item::<span class="hljs-title function_ invoke__">Number</span>(num) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;i am a number: {}&quot;</span>, num),
+        Item::<span class="hljs-title function_ invoke__">String</span>(<span class="hljs-type">str</span>) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;i am a string: {}&quot;</span>, <span class="hljs-type">str</span>),
+        Item::<span class="hljs-title function_ invoke__">Custom</span>(custom) =&gt;
+            <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;name: {}, age: {}&quot;</span>, custom.name, custom.age),
+    }
+
+    <span class="hljs-keyword">match</span> &amp;foo {
+        Item::<span class="hljs-title function_ invoke__">Custom</span>(custom) =&gt;
+            <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;name: {}, age: {}&quot;</span>, custom.name, custom.age),
+        _ =&gt; {}
+    }
+
+    <span class="hljs-keyword">match</span> &amp;foo {
+        Item::<span class="hljs-title function_ invoke__">Custom</span>(Custom {
+            age,
+            ..
+        }) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;age: {}&quot;</span>, age),
+        _ =&gt; {}
+    }
+
+    <span class="hljs-keyword">match</span> &amp;foo {
+        Item::<span class="hljs-title function_ invoke__">Custom</span>(custom) <span class="hljs-keyword">if</span> custom.name == <span class="hljs-string">&quot;Ricky&quot;</span> =&gt;
+            <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;Hi, Ricky&quot;</span>),
+        Item::<span class="hljs-title function_ invoke__">Custom</span>(custom) <span class="hljs-keyword">if</span> custom.age &gt; <span class="hljs-number">33</span> =&gt;
+            <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;N64 was the best console&quot;</span>),
+        Item::<span class="hljs-title function_ invoke__">Custom</span>(custom) <span class="hljs-keyword">if</span> custom.age &lt; <span class="hljs-number">30</span>  =&gt;
+            <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;Xbox was the best console&quot;</span>),
+        _ =&gt; {}
+    }
+}
+</code></pre>
+<p>There are SO many problems that can be solved by good pattern matching, its
+wild.</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="questions">Questions?</h2>
+<p>Do you understand how pattern matching works?</p>
+<br/>
+
+<p><strong>if you have a question speak up!!!</strong></p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+</div><div class="lesson-links"><a href="/rust-for-typescript-devs/lessons/coding-rust/iterators" class="prev">← Previous</a><a href="/rust-for-typescript-devs/lessons/coding-rust/options" class="next">Next →</a></div></div><div class="details-bg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="154" height="154" viewBox="0 0 154 154"><defs><clipPath id="clip-path"><rect id="Rectangle_2238" data-name="Rectangle 2238" width="154" height="154" transform="translate(9467 350)" fill="#fff" stroke="#707070" stroke-width="1"></rect></clipPath><clipPath id="clip-corner-image-active"><rect width="154" height="154"></rect></clipPath></defs><g id="corner-image-active" clip-path="url(#clip-corner-image-active)"><g id="Corner-image-active-2" data-name="Corner-image-active" transform="translate(-9467 -350)" clip-path="url(#clip-path)"><path id="Subtraction_34" data-name="Subtraction 34" d="M-3857.365,1740.766h0l-7.07-7.07,12.89-12.89v14.142l-5.818,5.818Zm-14.142-14.142h0l-7.071-7.07,27.033-27.033v14.143l-19.96,19.96Zm-14.143-14.143h0l-7.07-7.069,41.175-41.175v14.142Zm-14.142-14.142h0l-7.07-7.069,55.317-55.317v14.142Zm-14.142-14.142h0l-7.07-7.069,69.459-69.459v14.142Zm-14.142-14.142h0l-7.07-7.069,76.739-76.739h6.862v7.28Zm-14.143-14.143h0l-7.07-7.069,62.6-62.6h14.142Zm-14.142-14.142h0l-7.07-7.069,48.454-48.454h14.142Zm-14.142-14.142h0l-7.07-7.069,34.312-34.312h14.142Zm-14.142-14.142h0l-7.07-7.069,20.17-20.17h14.142Zm-14.142-14.142h0l-7.071-7.071,6.027-6.027h14.144l-13.1,13.1Zm367.24-56.114v-.909l.455.455-.453.453Z" transform="translate(13472.546 -1236.766)" fill="var(--corner-fill)"></path></g></g></svg></div></div></div></div><footer class="footer"><ul class="socials"><li class="social"><a href="https://twitter.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="32" viewBox="0 0 40 32"><defs><clipPath id="clip-twitter-social"><rect width="40" height="32"></rect></clipPath></defs><g id="twitter-social" clip-path="url(#clip-twitter-social)"><g id="Group_269" data-name="Group 269" transform="translate(-230.23 -1140.849)"><path id="Path_419" data-name="Path 419" d="M266.12,1148.861v1.035a23.092,23.092,0,0,1-1.507,8.1,24.08,24.08,0,0,1-4.475,7.381,22.175,22.175,0,0,1-7.306,5.4,24.129,24.129,0,0,1-10,2.07,23.7,23.7,0,0,1-6.667-.945,22.83,22.83,0,0,1-5.936-2.655q.959.091,1.963.09a16.518,16.518,0,0,0,5.434-.9,17.111,17.111,0,0,0,4.749-2.52,8.275,8.275,0,0,1-4.749-1.643,7.8,7.8,0,0,1-2.877-3.983,8.268,8.268,0,0,0,1.507.135,8.58,8.58,0,0,0,2.146-.27,8.16,8.16,0,0,1-5.685-4.344,8.326,8.326,0,0,1-.89-3.578v-.135a7.775,7.775,0,0,0,3.744,1.035,8.183,8.183,0,0,1-2.671-2.9,7.817,7.817,0,0,1-.982-3.848,7.948,7.948,0,0,1,1.1-4.05,23.53,23.53,0,0,0,16.895,8.46,9.221,9.221,0,0,1-.183-1.845,7.787,7.787,0,0,1,1.1-4.05,8.216,8.216,0,0,1,2.991-2.948,7.991,7.991,0,0,1,4.087-1.1,8.184,8.184,0,0,1,5.982,2.566,16.087,16.087,0,0,0,5.205-1.98,7.784,7.784,0,0,1-1.393,2.588,8.4,8.4,0,0,1-2.215,1.913,16.856,16.856,0,0,0,4.749-1.305A17.032,17.032,0,0,1,266.12,1148.861Z" fill="var(--footer-icons)"></path></g></g></svg></a></li><li class="social"><a href="https://github.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32"><defs><clipPath id="clip-github-social"><rect width="32" height="32"></rect></clipPath></defs><g id="github-social" clip-path="url(#clip-github-social)"><g id="Group_272" data-name="Group 272" transform="translate(13522.5 -6994)"><path id="Subtraction_33" data-name="Subtraction 33" d="M-24967.5,8041a15.9,15.9,0,0,1-11.312-4.688A15.893,15.893,0,0,1-24983.5,8025a15.893,15.893,0,0,1,4.689-11.315A15.894,15.894,0,0,1-24967.5,8009a15.894,15.894,0,0,1,11.313,4.686A15.893,15.893,0,0,1-24951.5,8025a15.893,15.893,0,0,1-4.689,11.313A15.9,15.9,0,0,1-24967.5,8041Zm-3.781-4.571h0v3.918h7.895v-6.665a1.836,1.836,0,0,0-1.2-1.718c5.1-.617,7.467-2.975,7.467-7.424a7.176,7.176,0,0,0-1.637-4.728,6.74,6.74,0,0,0,.275-1.812,4.34,4.34,0,0,0-.52-2.452.574.574,0,0,0-.359-.1c-1.061,0-3.465,1.411-3.936,1.694a16.644,16.644,0,0,0-4.2-.489,16.379,16.379,0,0,0-3.969.445c-.846-.5-2.91-1.649-3.859-1.649a.566.566,0,0,0-.354.095,4.3,4.3,0,0,0-.521,2.452,6.7,6.7,0,0,0,.244,1.718,7.346,7.346,0,0,0-1.6,4.822,7.263,7.263,0,0,0,1.533,4.985c1.193,1.359,3.115,2.165,5.871,2.464a1.826,1.826,0,0,0-1.129,1.693v.5h0l-.006,0a7.121,7.121,0,0,1-2.033.363,2.608,2.608,0,0,1-.965-.158,4.438,4.438,0,0,1-1.836-1.881,2.361,2.361,0,0,0-1.248-1.091,3.472,3.472,0,0,0-1.217-.3.584.584,0,0,0-.545.224.282.282,0,0,0,.027.367,1.875,1.875,0,0,0,.447.307,4.732,4.732,0,0,1,.561.355,10.726,10.726,0,0,1,1.682,2.755c.043.092.078.163.105.217a3.876,3.876,0,0,0,2.42,1.185,6.036,6.036,0,0,0,.607.025c.875,0,1.988-.124,2-.125Z" transform="translate(11461 -1015)" fill="var(--footer-icons)"></path><g id="Ellipse_670" data-name="Ellipse 670" transform="translate(-13522.5 6994)" fill="none" stroke="var(--footer-icons)" stroke-width="1"><circle cx="16" cy="16" r="16" stroke="none"></circle><circle cx="16" cy="16" r="15.5" fill="none"></circle></g></g></g></svg></a></li><li class="social"><a href="https://twitch.tv/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45"><path d="M2.149 0l-1.612 4.119v16.836h5.731v3.045h3.245l3.045-3.045h4.657l6.269-6.269v-14.686h-21.314zm19.164 13.612l-3.582 3.582h-5.731l-3.045 3.045v-3.045h-4.836v-15.045h17.194v11.463zm-3.582-7.343v6.262h-2.149v-6.262h2.149zm-5.731 0v6.262h-2.149v-6.262h2.149z" fill-rule="evenodd" clip-rule="evenodd"></path></svg></a></li><li class="social"><div class="terms"><p>Content Licensed Under CC-BY-NC-4.0</p><p>Code Samples and Excercises Licensed Under Apache 2.0</p><p>Site Designed by<!-- --> <a href="https://www.alexdanielson.com/">Alex Danielson</a></p></div></li></ul></footer></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"post":{"attributes":{"title":"Rust Enums","description":"Rust enums are the greatest thing you have ever seen"},"html":"\u003ch2 id=\"enums-in-typescript\"\u003eEnums in TypeScript\u003c/h2\u003e\n\u003cp\u003e\u003cimg src=\"/rust-for-typescript-devs/./images/enums-bad.png\" alt=\"Enums are bad\"\u003e\u003c/p\u003e\n\u003cp\u003eAnd I agree\u003c/p\u003e\n\u003cp\u003eSo... why are we learning enums?\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"rust-enums-are-incredible\"\u003eRust enums are incredible\u003c/h2\u003e\n\u003cp\u003eThey are nothing like TypeScript\u0026#39;s enums, and a reason why rust, for a static\ntyped language, is so good.\u003c/p\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eSo lets go over a basic set of examples\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"typescript\"\u003eTypeScript\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003eCreate an enum \u003ccode\u003eColor\u003c/code\u003e with \u003ccode\u003eRed\u003c/code\u003e, \u003ccode\u003eBlue\u003c/code\u003e, and \u003ccode\u003eGreen\u003c/code\u003e fields.\u003c/li\u003e\n\u003cli\u003eCreate a \u003ccode\u003eprintColor\u003c/code\u003e method that prints out \u0026quot;red\u0026quot; for \u003ccode\u003eRed\u003c/code\u003e, ...\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"full-code\"\u003eFull Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003eenum\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e {\n  \u003cspan class=\"hljs-title class_\"\u003eRed\u003c/span\u003e,\n  \u003cspan class=\"hljs-title class_\"\u003eGreen\u003c/span\u003e,\n  \u003cspan class=\"hljs-title class_\"\u003eBlue\u003c/span\u003e,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efunction\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eprintColor\u003c/span\u003e(\u003cspan class=\"hljs-params\"\u003ecolor: Color\u003c/span\u003e) {\n  \u003cspan class=\"hljs-keyword\"\u003eswitch\u003c/span\u003e (color) {\n    \u003cspan class=\"hljs-keyword\"\u003ecase\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e.\u003cspan class=\"hljs-property\"\u003eRed\u003c/span\u003e:\n      \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;red\u0026quot;\u003c/span\u003e);\n      \u003cspan class=\"hljs-keyword\"\u003ebreak\u003c/span\u003e;\n    \u003cspan class=\"hljs-keyword\"\u003ecase\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e.\u003cspan class=\"hljs-property\"\u003eGreen\u003c/span\u003e:\n      \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;green\u0026quot;\u003c/span\u003e);\n      \u003cspan class=\"hljs-keyword\"\u003ebreak\u003c/span\u003e;\n    \u003cspan class=\"hljs-keyword\"\u003ecase\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e.\u003cspan class=\"hljs-property\"\u003eBlue\u003c/span\u003e:\n      \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;blue\u0026quot;\u003c/span\u003e);\n      \u003cspan class=\"hljs-keyword\"\u003ebreak\u003c/span\u003e;\n  }\n}\n\n\u003cspan class=\"hljs-title function_\"\u003eprintColor\u003c/span\u003e(\u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e.\u003cspan class=\"hljs-property\"\u003eGreen\u003c/span\u003e);\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"lets-do-the-same-thing-in-rust\"\u003eLets do the same thing in Rust\u003c/h2\u003e\n\u003cp\u003eExact same thing\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003ethe syntax for an equivalent enum in rust is 100% identical to ts\u003c/li\u003e\n\u003cli\u003euse \u003ccode\u003ematch\u003c/code\u003e to get \u003cem\u003enear\u003c/em\u003e equivalent behavior of \u003ccode\u003eswitch\u003c/code\u003e\u003c/li\u003e\n\u003c/ol\u003e\n\u003cp\u003ei\u0026#39;ll give you ~2 minutes, then i\u0026#39;ll start\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003eenum\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e {\n    Red,\n    Green,\n    Blue,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eprint_color\u003c/span\u003e(color: Color) {\n    \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e color {\n        Color::Red =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;red\u0026quot;\u003c/span\u003e),\n        Color::Green =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;green\u0026quot;\u003c/span\u003e),\n        Color::Blue =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;blue\u0026quot;\u003c/span\u003e),\n    }\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eprint_color\u003c/span\u003e(Color::Green);\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"ok\"\u003eok...?\u003c/h2\u003e\n\u003cp\u003eThey seem the same...\u003c/p\u003e\n\u003cp\u003eOk... lets extend our original example\u003c/p\u003e\n\u003cp\u003eLets add \u003ccode\u003eYellow\u003c/code\u003e\u003c/p\u003e\n\u003cp\u003eI\u0026#39;ll give you a moment with \u003ccode\u003eTypeScript\u003c/code\u003e\u003c/p\u003e\n\u003cp\u003e(follow along pls and make you type out the full example)\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code-1\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003eenum\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e {\n  \u003cspan class=\"hljs-title class_\"\u003eRed\u003c/span\u003e,\n  \u003cspan class=\"hljs-title class_\"\u003eYellow\u003c/span\u003e,\n  \u003cspan class=\"hljs-title class_\"\u003eGreen\u003c/span\u003e,\n  \u003cspan class=\"hljs-title class_\"\u003eBlue\u003c/span\u003e,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efunction\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eprintColor\u003c/span\u003e(\u003cspan class=\"hljs-params\"\u003ecolor: Color\u003c/span\u003e) {\n  \u003cspan class=\"hljs-keyword\"\u003eswitch\u003c/span\u003e (color) {\n    \u003cspan class=\"hljs-keyword\"\u003ecase\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e.\u003cspan class=\"hljs-property\"\u003eRed\u003c/span\u003e:\n      \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;red\u0026quot;\u003c/span\u003e);\n      \u003cspan class=\"hljs-keyword\"\u003ebreak\u003c/span\u003e;\n    \u003cspan class=\"hljs-keyword\"\u003ecase\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e.\u003cspan class=\"hljs-property\"\u003eGreen\u003c/span\u003e:\n      \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;green\u0026quot;\u003c/span\u003e);\n      \u003cspan class=\"hljs-keyword\"\u003ebreak\u003c/span\u003e;\n    \u003cspan class=\"hljs-keyword\"\u003ecase\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e.\u003cspan class=\"hljs-property\"\u003eBlue\u003c/span\u003e:\n      \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;blue\u0026quot;\u003c/span\u003e);\n      \u003cspan class=\"hljs-keyword\"\u003ebreak\u003c/span\u003e;\n  }\n}\n\n\u003cspan class=\"hljs-title function_\"\u003eprintColor\u003c/span\u003e(\u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e.\u003cspan class=\"hljs-property\"\u003eGreen\u003c/span\u003e);\n\u003c/code\u003e\u003c/pre\u003e\n\u003ch2 id=\"rusts-turn\"\u003eRust\u0026#39;s turn\u003c/h2\u003e\n\u003cp\u003eUpgrade the enum in rust.\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code-2\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003eenum\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e {\n    Red,\n    Yellow,\n    Green,\n    Blue,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eprint_color\u003c/span\u003e(color: Color) {\n    \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e color {\n        Color::Red =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;red\u0026quot;\u003c/span\u003e),\n        Color::Yellow =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;yellow\u0026quot;\u003c/span\u003e),\n        Color::Green =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;green\u0026quot;\u003c/span\u003e),\n        Color::Blue =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;blue\u0026quot;\u003c/span\u003e),\n    }\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eprint_color\u003c/span\u003e(Color::Green);\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"ok-1\"\u003eOk...\u003c/h2\u003e\n\u003cp\u003eI still think enums suck.. I mean technically it was the \u003ccode\u003ematch\u003c/code\u003e statement that\nmade rust so good, not the enum itself. \u003cbr/\u003e\u003c/p\u003e\n\u003cp\u003eLets take enum\u0026#39;s to another level\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"lets-create-some-helpers\"\u003eLets create some helpers!\u003c/h2\u003e\n\u003cp\u003eLets create two methods\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eis_green\u003cul\u003e\n\u003cli\u003ereturn true for green\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eis_green_parts\u003cul\u003e\n\u003cli\u003ereturn true for blue and yellow\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003efirst, lets create this only in Rust. I\u0026#39;ll give you a couple moments to try on\nyour own. (you should always try to follow along, it will deeply help with your\nlearnings!)\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"next-complete-code\"\u003eNext complete code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003eenum\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e {\n    Red,\n    Yellow,\n    Green,\n    Blue,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003eimpl\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eis_green_parts\u003c/span\u003e(\u0026amp;\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003ebool\u003c/span\u003e {\n        \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e {\n            Color::Yellow =\u0026gt; \u003cspan class=\"hljs-literal\"\u003etrue\u003c/span\u003e,\n            Color::Blue =\u0026gt; \u003cspan class=\"hljs-literal\"\u003etrue\u003c/span\u003e,\n            _ =\u0026gt; \u003cspan class=\"hljs-literal\"\u003efalse\u003c/span\u003e,\n        }\n    }\n\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eis_green\u003c/span\u003e(\u0026amp;\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003ebool\u003c/span\u003e {\n        \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eColor\u003c/span\u003e::Green = \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e {\n            \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-literal\"\u003etrue\u003c/span\u003e;\n        }\n        \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-literal\"\u003efalse\u003c/span\u003e;\n    }\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eprint_color\u003c/span\u003e(color: Color) {\n    \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e color {\n        Color::Red =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;red\u0026quot;\u003c/span\u003e),\n        Color::Green =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;green\u0026quot;\u003c/span\u003e),\n        Color::Blue =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;blue\u0026quot;\u003c/span\u003e),\n        Color::Yellow =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;yellow\u0026quot;\u003c/span\u003e),\n    }\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eprint_color\u003c/span\u003e(Color::Red);\n    Color::Green.\u003cspan class=\"hljs-title function_ invoke__\"\u003eis_green\u003c/span\u003e();\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"ok-are-you-impressed-yet\"\u003eOk... are you impressed yet?\u003c/h2\u003e\n\u003cp\u003ewell, you shouldn\u0026#39;t be. this isn\u0026#39;t awesome yet\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"one-small-argument\"\u003eOne small argument\u003c/h2\u003e\n\u003cp\u003eMost of what rust can do, javascript can do, but differently.\u003c/p\u003e\n\u003cp\u003eYou could imagen that a javascript module exists for \u003ccode\u003eColor\u003c/code\u003e where the function\n\u003ccode\u003eis_green\u003c/code\u003e and \u003ccode\u003eis_green_parts\u003c/code\u003e are defined and exported. But i would argue\nthat having to peruse through a module to know what operations are supported is\nnot nearly as nice as having them hang off the struct itself. And in this\ncase, the enum\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-javascript\"\u003e\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e, { is_green } \u003cspan class=\"hljs-keyword\"\u003efrom\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;./colors\u0026quot;\u003c/span\u003e;\n\n\u003cspan class=\"hljs-comment\"\u003e// this is simply not as convenient as green.is_green();\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003econst\u003c/span\u003e green = \u003cspan class=\"hljs-title class_\"\u003eColor\u003c/span\u003e.\u003cspan class=\"hljs-property\"\u003eGreen\u003c/span\u003e;\n\u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e (\u003cspan class=\"hljs-title function_\"\u003eis_green\u003c/span\u003e(green)) {\n  \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;i am green\u0026quot;\u003c/span\u003e);\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"you-may-get-offended\"\u003eYou may get offended...\u003c/h2\u003e\n\u003cp\u003eFirst, lets start with typescript\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cp\u003ecreate a custom type called \u003ccode\u003eCustom\u003c/code\u003e\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eit should have 2 fields, \u003ccode\u003eage: number\u003c/code\u003e, and \u003ccode\u003ename: string\u003c/code\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\u003cp\u003ecreate a union type \u003ccode\u003eItem\u003c/code\u003e that is \u003ccode\u003enumber | string | Custom\u003c/code\u003e\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\u003cp\u003ecreate a method \u003ccode\u003eappend\u003c/code\u003e to take in a list of \u003ccode\u003eItem\u003c/code\u003es and push in the string \u003ccode\u003e\u0026quot;Hello Fem!\u0026quot;\u003c/code\u003e\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\u003cp\u003ecreate an \u003ccode\u003eItem\u003c/code\u003es array (doesn\u0026#39;t matter if its empty or not)\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\u003cp\u003epass it to \u003ccode\u003eappend\u003c/code\u003e\u003c/p\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code-3\"\u003eComplete Code\u003c/h2\u003e\n\u003cp\u003eTypeScript\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eCustom\u003c/span\u003e = {\n  \u003cspan class=\"hljs-attr\"\u003ename\u003c/span\u003e: \u003cspan class=\"hljs-built_in\"\u003estring\u003c/span\u003e;\n  \u003cspan class=\"hljs-attr\"\u003eage\u003c/span\u003e: \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e;\n};\n\n\u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e | \u003cspan class=\"hljs-title class_\"\u003eCustom\u003c/span\u003e | \u003cspan class=\"hljs-built_in\"\u003estring\u003c/span\u003e;\n\n\u003cspan class=\"hljs-keyword\"\u003efunction\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eappend\u003c/span\u003e(\u003cspan class=\"hljs-params\"\u003eitems: Item[]\u003c/span\u003e) {\n  items.\u003cspan class=\"hljs-title function_\"\u003epush\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;hello fem\u0026quot;\u003c/span\u003e);\n}\n\n\u003cspan class=\"hljs-keyword\"\u003econst\u003c/span\u003e \u003cspan class=\"hljs-attr\"\u003eitems\u003c/span\u003e: \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e[] = [];\n\u003cspan class=\"hljs-title function_\"\u003eappend\u003c/span\u003e(items);\n\n\u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(items);\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"one-more-task\"\u003eOne more task\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003ecreate a list of \u003ccode\u003enumber\u003c/code\u003e and pass it to \u003ccode\u003eappend\u003c/code\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"how-do-you-feel\"\u003eHow do you feel?\u003c/h2\u003e\n\u003cp\u003eDo you feel you have been lied to?\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"the-rust-way\"\u003eThe rust way\u003c/h2\u003e\n\u003cp\u003eLets do the same thing, but this time the rust way, and we will do it together.\u003c/p\u003e\n\u003ch4 id=\"instructions-in-case-you-forgot\"\u003eInstructions (in case you forgot)\u003c/h4\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cp\u003ecreate a custom struct called \u003ccode\u003eCustom\u003c/code\u003e\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eit should have 2 fields, \u003ccode\u003eage: number\u003c/code\u003e, and \u003ccode\u003ename: string\u003c/code\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\u003cp\u003ecreate a union type \u003ccode\u003eItem\u003c/code\u003e that is \u003ccode\u003enumber | string | Custom\u003c/code\u003e\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\u003cp\u003ecreate a method \u003ccode\u003eappend\u003c/code\u003e to take in a list of \u003ccode\u003eItem\u003c/code\u003es and push in the string \u003ccode\u003e\u0026quot;Hello Fem!\u0026quot;\u003c/code\u003e\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\u003cp\u003ecreate an \u003ccode\u003eItem\u003c/code\u003es array (doesn\u0026#39;t matter if its empty or not)\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\u003cp\u003epass it to \u003ccode\u003eappend\u003c/code\u003e\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\u003cp\u003ecreate a \u003ccode\u003eVec\u0026lt;usize\u0026gt;\u003c/code\u003e\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\u003cp\u003etry to pass it to \u003ccode\u003eappend\u003c/code\u003e\u003c/p\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003cp\u003eRust\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003estruct\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eCustom\u003c/span\u003e {\n    name: \u003cspan class=\"hljs-type\"\u003eString\u003c/span\u003e,\n    age: \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003eenum\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e {\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eNumber\u003c/span\u003e(\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e),\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eCustom\u003c/span\u003e(Custom),\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eString\u003c/span\u003e(\u003cspan class=\"hljs-type\"\u003eString\u003c/span\u003e),\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eappend\u003c/span\u003e(items: \u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;Item\u0026gt;) {\n    items.\u003cspan class=\"hljs-title function_ invoke__\"\u003epush\u003c/span\u003e(Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eNumber\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e));\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003eitems\u003c/span\u003e: \u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;Item\u0026gt; = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[];\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eappend\u003c/span\u003e(\u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e items);\n\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003ejust_numbers\u003c/span\u003e: \u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e\u0026gt; = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[];\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eappend\u003c/span\u003e(\u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e just_numbers); \u003cspan class=\"hljs-comment\"\u003e// errors\u003c/span\u003e\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"pretty-dang-cool\"\u003ePretty dang cool?\u003c/h2\u003e\n\u003cp\u003eThis means no more\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e (\u003cspan class=\"hljs-keyword\"\u003etypeof\u003c/span\u003e x === \u003cspan class=\"hljs-string\"\u003e\u0026quot;number\u0026quot;\u003c/span\u003e) {\n    ...\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eor\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e (\u003cspan class=\"hljs-string\"\u003e\u0026quot;bar\u0026quot;\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003ein\u003c/span\u003e x) {\n    ...\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eSo no more \u0026quot;magic\u0026quot; checking for types, you get named types and this works very\nwell with non type discriminated unions (what we made). This is because the\ndiscrimination exists at a language level, not a \u003ccode\u003etype: string\u003c/code\u003e level\u003c/p\u003e\n\u003ch4 id=\"its-not-all-magic\"\u003eits not all magic\u003c/h4\u003e\n\u003cp\u003eSometimes code can become a bit more verbose because of this, and that isn\u0026#39;t as\nnice to write. But at the same time, it prevents easy errors where you forgot\nto handle cases.\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"lets-talk-about-pattern-matching\"\u003eLets talk about Pattern Matching\u003c/h2\u003e\n\u003cp\u003eIts incredible, and you can DO a lot. Check this out\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003estruct\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eCustom\u003c/span\u003e {\n    name: \u003cspan class=\"hljs-type\"\u003eString\u003c/span\u003e,\n    age: \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003eenum\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e {\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eNumber\u003c/span\u003e(\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e),\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eCustom\u003c/span\u003e(Custom),\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eString\u003c/span\u003e(\u003cspan class=\"hljs-type\"\u003eString\u003c/span\u003e),\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eNumber\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e);\n\n    \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e \u0026amp;foo {\n        Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eNumber\u003c/span\u003e(num) =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;i am a number: {}\u0026quot;\u003c/span\u003e, num),\n        Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eString\u003c/span\u003e(\u003cspan class=\"hljs-type\"\u003estr\u003c/span\u003e) =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;i am a string: {}\u0026quot;\u003c/span\u003e, \u003cspan class=\"hljs-type\"\u003estr\u003c/span\u003e),\n        Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eCustom\u003c/span\u003e(custom) =\u0026gt;\n            \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;name: {}, age: {}\u0026quot;\u003c/span\u003e, custom.name, custom.age),\n    }\n\n    \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e \u0026amp;foo {\n        Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eCustom\u003c/span\u003e(custom) =\u0026gt;\n            \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;name: {}, age: {}\u0026quot;\u003c/span\u003e, custom.name, custom.age),\n        _ =\u0026gt; {}\n    }\n\n    \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e \u0026amp;foo {\n        Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eCustom\u003c/span\u003e(Custom {\n            age,\n            ..\n        }) =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;age: {}\u0026quot;\u003c/span\u003e, age),\n        _ =\u0026gt; {}\n    }\n\n    \u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e \u0026amp;foo {\n        Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eCustom\u003c/span\u003e(custom) \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e custom.name == \u003cspan class=\"hljs-string\"\u003e\u0026quot;Ricky\u0026quot;\u003c/span\u003e =\u0026gt;\n            \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;Hi, Ricky\u0026quot;\u003c/span\u003e),\n        Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eCustom\u003c/span\u003e(custom) \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e custom.age \u0026gt; \u003cspan class=\"hljs-number\"\u003e33\u003c/span\u003e =\u0026gt;\n            \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;N64 was the best console\u0026quot;\u003c/span\u003e),\n        Item::\u003cspan class=\"hljs-title function_ invoke__\"\u003eCustom\u003c/span\u003e(custom) \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e custom.age \u0026lt; \u003cspan class=\"hljs-number\"\u003e30\u003c/span\u003e  =\u0026gt;\n            \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;Xbox was the best console\u0026quot;\u003c/span\u003e),\n        _ =\u0026gt; {}\n    }\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThere are SO many problems that can be solved by good pattern matching, its\nwild.\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"questions\"\u003eQuestions?\u003c/h2\u003e\n\u003cp\u003eDo you understand how pattern matching works?\u003c/p\u003e\n\u003cbr/\u003e\n\n\u003cp\u003e\u003cstrong\u003eif you have a question speak up!!!\u003c/strong\u003e\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n","slug":"is-for-enums","title":"Rust Enums","section":"Coding Rust","icon":"info-circle","filePath":"/home/runner/work/rust-for-typescript-devs/rust-for-typescript-devs/lessons/02-coding-rust/B-is-for-enums.md","nextSlug":"/rust-for-typescript-devs/lessons/coding-rust/options","prevSlug":"/rust-for-typescript-devs/lessons/coding-rust/iterators"}},"__N_SSG":true},"page":"/lessons/[section]/[slug]","query":{"section":"coding-rust","slug":"is-for-enums"},"buildId":"80Kch6YahQPprgQ870uS5","assetPrefix":"/rust-for-typescript-devs","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><link rel="apple-touch-icon" sizes="180x180" href="/rust-for-typescript-devs/images/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/rust-for-typescript-devs/images/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/x-icon" href="/rust-for-typescript-devs/images/favicon.ico"/><title>Creating Iterators – Rust For Typescript Devs</title><meta name="description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:title" content="Creating Iterators – Rust For Typescript Devs"/><meta name="og:image" content="/rust-for-typescript-devs/images/social-share-cover.jpg"/><meta name="twitter:card" content="summary_large_image"/><meta name="next-head-count" content="13"/><link rel="preload" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" as="style"/><link rel="stylesheet" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/rust-for-typescript-devs/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/rust-for-typescript-devs/_next/static/chunks/webpack-96df002cefccd98a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/framework-4556c45dd113b893.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/main-6607c1a1abd42fdc.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/_app-450f2eef7687996a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/lessons/%5Bsection%5D/%5Bslug%5D-1a57ac5cb3cfea2d.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_buildManifest.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_ssgManifest.js" defer=""></script></head><body><div id="__next"><div class="remix-app"><header class="navbar"><h1 class="navbar-brand"><a href="/rust-for-typescript-devs">Rust For Typescript Devs</a></h1><div class="navbar-info"><a href="https://frontendmasters.com/courses/rust-ts-devs/" class="cta-btn">Watch on Frontend Masters</a></div></header><div class="content-container"><div class="main"><div class="lesson-container"><div class="lesson"><div class="lesson-content"><h2 id="now-its-time-to-take-it-to-the-next-level">Now its time to take it to the next level</h2>
+<p>Lets make some things that are a bit... useless, but they show off how to use
+rust and that is what we are going for</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="iterator">Iterator</h2>
+<p>An iterator isn&#39;t just something we interact with, its something we can also
+create!</p>
+<p>Lets talk about how iterators are implemented (whiteboard)</p>
+<p>Lets implement an iterator for <code>Rectangle</code>. It will iterate over the four
+points</p>
+<p>src/shapes/rect.rs</p>
+<ul>
+<li>struct <code>RectIter</code> with a <code>points: Vec&lt;(f64, f64)&gt;</code> and <code>idx: usize</code></li>
+<li>implement <code>Iterator</code> for <code>RectIter</code></li>
+<li>implement <code>IntoIterator</code> for <code>Rectangle</code></li>
+</ul>
+<p>src/main.rs</p>
+<ul>
+<li>create a rect</li>
+<li>iterate over a rect <code>for point in rect</code> printing out each point</li>
+<li>print out the entire rectangle via the <code>Display</code> trait</li>
+</ul>
+<p>I&#39;ll give you a moment to try it a bit yourself</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code">Complete Code</h2>
+<p>Why are we getting a borrow checker issue?</p>
+<p>src/main.rs</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">use</span> shapes::rect::Rectangle;
+
+<span class="hljs-keyword">mod</span> shapes;
+
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">rect</span> = Rectangle::<span class="hljs-title function_ invoke__">default</span>();
+
+    <span class="hljs-keyword">for</span> <span class="hljs-variable">point</span> <span class="hljs-keyword">in</span> rect {
+        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;({}, {})&quot;</span>, point.<span class="hljs-number">0</span>, point.<span class="hljs-number">1</span>);
+    }
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, rect);
+}
+</code></pre>
+<p>src/shapes/rect.rs</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">pub</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">RectIter</span> {
+    points: <span class="hljs-type">Vec</span>&lt;(<span class="hljs-type">f64</span>, <span class="hljs-type">f64</span>)&gt;,
+    idx: <span class="hljs-type">usize</span>,
+}
+
+<span class="hljs-keyword">impl</span> <span class="hljs-title class_">Iterator</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">RectIter</span> {
+    <span class="hljs-keyword">type</span> <span class="hljs-title class_">Item</span> = (<span class="hljs-type">f64</span>, <span class="hljs-type">f64</span>);
+
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">next</span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Option</span>&lt;<span class="hljs-keyword">Self</span>::Item&gt; {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.idx &gt;= <span class="hljs-keyword">self</span>.points.<span class="hljs-title function_ invoke__">len</span>() {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>;
+        }
+
+        <span class="hljs-keyword">let</span> <span class="hljs-variable">point</span> = <span class="hljs-keyword">self</span>.points[<span class="hljs-keyword">self</span>.idx];
+        <span class="hljs-keyword">self</span>.idx += <span class="hljs-number">1</span>;
+
+        <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Some</span>(point);
+    }
+}
+
+<span class="hljs-keyword">impl</span> <span class="hljs-title class_">IntoIterator</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">Rectangle</span> {
+    <span class="hljs-keyword">type</span> <span class="hljs-title class_">Item</span> = (<span class="hljs-type">f64</span>, <span class="hljs-type">f64</span>);
+
+    <span class="hljs-keyword">type</span> <span class="hljs-title class_">IntoIter</span> = RectIter;
+
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">into_iter</span>(<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-keyword">Self</span>::IntoIter {
+        <span class="hljs-keyword">return</span> RectIter {
+            points: <span class="hljs-built_in">vec!</span>[
+                (<span class="hljs-keyword">self</span>.x, <span class="hljs-keyword">self</span>.y),
+                (<span class="hljs-keyword">self</span>.x + <span class="hljs-keyword">self</span>.width, <span class="hljs-keyword">self</span>.y),
+                (<span class="hljs-keyword">self</span>.x, <span class="hljs-keyword">self</span>.y + <span class="hljs-keyword">self</span>.height),
+                (<span class="hljs-keyword">self</span>.x + <span class="hljs-keyword">self</span>.width, <span class="hljs-keyword">self</span>.y + <span class="hljs-keyword">self</span>.height),
+            ],
+            idx: <span class="hljs-number">0</span>,
+        }
+    }
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="intoiterator">IntoIterator</h2>
+<p>It <em>consumes</em> the thing you give it. We need to give it something to consume
+that wont consume our original struct!</p>
+<p>Lets do a quick example in main with <code>Vec</code> and a <code>for</code> loop to show the
+consuming vs non consuming.</p>
+<p>So what do we do?
+(make simple fix)</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code-1">Complete Code</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">impl</span> <span class="hljs-title class_">IntoIterator</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">Rectangle</span> {
+    <span class="hljs-keyword">type</span> <span class="hljs-title class_">Item</span> = (<span class="hljs-type">f64</span>, <span class="hljs-type">f64</span>);
+
+    <span class="hljs-keyword">type</span> <span class="hljs-title class_">IntoIter</span> = RectIter;
+
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">into_iter</span>(<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-keyword">Self</span>::IntoIter {
+        <span class="hljs-keyword">return</span> RectIter {
+            points: [
+                (<span class="hljs-keyword">self</span>.x, <span class="hljs-keyword">self</span>.y),
+                (<span class="hljs-keyword">self</span>.x + <span class="hljs-keyword">self</span>.width, <span class="hljs-keyword">self</span>.y),
+                (<span class="hljs-keyword">self</span>.x, <span class="hljs-keyword">self</span>.y + <span class="hljs-keyword">self</span>.height),
+                (<span class="hljs-keyword">self</span>.x + <span class="hljs-keyword">self</span>.width, <span class="hljs-keyword">self</span>.y + <span class="hljs-keyword">self</span>.height),
+            ],
+            idx: <span class="hljs-number">0</span>,
+        }
+    }
+}
+
+<span class="hljs-keyword">impl</span> <span class="hljs-title class_">IntoIterator</span> <span class="hljs-keyword">for</span> &amp;Rectangle {
+    <span class="hljs-keyword">type</span> <span class="hljs-title class_">Item</span> = (<span class="hljs-type">f64</span>, <span class="hljs-type">f64</span>);
+
+    <span class="hljs-keyword">type</span> <span class="hljs-title class_">IntoIter</span> = RectIter;
+
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">into_iter</span>(<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-keyword">Self</span>::IntoIter {
+        <span class="hljs-keyword">return</span> RectIter {
+            points: [
+                (<span class="hljs-keyword">self</span>.x, <span class="hljs-keyword">self</span>.y),
+                (<span class="hljs-keyword">self</span>.x + <span class="hljs-keyword">self</span>.width, <span class="hljs-keyword">self</span>.y),
+                (<span class="hljs-keyword">self</span>.x, <span class="hljs-keyword">self</span>.y + <span class="hljs-keyword">self</span>.height),
+                (<span class="hljs-keyword">self</span>.x + <span class="hljs-keyword">self</span>.width, <span class="hljs-keyword">self</span>.y + <span class="hljs-keyword">self</span>.height),
+            ],
+            idx: <span class="hljs-number">0</span>,
+        }
+    }
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="i-hate-duplicating-code">I hate duplicating code</h2>
+<p>Notice that they are the <em>same</em> code, just different types. One is the <em>value</em>
+<code>Rectangle</code> and the other is a reference to <code>Rectangle</code></p>
+<ul>
+<li>lets implement a constructor</li>
+<li>lets do it the trait way (<code>From</code>)</li>
+</ul>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code-2">Complete Code</h2>
+<p>Never sleep on the <code>From&lt;T&gt;</code> trait. It allows you to hide complicated code and
+it relies on built in behavior.</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">pub</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">RectIter</span> {
+    points: [(<span class="hljs-type">f64</span>, <span class="hljs-type">f64</span>); <span class="hljs-number">4</span>],
+    idx: <span class="hljs-type">usize</span>,
+}
+
+<span class="hljs-keyword">impl</span> <span class="hljs-title class_">From</span>&lt;&amp;Rectangle&gt; <span class="hljs-keyword">for</span> <span class="hljs-title class_">RectIter</span> {
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">from</span>(rect: &amp;Rectangle) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-keyword">Self</span> {
+        <span class="hljs-keyword">return</span> RectIter {
+            points: <span class="hljs-built_in">vec!</span>[
+                (rect.x, rect.y),
+                (rect.x + rect.width, rect.y),
+                (rect.x, rect.y + rect.height),
+                (rect.x + rect.width, rect.y + rect.height),
+            ],
+            idx: <span class="hljs-number">0</span>,
+        }
+    }
+}
+
+<span class="hljs-keyword">impl</span> <span class="hljs-title class_">IntoIterator</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">Rectangle</span> {
+    <span class="hljs-keyword">type</span> <span class="hljs-title class_">Item</span> = (<span class="hljs-type">f64</span>, <span class="hljs-type">f64</span>);
+
+    <span class="hljs-keyword">type</span> <span class="hljs-title class_">IntoIter</span> = RectIter;
+
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">into_iter</span>(<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-keyword">Self</span>::IntoIter {
+        <span class="hljs-title function_ invoke__">return</span> (&amp;<span class="hljs-keyword">self</span>).<span class="hljs-title function_ invoke__">into</span>();
+    }
+}
+
+<span class="hljs-keyword">impl</span> <span class="hljs-title class_">IntoIterator</span> <span class="hljs-keyword">for</span> &amp;Rectangle {
+    <span class="hljs-keyword">type</span> <span class="hljs-title class_">Item</span> = (<span class="hljs-type">f64</span>, <span class="hljs-type">f64</span>);
+
+    <span class="hljs-keyword">type</span> <span class="hljs-title class_">IntoIter</span> = RectIter;
+
+    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">into_iter</span>(<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-keyword">Self</span>::IntoIter {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>.<span class="hljs-title function_ invoke__">into</span>();
+    }
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="questions">Questions</h2>
+<p>We are in some heavy stuff now</p>
+</div><div class="lesson-links"><a href="/rust-for-typescript-devs/lessons/traits/creating-modules" class="prev">← Previous</a><a href="/rust-for-typescript-devs/lessons/traits/custom-traits" class="next">Next →</a></div></div><div class="details-bg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="154" height="154" viewBox="0 0 154 154"><defs><clipPath id="clip-path"><rect id="Rectangle_2238" data-name="Rectangle 2238" width="154" height="154" transform="translate(9467 350)" fill="#fff" stroke="#707070" stroke-width="1"></rect></clipPath><clipPath id="clip-corner-image-active"><rect width="154" height="154"></rect></clipPath></defs><g id="corner-image-active" clip-path="url(#clip-corner-image-active)"><g id="Corner-image-active-2" data-name="Corner-image-active" transform="translate(-9467 -350)" clip-path="url(#clip-path)"><path id="Subtraction_34" data-name="Subtraction 34" d="M-3857.365,1740.766h0l-7.07-7.07,12.89-12.89v14.142l-5.818,5.818Zm-14.142-14.142h0l-7.071-7.07,27.033-27.033v14.143l-19.96,19.96Zm-14.143-14.143h0l-7.07-7.069,41.175-41.175v14.142Zm-14.142-14.142h0l-7.07-7.069,55.317-55.317v14.142Zm-14.142-14.142h0l-7.07-7.069,69.459-69.459v14.142Zm-14.142-14.142h0l-7.07-7.069,76.739-76.739h6.862v7.28Zm-14.143-14.143h0l-7.07-7.069,62.6-62.6h14.142Zm-14.142-14.142h0l-7.07-7.069,48.454-48.454h14.142Zm-14.142-14.142h0l-7.07-7.069,34.312-34.312h14.142Zm-14.142-14.142h0l-7.07-7.069,20.17-20.17h14.142Zm-14.142-14.142h0l-7.071-7.071,6.027-6.027h14.144l-13.1,13.1Zm367.24-56.114v-.909l.455.455-.453.453Z" transform="translate(13472.546 -1236.766)" fill="var(--corner-fill)"></path></g></g></svg></div></div></div></div><footer class="footer"><ul class="socials"><li class="social"><a href="https://twitter.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="32" viewBox="0 0 40 32"><defs><clipPath id="clip-twitter-social"><rect width="40" height="32"></rect></clipPath></defs><g id="twitter-social" clip-path="url(#clip-twitter-social)"><g id="Group_269" data-name="Group 269" transform="translate(-230.23 -1140.849)"><path id="Path_419" data-name="Path 419" d="M266.12,1148.861v1.035a23.092,23.092,0,0,1-1.507,8.1,24.08,24.08,0,0,1-4.475,7.381,22.175,22.175,0,0,1-7.306,5.4,24.129,24.129,0,0,1-10,2.07,23.7,23.7,0,0,1-6.667-.945,22.83,22.83,0,0,1-5.936-2.655q.959.091,1.963.09a16.518,16.518,0,0,0,5.434-.9,17.111,17.111,0,0,0,4.749-2.52,8.275,8.275,0,0,1-4.749-1.643,7.8,7.8,0,0,1-2.877-3.983,8.268,8.268,0,0,0,1.507.135,8.58,8.58,0,0,0,2.146-.27,8.16,8.16,0,0,1-5.685-4.344,8.326,8.326,0,0,1-.89-3.578v-.135a7.775,7.775,0,0,0,3.744,1.035,8.183,8.183,0,0,1-2.671-2.9,7.817,7.817,0,0,1-.982-3.848,7.948,7.948,0,0,1,1.1-4.05,23.53,23.53,0,0,0,16.895,8.46,9.221,9.221,0,0,1-.183-1.845,7.787,7.787,0,0,1,1.1-4.05,8.216,8.216,0,0,1,2.991-2.948,7.991,7.991,0,0,1,4.087-1.1,8.184,8.184,0,0,1,5.982,2.566,16.087,16.087,0,0,0,5.205-1.98,7.784,7.784,0,0,1-1.393,2.588,8.4,8.4,0,0,1-2.215,1.913,16.856,16.856,0,0,0,4.749-1.305A17.032,17.032,0,0,1,266.12,1148.861Z" fill="var(--footer-icons)"></path></g></g></svg></a></li><li class="social"><a href="https://github.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32"><defs><clipPath id="clip-github-social"><rect width="32" height="32"></rect></clipPath></defs><g id="github-social" clip-path="url(#clip-github-social)"><g id="Group_272" data-name="Group 272" transform="translate(13522.5 -6994)"><path id="Subtraction_33" data-name="Subtraction 33" d="M-24967.5,8041a15.9,15.9,0,0,1-11.312-4.688A15.893,15.893,0,0,1-24983.5,8025a15.893,15.893,0,0,1,4.689-11.315A15.894,15.894,0,0,1-24967.5,8009a15.894,15.894,0,0,1,11.313,4.686A15.893,15.893,0,0,1-24951.5,8025a15.893,15.893,0,0,1-4.689,11.313A15.9,15.9,0,0,1-24967.5,8041Zm-3.781-4.571h0v3.918h7.895v-6.665a1.836,1.836,0,0,0-1.2-1.718c5.1-.617,7.467-2.975,7.467-7.424a7.176,7.176,0,0,0-1.637-4.728,6.74,6.74,0,0,0,.275-1.812,4.34,4.34,0,0,0-.52-2.452.574.574,0,0,0-.359-.1c-1.061,0-3.465,1.411-3.936,1.694a16.644,16.644,0,0,0-4.2-.489,16.379,16.379,0,0,0-3.969.445c-.846-.5-2.91-1.649-3.859-1.649a.566.566,0,0,0-.354.095,4.3,4.3,0,0,0-.521,2.452,6.7,6.7,0,0,0,.244,1.718,7.346,7.346,0,0,0-1.6,4.822,7.263,7.263,0,0,0,1.533,4.985c1.193,1.359,3.115,2.165,5.871,2.464a1.826,1.826,0,0,0-1.129,1.693v.5h0l-.006,0a7.121,7.121,0,0,1-2.033.363,2.608,2.608,0,0,1-.965-.158,4.438,4.438,0,0,1-1.836-1.881,2.361,2.361,0,0,0-1.248-1.091,3.472,3.472,0,0,0-1.217-.3.584.584,0,0,0-.545.224.282.282,0,0,0,.027.367,1.875,1.875,0,0,0,.447.307,4.732,4.732,0,0,1,.561.355,10.726,10.726,0,0,1,1.682,2.755c.043.092.078.163.105.217a3.876,3.876,0,0,0,2.42,1.185,6.036,6.036,0,0,0,.607.025c.875,0,1.988-.124,2-.125Z" transform="translate(11461 -1015)" fill="var(--footer-icons)"></path><g id="Ellipse_670" data-name="Ellipse 670" transform="translate(-13522.5 6994)" fill="none" stroke="var(--footer-icons)" stroke-width="1"><circle cx="16" cy="16" r="16" stroke="none"></circle><circle cx="16" cy="16" r="15.5" fill="none"></circle></g></g></g></svg></a></li><li class="social"><a href="https://twitch.tv/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45"><path d="M2.149 0l-1.612 4.119v16.836h5.731v3.045h3.245l3.045-3.045h4.657l6.269-6.269v-14.686h-21.314zm19.164 13.612l-3.582 3.582h-5.731l-3.045 3.045v-3.045h-4.836v-15.045h17.194v11.463zm-3.582-7.343v6.262h-2.149v-6.262h2.149zm-5.731 0v6.262h-2.149v-6.262h2.149z" fill-rule="evenodd" clip-rule="evenodd"></path></svg></a></li><li class="social"><div class="terms"><p>Content Licensed Under CC-BY-NC-4.0</p><p>Code Samples and Excercises Licensed Under Apache 2.0</p><p>Site Designed by<!-- --> <a href="https://www.alexdanielson.com/">Alex Danielson</a></p></div></li></ul></footer></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"post":{"attributes":{"title":"Creating Iterators"},"html":"\u003ch2 id=\"now-its-time-to-take-it-to-the-next-level\"\u003eNow its time to take it to the next level\u003c/h2\u003e\n\u003cp\u003eLets make some things that are a bit... useless, but they show off how to use\nrust and that is what we are going for\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"iterator\"\u003eIterator\u003c/h2\u003e\n\u003cp\u003eAn iterator isn\u0026#39;t just something we interact with, its something we can also\ncreate!\u003c/p\u003e\n\u003cp\u003eLets talk about how iterators are implemented (whiteboard)\u003c/p\u003e\n\u003cp\u003eLets implement an iterator for \u003ccode\u003eRectangle\u003c/code\u003e. It will iterate over the four\npoints\u003c/p\u003e\n\u003cp\u003esrc/shapes/rect.rs\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003estruct \u003ccode\u003eRectIter\u003c/code\u003e with a \u003ccode\u003epoints: Vec\u0026lt;(f64, f64)\u0026gt;\u003c/code\u003e and \u003ccode\u003eidx: usize\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003eimplement \u003ccode\u003eIterator\u003c/code\u003e for \u003ccode\u003eRectIter\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003eimplement \u003ccode\u003eIntoIterator\u003c/code\u003e for \u003ccode\u003eRectangle\u003c/code\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003esrc/main.rs\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003ecreate a rect\u003c/li\u003e\n\u003cli\u003eiterate over a rect \u003ccode\u003efor point in rect\u003c/code\u003e printing out each point\u003c/li\u003e\n\u003cli\u003eprint out the entire rectangle via the \u003ccode\u003eDisplay\u003c/code\u003e trait\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eI\u0026#39;ll give you a moment to try it a bit yourself\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code\"\u003eComplete Code\u003c/h2\u003e\n\u003cp\u003eWhy are we getting a borrow checker issue?\u003c/p\u003e\n\u003cp\u003esrc/main.rs\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003euse\u003c/span\u003e shapes::rect::Rectangle;\n\n\u003cspan class=\"hljs-keyword\"\u003emod\u003c/span\u003e shapes;\n\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003erect\u003c/span\u003e = Rectangle::\u003cspan class=\"hljs-title function_ invoke__\"\u003edefault\u003c/span\u003e();\n\n    \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003epoint\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003ein\u003c/span\u003e rect {\n        \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;({}, {})\u0026quot;\u003c/span\u003e, point.\u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e, point.\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e);\n    }\n\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;{}\u0026quot;\u003c/span\u003e, rect);\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003esrc/shapes/rect.rs\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003epub\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003estruct\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eRectIter\u003c/span\u003e {\n    points: \u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;(\u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e, \u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e)\u0026gt;,\n    idx: \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003eimpl\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eIterator\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eRectIter\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e = (\u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e, \u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e);\n\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003enext\u003c/span\u003e(\u0026amp;\u003cspan class=\"hljs-keyword\"\u003emut\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eOption\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-keyword\"\u003eSelf\u003c/span\u003e::Item\u0026gt; {\n        \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.idx \u0026gt;= \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.points.\u003cspan class=\"hljs-title function_ invoke__\"\u003elen\u003c/span\u003e() {\n            \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-literal\"\u003eNone\u003c/span\u003e;\n        }\n\n        \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003epoint\u003c/span\u003e = \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.points[\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.idx];\n        \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.idx += \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e;\n\n        \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-title function_ invoke__\"\u003eSome\u003c/span\u003e(point);\n    }\n}\n\n\u003cspan class=\"hljs-keyword\"\u003eimpl\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eIntoIterator\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eRectangle\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e = (\u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e, \u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e);\n\n    \u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eIntoIter\u003c/span\u003e = RectIter;\n\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003einto_iter\u003c/span\u003e(\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003eSelf\u003c/span\u003e::IntoIter {\n        \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e RectIter {\n            points: \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\n                (\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.x, \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.y),\n                (\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.x + \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.width, \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.y),\n                (\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.x, \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.y + \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.height),\n                (\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.x + \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.width, \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.y + \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.height),\n            ],\n            idx: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e,\n        }\n    }\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"intoiterator\"\u003eIntoIterator\u003c/h2\u003e\n\u003cp\u003eIt \u003cem\u003econsumes\u003c/em\u003e the thing you give it. We need to give it something to consume\nthat wont consume our original struct!\u003c/p\u003e\n\u003cp\u003eLets do a quick example in main with \u003ccode\u003eVec\u003c/code\u003e and a \u003ccode\u003efor\u003c/code\u003e loop to show the\nconsuming vs non consuming.\u003c/p\u003e\n\u003cp\u003eSo what do we do?\n(make simple fix)\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code-1\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003eimpl\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eIntoIterator\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eRectangle\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e = (\u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e, \u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e);\n\n    \u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eIntoIter\u003c/span\u003e = RectIter;\n\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003einto_iter\u003c/span\u003e(\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003eSelf\u003c/span\u003e::IntoIter {\n        \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e RectIter {\n            points: [\n                (\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.x, \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.y),\n                (\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.x + \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.width, \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.y),\n                (\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.x, \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.y + \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.height),\n                (\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.x + \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.width, \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.y + \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.height),\n            ],\n            idx: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e,\n        }\n    }\n}\n\n\u003cspan class=\"hljs-keyword\"\u003eimpl\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eIntoIterator\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u0026amp;Rectangle {\n    \u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e = (\u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e, \u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e);\n\n    \u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eIntoIter\u003c/span\u003e = RectIter;\n\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003einto_iter\u003c/span\u003e(\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003eSelf\u003c/span\u003e::IntoIter {\n        \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e RectIter {\n            points: [\n                (\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.x, \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.y),\n                (\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.x + \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.width, \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.y),\n                (\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.x, \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.y + \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.height),\n                (\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.x + \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.width, \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.y + \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.height),\n            ],\n            idx: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e,\n        }\n    }\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"i-hate-duplicating-code\"\u003eI hate duplicating code\u003c/h2\u003e\n\u003cp\u003eNotice that they are the \u003cem\u003esame\u003c/em\u003e code, just different types. One is the \u003cem\u003evalue\u003c/em\u003e\n\u003ccode\u003eRectangle\u003c/code\u003e and the other is a reference to \u003ccode\u003eRectangle\u003c/code\u003e\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003elets implement a constructor\u003c/li\u003e\n\u003cli\u003elets do it the trait way (\u003ccode\u003eFrom\u003c/code\u003e)\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code-2\"\u003eComplete Code\u003c/h2\u003e\n\u003cp\u003eNever sleep on the \u003ccode\u003eFrom\u0026lt;T\u0026gt;\u003c/code\u003e trait. It allows you to hide complicated code and\nit relies on built in behavior.\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003epub\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003estruct\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eRectIter\u003c/span\u003e {\n    points: [(\u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e, \u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e); \u003cspan class=\"hljs-number\"\u003e4\u003c/span\u003e],\n    idx: \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e,\n}\n\n\u003cspan class=\"hljs-keyword\"\u003eimpl\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eFrom\u003c/span\u003e\u0026lt;\u0026amp;Rectangle\u0026gt; \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eRectIter\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003efrom\u003c/span\u003e(rect: \u0026amp;Rectangle) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003eSelf\u003c/span\u003e {\n        \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e RectIter {\n            points: \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\n                (rect.x, rect.y),\n                (rect.x + rect.width, rect.y),\n                (rect.x, rect.y + rect.height),\n                (rect.x + rect.width, rect.y + rect.height),\n            ],\n            idx: \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e,\n        }\n    }\n}\n\n\u003cspan class=\"hljs-keyword\"\u003eimpl\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eIntoIterator\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eRectangle\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e = (\u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e, \u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e);\n\n    \u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eIntoIter\u003c/span\u003e = RectIter;\n\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003einto_iter\u003c/span\u003e(\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003eSelf\u003c/span\u003e::IntoIter {\n        \u003cspan class=\"hljs-title function_ invoke__\"\u003ereturn\u003c/span\u003e (\u0026amp;\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e).\u003cspan class=\"hljs-title function_ invoke__\"\u003einto\u003c/span\u003e();\n    }\n}\n\n\u003cspan class=\"hljs-keyword\"\u003eimpl\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eIntoIterator\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u0026amp;Rectangle {\n    \u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eItem\u003c/span\u003e = (\u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e, \u003cspan class=\"hljs-type\"\u003ef64\u003c/span\u003e);\n\n    \u003cspan class=\"hljs-keyword\"\u003etype\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eIntoIter\u003c/span\u003e = RectIter;\n\n    \u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003einto_iter\u003c/span\u003e(\u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e) \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003eSelf\u003c/span\u003e::IntoIter {\n        \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003eself\u003c/span\u003e.\u003cspan class=\"hljs-title function_ invoke__\"\u003einto\u003c/span\u003e();\n    }\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"questions\"\u003eQuestions\u003c/h2\u003e\n\u003cp\u003eWe are in some heavy stuff now\u003c/p\u003e\n","slug":"creating-iterators","title":"Creating Iterators","section":"Traits","icon":"info-circle","filePath":"/home/runner/work/rust-for-typescript-devs/rust-for-typescript-devs/lessons/04-traits/C-creating-iterators.md","nextSlug":"/rust-for-typescript-devs/lessons/traits/custom-traits","prevSlug":"/rust-for-typescript-devs/lessons/traits/creating-modules"}},"__N_SSG":true},"page":"/lessons/[section]/[slug]","query":{"section":"traits","slug":"creating-iterators"},"buildId":"80Kch6YahQPprgQ870uS5","assetPrefix":"/rust-for-typescript-devs","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>

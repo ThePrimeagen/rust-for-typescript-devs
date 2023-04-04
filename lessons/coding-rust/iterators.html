@@ -1,0 +1,1283 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><link rel="apple-touch-icon" sizes="180x180" href="/rust-for-typescript-devs/images/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/rust-for-typescript-devs/images/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/x-icon" href="/rust-for-typescript-devs/images/favicon.ico"/><title>Iterators – Rust For Typescript Devs</title><meta name="description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:title" content="Iterators – Rust For Typescript Devs"/><meta name="og:image" content="/rust-for-typescript-devs/images/social-share-cover.jpg"/><meta name="twitter:card" content="summary_large_image"/><meta name="next-head-count" content="13"/><link rel="preload" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" as="style"/><link rel="stylesheet" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/rust-for-typescript-devs/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/rust-for-typescript-devs/_next/static/chunks/webpack-96df002cefccd98a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/framework-4556c45dd113b893.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/main-6607c1a1abd42fdc.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/_app-450f2eef7687996a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/lessons/%5Bsection%5D/%5Bslug%5D-1a57ac5cb3cfea2d.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_buildManifest.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_ssgManifest.js" defer=""></script></head><body><div id="__next"><div class="remix-app"><header class="navbar"><h1 class="navbar-brand"><a href="/rust-for-typescript-devs">Rust For Typescript Devs</a></h1><div class="navbar-info"><a href="https://frontendmasters.com/courses/rust-ts-devs/" class="cta-btn">Watch on Frontend Masters</a></div></header><div class="content-container"><div class="main"><div class="lesson-container"><div class="lesson"><div class="lesson-content"><h2 id="ok-lets-start-coding">Ok lets start coding.</h2>
+<p>enough of this talking biz, its coding time. I have always been under the
+impression its easier to learn with my hands than my eyes.</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="to-begin-with-there-are-2-things-that-have-to-be-understood-in-rust">To begin with, There are 2 things that have to be understood in Rust</h2>
+<p>This is for fundamental understanding of the language.</p>
+<ol>
+<li>Iterators</li>
+<li>Enums</li>
+</ol>
+<p>Once you get these two, it becomes easier to work with rust initially. As these
+concepts are a bit wonkey coming from TypeScript.</p>
+<br />
+
+<p><strong>You are even probably thinking...</strong> &quot;I use iterators all the time and enums are
+horrible!&quot;</p>
+<br />
+
+<p>From a typescript perspective you are right and from a rust perspective, you
+are wrong.</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="lets-start-with-iterators">Lets start with iterators</h2>
+<p>(first basic whiteboard explanation)</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="iterators">Iterators</h2>
+<p>I think iterators will make the easiest transition as they have the strongest
+similarity in javascript.</p>
+<p>and we can start with <code>.map</code></p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="quick-example-in-typescript">Quick example in TypeScript</h2>
+<p>Lets go over a quick example in typescript</p>
+<p>Lets create a script that:</p>
+<ul>
+<li>creates an list initialized with 1, 2, 3</li>
+<li>adds 1 to each item in that list</li>
+<li>prints the list</li>
+</ul>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// what happens here?</span>
+<span class="hljs-keyword">const</span> foo = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>].<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> x + <span class="hljs-number">1</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(foo);
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="quick-example-in-rustlang">Quick example in Rustlang</h2>
+<p>Now lets do it in rust!</p>
+<ul>
+<li>(in case you forgot) a closure is defined</li>
+</ul>
+<pre><code class="hljs language-rust"><span class="hljs-comment">// defining a closure</span>
+|x| {
+    <span class="hljs-comment">//... body with a return</span>
+    <span class="hljs-keyword">return</span> x * <span class="hljs-number">5</span>;
+}
+
+<span class="hljs-comment">// without body</span>
+|x| x * <span class="hljs-number">5</span>
+</code></pre>
+<p>See how far you can get on your own!</p>
+<ul>
+<li>do you remember how to define a vector? <code>vec![...]</code></li>
+<li>to iterator over references <code>.iter()</code></li>
+<li>map it</li>
+<li>but... how to get an iterator back to a vector... (<code>collect</code>)</li>
+</ul>
+<p>(in case you forgot)</p>
+<ul>
+<li>creates an list filled with 1, 2, 3</li>
+<li>adds 1 to each item in that list</li>
+<li>prints the list<ul>
+<li>debug print works on vectors auto<em>magically</em> <code>println!(&quot;{:?}&quot;, foo);</code></li>
+</ul>
+</li>
+</ul>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">items</span>: <span class="hljs-type">Vec</span>&lt;<span class="hljs-type">isize</span>&gt; = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+        .<span class="hljs-title function_ invoke__">iter</span>() <span class="hljs-comment">// create the iterator to go over the elements in teh array</span>
+        .<span class="hljs-title function_ invoke__">map</span>(|x| x + <span class="hljs-number">1</span>) <span class="hljs-comment">// do the plus one&#x27;ings</span>
+        .<span class="hljs-title function_ invoke__">collect</span>(); <span class="hljs-comment">// take the iterator and put it somewhere..</span>
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;items {:?}&quot;</span>, items);
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="what-is-collect">What is collect?</h2>
+<p>One thing that is different than you may be use to is that an <code>Iterator</code> is its
+own data type. So we must convert from an iterator back into the struct we
+want and in our case its a <code>Vec</code></p>
+<p>So lets do this manually</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code">Complete Code</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">items</span> = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">iter</span> = items
+        .<span class="hljs-title function_ invoke__">iter</span>()
+        .<span class="hljs-title function_ invoke__">map</span>(|x| x + <span class="hljs-number">1</span>);
+
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">collected_items</span> = <span class="hljs-built_in">vec!</span>[];
+    <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-variable">Some</span>(value) = iter.<span class="hljs-title function_ invoke__">next</span>() {
+        collected_items.<span class="hljs-title function_ invoke__">push</span>(value);
+    }
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;collected_items: {:?}&quot;</span>, collected_items);
+}
+</code></pre>
+<p>Its sometimes easy to think things magic when they are not, its literally, in
+our example, a simple while loop</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="wanna-see-something-cool-with-collect">Wanna see something cool with collect?</h2>
+<p>Well, collect is more that just &quot;put back into a vector&quot;</p>
+<p>(show them the deets, String, HashSet, HashMap)</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code-1">Complete Code</h2>
+<p>Collect into string!</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span>: <span class="hljs-type">String</span> = <span class="hljs-built_in">vec!</span>[<span class="hljs-string">&quot;this&quot;</span>, <span class="hljs-string">&quot;is&quot;</span>, <span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;test&quot;</span>]
+    .<span class="hljs-title function_ invoke__">into_iter</span>() <span class="hljs-comment">// what the heck is this?  we will talk more about this</span>
+    .<span class="hljs-title function_ invoke__">collect</span>();
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<p>Collect into HashSet (this would be Set in JS)</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span>: HashSet&lt;<span class="hljs-type">isize</span>&gt; = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+    .<span class="hljs-title function_ invoke__">into_iter</span>()
+    .<span class="hljs-title function_ invoke__">collect</span>();
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<p>Collect into a HashMap</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span>: HashMap&lt;&amp;<span class="hljs-type">str</span>, <span class="hljs-type">usize</span>&gt; = <span class="hljs-built_in">vec!</span>[<span class="hljs-string">&quot;this&quot;</span>, <span class="hljs-string">&quot;is&quot;</span>, <span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;test&quot;</span>]
+    .<span class="hljs-title function_ invoke__">into_iter</span>()
+    .<span class="hljs-title function_ invoke__">enumerate</span>() <span class="hljs-comment">// Adds the index to the iterator!</span>
+                 <span class="hljs-comment">// one of the glories of rust is that we work with iterators</span>
+    .<span class="hljs-title function_ invoke__">map</span>(|(idx, item)| (item, idx)) <span class="hljs-comment">// reverses the order</span>
+    .<span class="hljs-title function_ invoke__">collect</span>();
+</code></pre>
+<p><code>map(|(idx, item)|</code> is an example of destructuring.</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="we-are-going-to-play-a-game">We are going to play a game</h2>
+<p>this will help you see whats possible</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="what-is-value">What is value?</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">value</span>: <span class="hljs-type">usize</span> = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+    .<span class="hljs-title function_ invoke__">iter</span>()
+    .<span class="hljs-title function_ invoke__">sum</span>();
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">how_many_items</span>: <span class="hljs-type">usize</span> = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+    .<span class="hljs-title function_ invoke__">iter</span>()
+    .<span class="hljs-title function_ invoke__">skip</span>(<span class="hljs-number">2</span>)
+    .<span class="hljs-title function_ invoke__">count</span>();
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="what-will-i-print">What will i print?</h2>
+<pre><code class="hljs language-rust">    <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">9</span>, <span class="hljs-number">4</span>]
+        .<span class="hljs-title function_ invoke__">iter</span>()
+        .<span class="hljs-title function_ invoke__">skip</span>(<span class="hljs-number">2</span>)
+        .<span class="hljs-title function_ invoke__">take_while</span>(|&amp;&amp;x| x &gt; <span class="hljs-number">4</span>) <span class="hljs-comment">// i can explain the &amp;&amp; later,</span>
+                                 <span class="hljs-comment">// but know its pattern matching</span>
+        .<span class="hljs-title function_ invoke__">for_each</span>(|x| <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, x));
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">what_about_this</span>: <span class="hljs-type">usize</span> = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+    .<span class="hljs-title function_ invoke__">iter</span>()
+    .<span class="hljs-title function_ invoke__">filter</span>(|x| *x % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) <span class="hljs-comment">// we will explain the * later</span>
+    .<span class="hljs-title function_ invoke__">count</span>();
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="iterators-from-other-collections">Iterators from other collections!</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">map</span> = HashMap::<span class="hljs-title function_ invoke__">from</span>([
+   (<span class="hljs-string">&quot;foo&quot;</span>, <span class="hljs-number">1</span>),
+   (<span class="hljs-string">&quot;bar&quot;</span>, <span class="hljs-number">2</span>),
+   (<span class="hljs-string">&quot;baz&quot;</span>, <span class="hljs-number">3</span>),
+]);
+
+map
+    .<span class="hljs-title function_ invoke__">iter</span>()
+    .<span class="hljs-title function_ invoke__">for_each</span>(|(k, v)| <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}: {}&quot;</span>, k, v));
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">set</span> = HashSet::<span class="hljs-title function_ invoke__">from</span>([
+    <span class="hljs-string">&quot;foo&quot;</span>,
+    <span class="hljs-string">&quot;bar&quot;</span>,
+    <span class="hljs-string">&quot;baz&quot;</span>,
+]);
+
+set
+    .<span class="hljs-title function_ invoke__">iter</span>()
+    .<span class="hljs-title function_ invoke__">for_each</span>(|v| <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, v));
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="you-can-even-create-your-own-iterators">You can even create your own iterators!</h2>
+<p>We will soon, but here is a basic example!</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">todos</span> = Todo { ... values ... }
+
+<span class="hljs-keyword">for</span> <span class="hljs-variable">task</span> <span class="hljs-keyword">in</span> &amp;todos { <span class="hljs-comment">// requires trait implementations</span>
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;I need to do: {}&quot;</span>, task); <span class="hljs-comment">// require trait implementations</span>
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="iterator-way-of-thinking">Iterator way of thinking</h2>
+<p>This is an important concept which isn&#39;t in javascript</p>
+<pre><code>[Type] -&gt; [Iterator] -&gt; [Type]
+</code></pre>
+<p>This typically gives us code that looks like.</p>
+<pre><code class="hljs language-rust">some_type
+    .<span class="hljs-title function_ invoke__">iter</span>() <span class="hljs-comment">// creates iterator</span>
+    .<span class="hljs-title function_ invoke__">filter</span>(|x| ...
+
+    ) <span class="hljs-comment">// A series of combinators</span>
+
+    .collect/sum/count/<span class="hljs-title function_ invoke__">for_each</span>() <span class="hljs-comment">// some operation that takes the iterator and consumes it</span>
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="lets-do-a-simple-exercise">Lets do a simple exercise</h2>
+<p>Lets do the following.</p>
+<ol>
+<li>create this file called <code>project/lines</code></li>
+</ol>
+<pre><code class="hljs language-bash">hello
+fem
+how
+1
+2
+3
+are
+you?
+</code></pre>
+<ol>
+<li>read file <code>lines</code></li>
+<li>print out each line individually</li>
+</ol>
+<br />
+
+<h4 id="typescript"><strong>TypeScript</strong></h4>
+<p>I&#39;ll give you a few moments to try this yourself</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code-2">Complete Code</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;fs&quot;</span>;
+
+<span class="hljs-keyword">const</span> file = fs.<span class="hljs-title function_">readFileSync</span>(<span class="hljs-string">&quot;lines&quot;</span>);
+
+file
+  .<span class="hljs-title function_">toString</span>()
+  .<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;\n&quot;</span>)
+  .<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">line</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(line));
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="lets-do-the-same-in-rust">Lets do the same in Rust</h2>
+<p>Since you are new, i&#39;ll have to walk through each line of code. <br/>
+<br/>
+Just in case you forgot</p>
+<ol>
+<li>read a file from disk</li>
+<li>print out each line individually</li>
+</ol>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code-3">Complete Code</h2>
+<pre><code class="hljs language-rust">
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">file</span> = std::fs::<span class="hljs-title function_ invoke__">read_to_string</span>(<span class="hljs-string">&quot;lines&quot;</span>).<span class="hljs-title function_ invoke__">unwrap</span>();
+
+    file
+        .<span class="hljs-title function_ invoke__">lines</span>()
+        .<span class="hljs-title function_ invoke__">for_each</span>(|line| <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, line));
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="how-about-every-other-line">How about every other line?</h2>
+<p>Add a few more lines to your test file and then implement it in TypeScript</p>
+<p>I&#39;ll give you ~1 minute to do this</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code-4">Complete Code</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;fs&quot;</span>;
+
+<span class="hljs-keyword">const</span> file = fs.<span class="hljs-title function_">readFileSync</span>(<span class="hljs-string">&quot;lines&quot;</span>);
+
+file
+  .<span class="hljs-title function_">toString</span>()
+  .<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;\n&quot;</span>)
+  .<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">_, i</span>) =&gt;</span> i % <span class="hljs-number">2</span> === <span class="hljs-number">0</span>)
+  .<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">line</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(line));
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="but-how-to-do-this-in-rust">But how to do this in rust?</h2>
+<p>You have seen me mention <code>.enumerate()</code> <code>.filter(|x| ...)</code> thus far, why not
+take 1 minute and see if you can update your code to take every other!</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code-5">Complete Code</h2>
+<p>Observation: Rust does exactly what you tell it and no more.</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">file</span> = std::fs::<span class="hljs-title function_ invoke__">read_to_string</span>(<span class="hljs-string">&quot;lines&quot;</span>).<span class="hljs-title function_ invoke__">unwrap</span>();
+
+    file
+        .<span class="hljs-title function_ invoke__">lines</span>()
+        .<span class="hljs-title function_ invoke__">enumerate</span>()
+        .<span class="hljs-title function_ invoke__">filter</span>(|(idx, _)| idx % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>)
+        .<span class="hljs-title function_ invoke__">for_each</span>(|line| <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, line.<span class="hljs-number">1</span>));
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="one-more">One more</h2>
+<p>do these steps <em>IN ORDER</em>.</p>
+<ul>
+<li>every other line</li>
+<li>skip the first two lines</li>
+<li>print two lines</li>
+</ul>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code-6">Complete Code</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;fs&quot;</span>;
+
+<span class="hljs-keyword">const</span> file = fs.<span class="hljs-title function_">readFileSync</span>(<span class="hljs-string">&quot;lines&quot;</span>);
+
+file
+  .<span class="hljs-title function_">toString</span>()
+  .<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;\n&quot;</span>)
+  .<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">_, i</span>) =&gt;</span> i % <span class="hljs-number">2</span> === <span class="hljs-number">0</span>)
+  .<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">_, i</span>) =&gt;</span> i &gt;= <span class="hljs-number">2</span> &amp;&amp; i &lt; <span class="hljs-number">4</span>)
+  .<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">line</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(line));
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="now-rust">Now Rust</h2>
+<p>Remember when i said rust has an amazing combinator set? Its time to shine</p>
+<p>i think you should give it a try</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="complete-code-7">Complete Code</h2>
+<pre><code class="hljs language-rust">
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">file</span> = std::fs::<span class="hljs-title function_ invoke__">read_to_string</span>(<span class="hljs-string">&quot;lines&quot;</span>).<span class="hljs-title function_ invoke__">unwrap</span>();
+
+    file
+        .<span class="hljs-title function_ invoke__">lines</span>()
+        .<span class="hljs-title function_ invoke__">enumerate</span>()
+        .<span class="hljs-title function_ invoke__">filter</span>(|(idx, _)| idx % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>)
+        .<span class="hljs-title function_ invoke__">skip</span>(<span class="hljs-number">2</span>)
+        .<span class="hljs-title function_ invoke__">take</span>(<span class="hljs-number">2</span>)
+        .<span class="hljs-title function_ invoke__">for_each</span>(|line| <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, line.<span class="hljs-number">1</span>));
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="lets-break-down-what-happened">Lets break down what happened</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;\n&quot;</span>)
+  .<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">_, i</span>) =&gt;</span> i % <span class="hljs-number">2</span> === <span class="hljs-number">0</span>)
+  .<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">_, i</span>) =&gt;</span> i &gt;= <span class="hljs-number">2</span> &amp;&amp; i &lt; <span class="hljs-number">4</span>)
+  .<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">line</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(line));
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="split">Split</h2>
+<p>that takes substrings and creates an array.</p>
+<p>That means calling <code>split</code> iterates the entire string up front and creates a
+list</p>
+<pre><code class="hljs language-typescript">[
+    <span class="hljs-string">&quot;line1&quot;</span>,
+    <span class="hljs-string">&quot;line2&quot;</span>,
+    ...
+]
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="what-about-filter">What about filter?</h2>
+<p>Filter takes in a list and produces a new list</p>
+<pre><code class="hljs language-typescript">[
+    <span class="hljs-string">&quot;line1&quot;</span>,
+    <span class="hljs-string">&quot;line2&quot;</span>,
+    ...
+] =&gt; [
+    <span class="hljs-string">&quot;line2&quot;</span>,
+    <span class="hljs-string">&quot;line4&quot;</span>,
+    ...
+]
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="the-second-filter">The second filter</h2>
+<pre><code class="hljs language-typescript">[
+    <span class="hljs-string">&quot;line1&quot;</span>,
+    <span class="hljs-string">&quot;line2&quot;</span>,
+    ...
+] =&gt; [
+    <span class="hljs-string">&quot;line2&quot;</span>,
+    <span class="hljs-string">&quot;line4&quot;</span>,
+    ...
+] =&gt; [ <span class="hljs-comment">// no matter how many lines were before, it goes through ALL</span>
+    <span class="hljs-string">&quot;line6&quot;</span>,
+    <span class="hljs-string">&quot;line8&quot;</span>,
+]
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="for-each">for each</h2>
+<p>This just goes through each item in the final array, i approve</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="so-what-does-the-code-produced-ackshually-look-like">So what does the &quot;code produced&quot; ackshually look like?</h2>
+<p>With javascript its so easy to perform <em>many</em> high level tasks that you forget
+exactly what is happening.</p>
+<p>Here is &quot;transpiled&quot; code</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">filter_1</span>(<span class="hljs-params">x: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">boolean</span> {
+  <span class="hljs-keyword">return</span> x % <span class="hljs-number">2</span> === <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">filter_2</span>(<span class="hljs-params">x: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+  <span class="hljs-keyword">return</span> x &gt;= <span class="hljs-number">2</span> &amp;&amp; x &lt; <span class="hljs-number">4</span>;
+}
+
+<span class="hljs-comment">// Skipping the split operation</span>
+<span class="hljs-keyword">let</span> a = contents.<span class="hljs-title function_">toString</span>().<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;\n&quot;</span>);
+<span class="hljs-keyword">let</span> b = [];
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; a.<span class="hljs-property">length</span>; ++i) {
+  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">filter_1</span>(a[i])) {
+    b.<span class="hljs-title function_">push</span>(a[i]);
+  }
+}
+<span class="hljs-keyword">let</span> c = [];
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; b.<span class="hljs-property">length</span>; ++i) {
+  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">filter_2</span>(i)) {
+    c.<span class="hljs-title function_">push</span>(b[i]);
+  }
+}
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; c.<span class="hljs-property">length</span>; ++i) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(c[i]);
+}
+</code></pre>
+<p>v8 may optimize some of this away. To what extent, i don&#39;t have the faintest
+clue and neither do you</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="same-example-but-in-rust">Same example, but in rust</h2>
+<pre><code class="hljs language-rust">    .<span class="hljs-title function_ invoke__">lines</span>()
+    .<span class="hljs-title function_ invoke__">enumerate</span>()
+    .<span class="hljs-title function_ invoke__">filter</span>(|(idx, _)| idx % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>)
+    .<span class="hljs-title function_ invoke__">skip</span>(<span class="hljs-number">2</span>)
+    .<span class="hljs-title function_ invoke__">take</span>(<span class="hljs-number">2</span>)
+    .<span class="hljs-title function_ invoke__">for_each</span>(|line| <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, line.<span class="hljs-number">1</span>));
+
+<span class="hljs-comment">// Goes through every char</span>
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">start</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">taken</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">skipped</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">lines_found</span> = <span class="hljs-number">0</span>;
+<span class="hljs-title function_ invoke__">for</span> (idx, c) <span class="hljs-keyword">in</span> lines.<span class="hljs-title function_ invoke__">enumerate</span>().<span class="hljs-title function_ invoke__">chars</span>() {
+    <span class="hljs-keyword">if</span> c !== <span class="hljs-string">&quot;\n&quot;</span> {
+        <span class="hljs-keyword">continue</span>;
+    }
+
+    <span class="hljs-comment">// doesn&#x27;t copy, just a &amp;str (ptr, len)</span>
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">slice</span> = lines[start..idx];
+    start = idx + <span class="hljs-number">1</span>;
+
+    lines_found += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">if</span> lines_found % <span class="hljs-number">2</span> == <span class="hljs-number">0</span> {
+        <span class="hljs-keyword">continue</span>
+    }
+
+    <span class="hljs-keyword">if</span> skipped &lt; <span class="hljs-number">2</span> {
+        skipped += <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">continue</span>;
+    }
+
+    taken += <span class="hljs-number">1</span>;
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, slice);
+
+    <span class="hljs-keyword">if</span> taken == <span class="hljs-number">2</span> {
+        <span class="hljs-keyword">break</span>;
+    }
+}
+</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="zero-cost-abstractions">Zero cost abstractions</h2>
+<p>You will see this phrase commonly in the rust community, and this is why. Its
+able to have these higher order abstractions, just without all the cost of them</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h2 id="questions">Questions?</h2>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+</div><div class="lesson-links"><a href="/rust-for-typescript-devs/lessons/introduction/a-note-about-types" class="prev">← Previous</a><a href="/rust-for-typescript-devs/lessons/coding-rust/is-for-enums" class="next">Next →</a></div></div><div class="details-bg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="154" height="154" viewBox="0 0 154 154"><defs><clipPath id="clip-path"><rect id="Rectangle_2238" data-name="Rectangle 2238" width="154" height="154" transform="translate(9467 350)" fill="#fff" stroke="#707070" stroke-width="1"></rect></clipPath><clipPath id="clip-corner-image-active"><rect width="154" height="154"></rect></clipPath></defs><g id="corner-image-active" clip-path="url(#clip-corner-image-active)"><g id="Corner-image-active-2" data-name="Corner-image-active" transform="translate(-9467 -350)" clip-path="url(#clip-path)"><path id="Subtraction_34" data-name="Subtraction 34" d="M-3857.365,1740.766h0l-7.07-7.07,12.89-12.89v14.142l-5.818,5.818Zm-14.142-14.142h0l-7.071-7.07,27.033-27.033v14.143l-19.96,19.96Zm-14.143-14.143h0l-7.07-7.069,41.175-41.175v14.142Zm-14.142-14.142h0l-7.07-7.069,55.317-55.317v14.142Zm-14.142-14.142h0l-7.07-7.069,69.459-69.459v14.142Zm-14.142-14.142h0l-7.07-7.069,76.739-76.739h6.862v7.28Zm-14.143-14.143h0l-7.07-7.069,62.6-62.6h14.142Zm-14.142-14.142h0l-7.07-7.069,48.454-48.454h14.142Zm-14.142-14.142h0l-7.07-7.069,34.312-34.312h14.142Zm-14.142-14.142h0l-7.07-7.069,20.17-20.17h14.142Zm-14.142-14.142h0l-7.071-7.071,6.027-6.027h14.144l-13.1,13.1Zm367.24-56.114v-.909l.455.455-.453.453Z" transform="translate(13472.546 -1236.766)" fill="var(--corner-fill)"></path></g></g></svg></div></div></div></div><footer class="footer"><ul class="socials"><li class="social"><a href="https://twitter.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="32" viewBox="0 0 40 32"><defs><clipPath id="clip-twitter-social"><rect width="40" height="32"></rect></clipPath></defs><g id="twitter-social" clip-path="url(#clip-twitter-social)"><g id="Group_269" data-name="Group 269" transform="translate(-230.23 -1140.849)"><path id="Path_419" data-name="Path 419" d="M266.12,1148.861v1.035a23.092,23.092,0,0,1-1.507,8.1,24.08,24.08,0,0,1-4.475,7.381,22.175,22.175,0,0,1-7.306,5.4,24.129,24.129,0,0,1-10,2.07,23.7,23.7,0,0,1-6.667-.945,22.83,22.83,0,0,1-5.936-2.655q.959.091,1.963.09a16.518,16.518,0,0,0,5.434-.9,17.111,17.111,0,0,0,4.749-2.52,8.275,8.275,0,0,1-4.749-1.643,7.8,7.8,0,0,1-2.877-3.983,8.268,8.268,0,0,0,1.507.135,8.58,8.58,0,0,0,2.146-.27,8.16,8.16,0,0,1-5.685-4.344,8.326,8.326,0,0,1-.89-3.578v-.135a7.775,7.775,0,0,0,3.744,1.035,8.183,8.183,0,0,1-2.671-2.9,7.817,7.817,0,0,1-.982-3.848,7.948,7.948,0,0,1,1.1-4.05,23.53,23.53,0,0,0,16.895,8.46,9.221,9.221,0,0,1-.183-1.845,7.787,7.787,0,0,1,1.1-4.05,8.216,8.216,0,0,1,2.991-2.948,7.991,7.991,0,0,1,4.087-1.1,8.184,8.184,0,0,1,5.982,2.566,16.087,16.087,0,0,0,5.205-1.98,7.784,7.784,0,0,1-1.393,2.588,8.4,8.4,0,0,1-2.215,1.913,16.856,16.856,0,0,0,4.749-1.305A17.032,17.032,0,0,1,266.12,1148.861Z" fill="var(--footer-icons)"></path></g></g></svg></a></li><li class="social"><a href="https://github.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32"><defs><clipPath id="clip-github-social"><rect width="32" height="32"></rect></clipPath></defs><g id="github-social" clip-path="url(#clip-github-social)"><g id="Group_272" data-name="Group 272" transform="translate(13522.5 -6994)"><path id="Subtraction_33" data-name="Subtraction 33" d="M-24967.5,8041a15.9,15.9,0,0,1-11.312-4.688A15.893,15.893,0,0,1-24983.5,8025a15.893,15.893,0,0,1,4.689-11.315A15.894,15.894,0,0,1-24967.5,8009a15.894,15.894,0,0,1,11.313,4.686A15.893,15.893,0,0,1-24951.5,8025a15.893,15.893,0,0,1-4.689,11.313A15.9,15.9,0,0,1-24967.5,8041Zm-3.781-4.571h0v3.918h7.895v-6.665a1.836,1.836,0,0,0-1.2-1.718c5.1-.617,7.467-2.975,7.467-7.424a7.176,7.176,0,0,0-1.637-4.728,6.74,6.74,0,0,0,.275-1.812,4.34,4.34,0,0,0-.52-2.452.574.574,0,0,0-.359-.1c-1.061,0-3.465,1.411-3.936,1.694a16.644,16.644,0,0,0-4.2-.489,16.379,16.379,0,0,0-3.969.445c-.846-.5-2.91-1.649-3.859-1.649a.566.566,0,0,0-.354.095,4.3,4.3,0,0,0-.521,2.452,6.7,6.7,0,0,0,.244,1.718,7.346,7.346,0,0,0-1.6,4.822,7.263,7.263,0,0,0,1.533,4.985c1.193,1.359,3.115,2.165,5.871,2.464a1.826,1.826,0,0,0-1.129,1.693v.5h0l-.006,0a7.121,7.121,0,0,1-2.033.363,2.608,2.608,0,0,1-.965-.158,4.438,4.438,0,0,1-1.836-1.881,2.361,2.361,0,0,0-1.248-1.091,3.472,3.472,0,0,0-1.217-.3.584.584,0,0,0-.545.224.282.282,0,0,0,.027.367,1.875,1.875,0,0,0,.447.307,4.732,4.732,0,0,1,.561.355,10.726,10.726,0,0,1,1.682,2.755c.043.092.078.163.105.217a3.876,3.876,0,0,0,2.42,1.185,6.036,6.036,0,0,0,.607.025c.875,0,1.988-.124,2-.125Z" transform="translate(11461 -1015)" fill="var(--footer-icons)"></path><g id="Ellipse_670" data-name="Ellipse 670" transform="translate(-13522.5 6994)" fill="none" stroke="var(--footer-icons)" stroke-width="1"><circle cx="16" cy="16" r="16" stroke="none"></circle><circle cx="16" cy="16" r="15.5" fill="none"></circle></g></g></g></svg></a></li><li class="social"><a href="https://twitch.tv/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45"><path d="M2.149 0l-1.612 4.119v16.836h5.731v3.045h3.245l3.045-3.045h4.657l6.269-6.269v-14.686h-21.314zm19.164 13.612l-3.582 3.582h-5.731l-3.045 3.045v-3.045h-4.836v-15.045h17.194v11.463zm-3.582-7.343v6.262h-2.149v-6.262h2.149zm-5.731 0v6.262h-2.149v-6.262h2.149z" fill-rule="evenodd" clip-rule="evenodd"></path></svg></a></li><li class="social"><div class="terms"><p>Content Licensed Under CC-BY-NC-4.0</p><p>Code Samples and Excercises Licensed Under Apache 2.0</p><p>Site Designed by<!-- --> <a href="https://www.alexdanielson.com/">Alex Danielson</a></p></div></li></ul></footer></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"post":{"attributes":{"title":"Iterators","description":"Iterators in rust are sooo much better."},"html":"\u003ch2 id=\"ok-lets-start-coding\"\u003eOk lets start coding.\u003c/h2\u003e\n\u003cp\u003eenough of this talking biz, its coding time. I have always been under the\nimpression its easier to learn with my hands than my eyes.\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"to-begin-with-there-are-2-things-that-have-to-be-understood-in-rust\"\u003eTo begin with, There are 2 things that have to be understood in Rust\u003c/h2\u003e\n\u003cp\u003eThis is for fundamental understanding of the language.\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003eIterators\u003c/li\u003e\n\u003cli\u003eEnums\u003c/li\u003e\n\u003c/ol\u003e\n\u003cp\u003eOnce you get these two, it becomes easier to work with rust initially. As these\nconcepts are a bit wonkey coming from TypeScript.\u003c/p\u003e\n\u003cbr /\u003e\n\n\u003cp\u003e\u003cstrong\u003eYou are even probably thinking...\u003c/strong\u003e \u0026quot;I use iterators all the time and enums are\nhorrible!\u0026quot;\u003c/p\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eFrom a typescript perspective you are right and from a rust perspective, you\nare wrong.\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"lets-start-with-iterators\"\u003eLets start with iterators\u003c/h2\u003e\n\u003cp\u003e(first basic whiteboard explanation)\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"iterators\"\u003eIterators\u003c/h2\u003e\n\u003cp\u003eI think iterators will make the easiest transition as they have the strongest\nsimilarity in javascript.\u003c/p\u003e\n\u003cp\u003eand we can start with \u003ccode\u003e.map\u003c/code\u003e\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"quick-example-in-typescript\"\u003eQuick example in TypeScript\u003c/h2\u003e\n\u003cp\u003eLets go over a quick example in typescript\u003c/p\u003e\n\u003cp\u003eLets create a script that:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003ecreates an list initialized with 1, 2, 3\u003c/li\u003e\n\u003cli\u003eadds 1 to each item in that list\u003c/li\u003e\n\u003cli\u003eprints the list\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-comment\"\u003e// what happens here?\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003econst\u003c/span\u003e foo = [\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e].\u003cspan class=\"hljs-title function_\"\u003emap\u003c/span\u003e(\u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003ex\u003c/span\u003e) =\u0026gt;\u003c/span\u003e x + \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e);\n\u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(foo);\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"quick-example-in-rustlang\"\u003eQuick example in Rustlang\u003c/h2\u003e\n\u003cp\u003eNow lets do it in rust!\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e(in case you forgot) a closure is defined\u003c/li\u003e\n\u003c/ul\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-comment\"\u003e// defining a closure\u003c/span\u003e\n|x| {\n    \u003cspan class=\"hljs-comment\"\u003e//... body with a return\u003c/span\u003e\n    \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e x * \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e;\n}\n\n\u003cspan class=\"hljs-comment\"\u003e// without body\u003c/span\u003e\n|x| x * \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eSee how far you can get on your own!\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003edo you remember how to define a vector? \u003ccode\u003evec![...]\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003eto iterator over references \u003ccode\u003e.iter()\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003emap it\u003c/li\u003e\n\u003cli\u003ebut... how to get an iterator back to a vector... (\u003ccode\u003ecollect\u003c/code\u003e)\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e(in case you forgot)\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003ecreates an list filled with 1, 2, 3\u003c/li\u003e\n\u003cli\u003eadds 1 to each item in that list\u003c/li\u003e\n\u003cli\u003eprints the list\u003cul\u003e\n\u003cli\u003edebug print works on vectors auto\u003cem\u003emagically\u003c/em\u003e \u003ccode\u003eprintln!(\u0026quot;{:?}\u0026quot;, foo);\u003c/code\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitems\u003c/span\u003e: \u003cspan class=\"hljs-type\"\u003eVec\u003c/span\u003e\u0026lt;\u003cspan class=\"hljs-type\"\u003eisize\u003c/span\u003e\u0026gt; = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e]\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003eiter\u003c/span\u003e() \u003cspan class=\"hljs-comment\"\u003e// create the iterator to go over the elements in teh array\u003c/span\u003e\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003emap\u003c/span\u003e(|x| x + \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e) \u003cspan class=\"hljs-comment\"\u003e// do the plus one\u0026#x27;ings\u003c/span\u003e\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003ecollect\u003c/span\u003e(); \u003cspan class=\"hljs-comment\"\u003e// take the iterator and put it somewhere..\u003c/span\u003e\n\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;items {:?}\u0026quot;\u003c/span\u003e, items);\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"what-is-collect\"\u003eWhat is collect?\u003c/h2\u003e\n\u003cp\u003eOne thing that is different than you may be use to is that an \u003ccode\u003eIterator\u003c/code\u003e is its\nown data type. So we must convert from an iterator back into the struct we\nwant and in our case its a \u003ccode\u003eVec\u003c/code\u003e\u003c/p\u003e\n\u003cp\u003eSo lets do this manually\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eitems\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e];\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003eiter\u003c/span\u003e = items\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003eiter\u003c/span\u003e()\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003emap\u003c/span\u003e(|x| x + \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e);\n\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003ecollected_items\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[];\n    \u003cspan class=\"hljs-keyword\"\u003ewhile\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eSome\u003c/span\u003e(value) = iter.\u003cspan class=\"hljs-title function_ invoke__\"\u003enext\u003c/span\u003e() {\n        collected_items.\u003cspan class=\"hljs-title function_ invoke__\"\u003epush\u003c/span\u003e(value);\n    }\n\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;collected_items: {:?}\u0026quot;\u003c/span\u003e, collected_items);\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eIts sometimes easy to think things magic when they are not, its literally, in\nour example, a simple while loop\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"wanna-see-something-cool-with-collect\"\u003eWanna see something cool with collect?\u003c/h2\u003e\n\u003cp\u003eWell, collect is more that just \u0026quot;put back into a vector\u0026quot;\u003c/p\u003e\n\u003cp\u003e(show them the deets, String, HashSet, HashMap)\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code-1\"\u003eComplete Code\u003c/h2\u003e\n\u003cp\u003eCollect into string!\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e: \u003cspan class=\"hljs-type\"\u003eString\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\u003cspan class=\"hljs-string\"\u003e\u0026quot;this\u0026quot;\u003c/span\u003e, \u003cspan class=\"hljs-string\"\u003e\u0026quot;is\u0026quot;\u003c/span\u003e, \u003cspan class=\"hljs-string\"\u003e\u0026quot;a\u0026quot;\u003c/span\u003e, \u003cspan class=\"hljs-string\"\u003e\u0026quot;test\u0026quot;\u003c/span\u003e]\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003einto_iter\u003c/span\u003e() \u003cspan class=\"hljs-comment\"\u003e// what the heck is this?  we will talk more about this\u003c/span\u003e\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003ecollect\u003c/span\u003e();\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003cp\u003eCollect into HashSet (this would be Set in JS)\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e: HashSet\u0026lt;\u003cspan class=\"hljs-type\"\u003eisize\u003c/span\u003e\u0026gt; = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e]\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003einto_iter\u003c/span\u003e()\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003ecollect\u003c/span\u003e();\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003cp\u003eCollect into a HashMap\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e: HashMap\u0026lt;\u0026amp;\u003cspan class=\"hljs-type\"\u003estr\u003c/span\u003e, \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e\u0026gt; = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\u003cspan class=\"hljs-string\"\u003e\u0026quot;this\u0026quot;\u003c/span\u003e, \u003cspan class=\"hljs-string\"\u003e\u0026quot;is\u0026quot;\u003c/span\u003e, \u003cspan class=\"hljs-string\"\u003e\u0026quot;a\u0026quot;\u003c/span\u003e, \u003cspan class=\"hljs-string\"\u003e\u0026quot;test\u0026quot;\u003c/span\u003e]\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003einto_iter\u003c/span\u003e()\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003eenumerate\u003c/span\u003e() \u003cspan class=\"hljs-comment\"\u003e// Adds the index to the iterator!\u003c/span\u003e\n                 \u003cspan class=\"hljs-comment\"\u003e// one of the glories of rust is that we work with iterators\u003c/span\u003e\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003emap\u003c/span\u003e(|(idx, item)| (item, idx)) \u003cspan class=\"hljs-comment\"\u003e// reverses the order\u003c/span\u003e\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003ecollect\u003c/span\u003e();\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\u003ccode\u003emap(|(idx, item)|\u003c/code\u003e is an example of destructuring.\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"we-are-going-to-play-a-game\"\u003eWe are going to play a game\u003c/h2\u003e\n\u003cp\u003ethis will help you see whats possible\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"what-is-value\"\u003eWhat is value?\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003evalue\u003c/span\u003e: \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e]\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003eiter\u003c/span\u003e()\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003esum\u003c/span\u003e();\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003ehow_many_items\u003c/span\u003e: \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e]\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003eiter\u003c/span\u003e()\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003eskip\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e)\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003ecount\u003c/span\u003e();\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"what-will-i-print\"\u003eWhat will i print?\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e    \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e5\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e9\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e4\u003c/span\u003e]\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003eiter\u003c/span\u003e()\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003eskip\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e)\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003etake_while\u003c/span\u003e(|\u0026amp;\u0026amp;x| x \u0026gt; \u003cspan class=\"hljs-number\"\u003e4\u003c/span\u003e) \u003cspan class=\"hljs-comment\"\u003e// i can explain the \u0026amp;\u0026amp; later,\u003c/span\u003e\n                                 \u003cspan class=\"hljs-comment\"\u003e// but know its pattern matching\u003c/span\u003e\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003efor_each\u003c/span\u003e(|x| \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;{}\u0026quot;\u003c/span\u003e, x));\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003ewhat_about_this\u003c/span\u003e: \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e = \u003cspan class=\"hljs-built_in\"\u003evec!\u003c/span\u003e[\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e]\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003eiter\u003c/span\u003e()\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003efilter\u003c/span\u003e(|x| *x % \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e == \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e) \u003cspan class=\"hljs-comment\"\u003e// we will explain the * later\u003c/span\u003e\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003ecount\u003c/span\u003e();\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"iterators-from-other-collections\"\u003eIterators from other collections!\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003emap\u003c/span\u003e = HashMap::\u003cspan class=\"hljs-title function_ invoke__\"\u003efrom\u003c/span\u003e([\n   (\u003cspan class=\"hljs-string\"\u003e\u0026quot;foo\u0026quot;\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e),\n   (\u003cspan class=\"hljs-string\"\u003e\u0026quot;bar\u0026quot;\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e),\n   (\u003cspan class=\"hljs-string\"\u003e\u0026quot;baz\u0026quot;\u003c/span\u003e, \u003cspan class=\"hljs-number\"\u003e3\u003c/span\u003e),\n]);\n\nmap\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003eiter\u003c/span\u003e()\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003efor_each\u003c/span\u003e(|(k, v)| \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;{}: {}\u0026quot;\u003c/span\u003e, k, v));\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eset\u003c/span\u003e = HashSet::\u003cspan class=\"hljs-title function_ invoke__\"\u003efrom\u003c/span\u003e([\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;foo\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;bar\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;baz\u0026quot;\u003c/span\u003e,\n]);\n\nset\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003eiter\u003c/span\u003e()\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003efor_each\u003c/span\u003e(|v| \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;{}\u0026quot;\u003c/span\u003e, v));\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"you-can-even-create-your-own-iterators\"\u003eYou can even create your own iterators!\u003c/h2\u003e\n\u003cp\u003eWe will soon, but here is a basic example!\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003etodos\u003c/span\u003e = Todo { ... values ... }\n\n\u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003etask\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003ein\u003c/span\u003e \u0026amp;todos { \u003cspan class=\"hljs-comment\"\u003e// requires trait implementations\u003c/span\u003e\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;I need to do: {}\u0026quot;\u003c/span\u003e, task); \u003cspan class=\"hljs-comment\"\u003e// require trait implementations\u003c/span\u003e\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"iterator-way-of-thinking\"\u003eIterator way of thinking\u003c/h2\u003e\n\u003cp\u003eThis is an important concept which isn\u0026#39;t in javascript\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e[Type] -\u0026gt; [Iterator] -\u0026gt; [Type]\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis typically gives us code that looks like.\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003esome_type\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003eiter\u003c/span\u003e() \u003cspan class=\"hljs-comment\"\u003e// creates iterator\u003c/span\u003e\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003efilter\u003c/span\u003e(|x| ...\n\n    ) \u003cspan class=\"hljs-comment\"\u003e// A series of combinators\u003c/span\u003e\n\n    .collect/sum/count/\u003cspan class=\"hljs-title function_ invoke__\"\u003efor_each\u003c/span\u003e() \u003cspan class=\"hljs-comment\"\u003e// some operation that takes the iterator and consumes it\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"lets-do-a-simple-exercise\"\u003eLets do a simple exercise\u003c/h2\u003e\n\u003cp\u003eLets do the following.\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003ecreate this file called \u003ccode\u003eproject/lines\u003c/code\u003e\u003c/li\u003e\n\u003c/ol\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-bash\"\u003ehello\nfem\nhow\n1\n2\n3\nare\nyou?\n\u003c/code\u003e\u003c/pre\u003e\n\u003col\u003e\n\u003cli\u003eread file \u003ccode\u003elines\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003eprint out each line individually\u003c/li\u003e\n\u003c/ol\u003e\n\u003cbr /\u003e\n\n\u003ch4 id=\"typescript\"\u003e\u003cstrong\u003eTypeScript\u003c/strong\u003e\u003c/h4\u003e\n\u003cp\u003eI\u0026#39;ll give you a few moments to try this yourself\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code-2\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e fs \u003cspan class=\"hljs-keyword\"\u003efrom\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;fs\u0026quot;\u003c/span\u003e;\n\n\u003cspan class=\"hljs-keyword\"\u003econst\u003c/span\u003e file = fs.\u003cspan class=\"hljs-title function_\"\u003ereadFileSync\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;lines\u0026quot;\u003c/span\u003e);\n\nfile\n  .\u003cspan class=\"hljs-title function_\"\u003etoString\u003c/span\u003e()\n  .\u003cspan class=\"hljs-title function_\"\u003esplit\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;\\n\u0026quot;\u003c/span\u003e)\n  .\u003cspan class=\"hljs-title function_\"\u003eforEach\u003c/span\u003e(\u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003eline\u003c/span\u003e) =\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(line));\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"lets-do-the-same-in-rust\"\u003eLets do the same in Rust\u003c/h2\u003e\n\u003cp\u003eSince you are new, i\u0026#39;ll have to walk through each line of code. \u003cbr/\u003e\n\u003cbr/\u003e\nJust in case you forgot\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003eread a file from disk\u003c/li\u003e\n\u003cli\u003eprint out each line individually\u003c/li\u003e\n\u003c/ol\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code-3\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efile\u003c/span\u003e = std::fs::\u003cspan class=\"hljs-title function_ invoke__\"\u003eread_to_string\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;lines\u0026quot;\u003c/span\u003e).\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap\u003c/span\u003e();\n\n    file\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003elines\u003c/span\u003e()\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003efor_each\u003c/span\u003e(|line| \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;{}\u0026quot;\u003c/span\u003e, line));\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"how-about-every-other-line\"\u003eHow about every other line?\u003c/h2\u003e\n\u003cp\u003eAdd a few more lines to your test file and then implement it in TypeScript\u003c/p\u003e\n\u003cp\u003eI\u0026#39;ll give you ~1 minute to do this\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code-4\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e fs \u003cspan class=\"hljs-keyword\"\u003efrom\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;fs\u0026quot;\u003c/span\u003e;\n\n\u003cspan class=\"hljs-keyword\"\u003econst\u003c/span\u003e file = fs.\u003cspan class=\"hljs-title function_\"\u003ereadFileSync\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;lines\u0026quot;\u003c/span\u003e);\n\nfile\n  .\u003cspan class=\"hljs-title function_\"\u003etoString\u003c/span\u003e()\n  .\u003cspan class=\"hljs-title function_\"\u003esplit\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;\\n\u0026quot;\u003c/span\u003e)\n  .\u003cspan class=\"hljs-title function_\"\u003efilter\u003c/span\u003e(\u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003e_, i\u003c/span\u003e) =\u0026gt;\u003c/span\u003e i % \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e === \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e)\n  .\u003cspan class=\"hljs-title function_\"\u003eforEach\u003c/span\u003e(\u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003eline\u003c/span\u003e) =\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(line));\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"but-how-to-do-this-in-rust\"\u003eBut how to do this in rust?\u003c/h2\u003e\n\u003cp\u003eYou have seen me mention \u003ccode\u003e.enumerate()\u003c/code\u003e \u003ccode\u003e.filter(|x| ...)\u003c/code\u003e thus far, why not\ntake 1 minute and see if you can update your code to take every other!\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code-5\"\u003eComplete Code\u003c/h2\u003e\n\u003cp\u003eObservation: Rust does exactly what you tell it and no more.\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efile\u003c/span\u003e = std::fs::\u003cspan class=\"hljs-title function_ invoke__\"\u003eread_to_string\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;lines\u0026quot;\u003c/span\u003e).\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap\u003c/span\u003e();\n\n    file\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003elines\u003c/span\u003e()\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003eenumerate\u003c/span\u003e()\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003efilter\u003c/span\u003e(|(idx, _)| idx % \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e == \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e)\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003efor_each\u003c/span\u003e(|line| \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;{}\u0026quot;\u003c/span\u003e, line.\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e));\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"one-more\"\u003eOne more\u003c/h2\u003e\n\u003cp\u003edo these steps \u003cem\u003eIN ORDER\u003c/em\u003e.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eevery other line\u003c/li\u003e\n\u003cli\u003eskip the first two lines\u003c/li\u003e\n\u003cli\u003eprint two lines\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code-6\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e fs \u003cspan class=\"hljs-keyword\"\u003efrom\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;fs\u0026quot;\u003c/span\u003e;\n\n\u003cspan class=\"hljs-keyword\"\u003econst\u003c/span\u003e file = fs.\u003cspan class=\"hljs-title function_\"\u003ereadFileSync\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;lines\u0026quot;\u003c/span\u003e);\n\nfile\n  .\u003cspan class=\"hljs-title function_\"\u003etoString\u003c/span\u003e()\n  .\u003cspan class=\"hljs-title function_\"\u003esplit\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;\\n\u0026quot;\u003c/span\u003e)\n  .\u003cspan class=\"hljs-title function_\"\u003efilter\u003c/span\u003e(\u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003e_, i\u003c/span\u003e) =\u0026gt;\u003c/span\u003e i % \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e === \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e)\n  .\u003cspan class=\"hljs-title function_\"\u003efilter\u003c/span\u003e(\u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003e_, i\u003c/span\u003e) =\u0026gt;\u003c/span\u003e i \u0026gt;= \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e \u0026amp;\u0026amp; i \u0026lt; \u003cspan class=\"hljs-number\"\u003e4\u003c/span\u003e)\n  .\u003cspan class=\"hljs-title function_\"\u003eforEach\u003c/span\u003e(\u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003eline\u003c/span\u003e) =\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(line));\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"now-rust\"\u003eNow Rust\u003c/h2\u003e\n\u003cp\u003eRemember when i said rust has an amazing combinator set? Its time to shine\u003c/p\u003e\n\u003cp\u003ei think you should give it a try\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"complete-code-7\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efile\u003c/span\u003e = std::fs::\u003cspan class=\"hljs-title function_ invoke__\"\u003eread_to_string\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;lines\u0026quot;\u003c/span\u003e).\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap\u003c/span\u003e();\n\n    file\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003elines\u003c/span\u003e()\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003eenumerate\u003c/span\u003e()\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003efilter\u003c/span\u003e(|(idx, _)| idx % \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e == \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e)\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003eskip\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e)\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003etake\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e)\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003efor_each\u003c/span\u003e(|line| \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;{}\u0026quot;\u003c/span\u003e, line.\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e));\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"lets-break-down-what-happened\"\u003eLets break down what happened\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-title function_\"\u003esplit\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;\\n\u0026quot;\u003c/span\u003e)\n  .\u003cspan class=\"hljs-title function_\"\u003efilter\u003c/span\u003e(\u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003e_, i\u003c/span\u003e) =\u0026gt;\u003c/span\u003e i % \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e === \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e)\n  .\u003cspan class=\"hljs-title function_\"\u003efilter\u003c/span\u003e(\u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003e_, i\u003c/span\u003e) =\u0026gt;\u003c/span\u003e i \u0026gt;= \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e \u0026amp;\u0026amp; i \u0026lt; \u003cspan class=\"hljs-number\"\u003e4\u003c/span\u003e)\n  .\u003cspan class=\"hljs-title function_\"\u003eforEach\u003c/span\u003e(\u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003eline\u003c/span\u003e) =\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(line));\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"split\"\u003eSplit\u003c/h2\u003e\n\u003cp\u003ethat takes substrings and creates an array.\u003c/p\u003e\n\u003cp\u003eThat means calling \u003ccode\u003esplit\u003c/code\u003e iterates the entire string up front and creates a\nlist\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e[\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;line1\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;line2\u0026quot;\u003c/span\u003e,\n    ...\n]\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"what-about-filter\"\u003eWhat about filter?\u003c/h2\u003e\n\u003cp\u003eFilter takes in a list and produces a new list\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e[\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;line1\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;line2\u0026quot;\u003c/span\u003e,\n    ...\n] =\u0026gt; [\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;line2\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;line4\u0026quot;\u003c/span\u003e,\n    ...\n]\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"the-second-filter\"\u003eThe second filter\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e[\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;line1\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;line2\u0026quot;\u003c/span\u003e,\n    ...\n] =\u0026gt; [\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;line2\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;line4\u0026quot;\u003c/span\u003e,\n    ...\n] =\u0026gt; [ \u003cspan class=\"hljs-comment\"\u003e// no matter how many lines were before, it goes through ALL\u003c/span\u003e\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;line6\u0026quot;\u003c/span\u003e,\n    \u003cspan class=\"hljs-string\"\u003e\u0026quot;line8\u0026quot;\u003c/span\u003e,\n]\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"for-each\"\u003efor each\u003c/h2\u003e\n\u003cp\u003eThis just goes through each item in the final array, i approve\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"so-what-does-the-code-produced-ackshually-look-like\"\u003eSo what does the \u0026quot;code produced\u0026quot; ackshually look like?\u003c/h2\u003e\n\u003cp\u003eWith javascript its so easy to perform \u003cem\u003emany\u003c/em\u003e high level tasks that you forget\nexactly what is happening.\u003c/p\u003e\n\u003cp\u003eHere is \u0026quot;transpiled\u0026quot; code\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003efunction\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003efilter_1\u003c/span\u003e(\u003cspan class=\"hljs-params\"\u003ex: \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e\u003c/span\u003e): \u003cspan class=\"hljs-built_in\"\u003eboolean\u003c/span\u003e {\n  \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e x % \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e === \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e;\n}\n\n\u003cspan class=\"hljs-keyword\"\u003efunction\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003efilter_2\u003c/span\u003e(\u003cspan class=\"hljs-params\"\u003ex: \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e\u003c/span\u003e): \u003cspan class=\"hljs-built_in\"\u003enumber\u003c/span\u003e {\n  \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e x \u0026gt;= \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e \u0026amp;\u0026amp; x \u0026lt; \u003cspan class=\"hljs-number\"\u003e4\u003c/span\u003e;\n}\n\n\u003cspan class=\"hljs-comment\"\u003e// Skipping the split operation\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e a = contents.\u003cspan class=\"hljs-title function_\"\u003etoString\u003c/span\u003e().\u003cspan class=\"hljs-title function_\"\u003esplit\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;\\n\u0026quot;\u003c/span\u003e);\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e b = [];\n\u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e (\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e i = \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e; i \u0026lt; a.\u003cspan class=\"hljs-property\"\u003elength\u003c/span\u003e; ++i) {\n  \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e (\u003cspan class=\"hljs-title function_\"\u003efilter_1\u003c/span\u003e(a[i])) {\n    b.\u003cspan class=\"hljs-title function_\"\u003epush\u003c/span\u003e(a[i]);\n  }\n}\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e c = [];\n\u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e (\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e i = \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e; i \u0026lt; b.\u003cspan class=\"hljs-property\"\u003elength\u003c/span\u003e; ++i) {\n  \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e (\u003cspan class=\"hljs-title function_\"\u003efilter_2\u003c/span\u003e(i)) {\n    c.\u003cspan class=\"hljs-title function_\"\u003epush\u003c/span\u003e(b[i]);\n  }\n}\n\u003cspan class=\"hljs-keyword\"\u003efor\u003c/span\u003e (\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e i = \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e; i \u0026lt; c.\u003cspan class=\"hljs-property\"\u003elength\u003c/span\u003e; ++i) {\n  \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(c[i]);\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003ev8 may optimize some of this away. To what extent, i don\u0026#39;t have the faintest\nclue and neither do you\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"same-example-but-in-rust\"\u003eSame example, but in rust\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e    .\u003cspan class=\"hljs-title function_ invoke__\"\u003elines\u003c/span\u003e()\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003eenumerate\u003c/span\u003e()\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003efilter\u003c/span\u003e(|(idx, _)| idx % \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e == \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e)\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003eskip\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e)\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003etake\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e)\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003efor_each\u003c/span\u003e(|line| \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;{}\u0026quot;\u003c/span\u003e, line.\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e));\n\n\u003cspan class=\"hljs-comment\"\u003e// Goes through every char\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003estart\u003c/span\u003e = \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e;\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003etaken\u003c/span\u003e = \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e;\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003eskipped\u003c/span\u003e = \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e;\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003emut \u003c/span\u003e\u003cspan class=\"hljs-variable\"\u003elines_found\u003c/span\u003e = \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e;\n\u003cspan class=\"hljs-title function_ invoke__\"\u003efor\u003c/span\u003e (idx, c) \u003cspan class=\"hljs-keyword\"\u003ein\u003c/span\u003e lines.\u003cspan class=\"hljs-title function_ invoke__\"\u003eenumerate\u003c/span\u003e().\u003cspan class=\"hljs-title function_ invoke__\"\u003echars\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e c !== \u003cspan class=\"hljs-string\"\u003e\u0026quot;\\n\u0026quot;\u003c/span\u003e {\n        \u003cspan class=\"hljs-keyword\"\u003econtinue\u003c/span\u003e;\n    }\n\n    \u003cspan class=\"hljs-comment\"\u003e// doesn\u0026#x27;t copy, just a \u0026amp;str (ptr, len)\u003c/span\u003e\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eslice\u003c/span\u003e = lines[start..idx];\n    start = idx + \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e;\n\n    lines_found += \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e\n    \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e lines_found % \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e == \u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e {\n        \u003cspan class=\"hljs-keyword\"\u003econtinue\u003c/span\u003e\n    }\n\n    \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e skipped \u0026lt; \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e {\n        skipped += \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e;\n        \u003cspan class=\"hljs-keyword\"\u003econtinue\u003c/span\u003e;\n    }\n\n    taken += \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e;\n    \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;{}\u0026quot;\u003c/span\u003e, slice);\n\n    \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e taken == \u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e {\n        \u003cspan class=\"hljs-keyword\"\u003ebreak\u003c/span\u003e;\n    }\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"zero-cost-abstractions\"\u003eZero cost abstractions\u003c/h2\u003e\n\u003cp\u003eYou will see this phrase commonly in the rust community, and this is why. Its\nable to have these higher order abstractions, just without all the cost of them\u003c/p\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\n\u003ch2 id=\"questions\"\u003eQuestions?\u003c/h2\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n\u003cbr/\u003e\n","slug":"iterators","title":"Iterators","section":"Coding Rust","icon":"info-circle","filePath":"/home/runner/work/rust-for-typescript-devs/rust-for-typescript-devs/lessons/02-coding-rust/A-iterators.md","nextSlug":"/rust-for-typescript-devs/lessons/coding-rust/is-for-enums","prevSlug":"/rust-for-typescript-devs/lessons/introduction/a-note-about-types"}},"__N_SSG":true},"page":"/lessons/[section]/[slug]","query":{"section":"coding-rust","slug":"iterators"},"buildId":"80Kch6YahQPprgQ870uS5","assetPrefix":"/rust-for-typescript-devs","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>

@@ -1,0 +1,498 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><link rel="apple-touch-icon" sizes="180x180" href="/rust-for-typescript-devs/images/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/rust-for-typescript-devs/images/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/png" sizes="16x16" href="/rust-for-typescript-devs/images/favicon-16x16.png"/><link rel="icon" type="image/x-icon" href="/rust-for-typescript-devs/images/favicon.ico"/><title>Learn Rustlang Results – Rust For Typescript Devs</title><meta name="description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:description" content="The greatest course you will ever take on Rust for a TypeScript Developer."/><meta name="og:title" content="Learn Rustlang Results – Rust For Typescript Devs"/><meta name="og:image" content="/rust-for-typescript-devs/images/social-share-cover.jpg"/><meta name="twitter:card" content="summary_large_image"/><meta name="next-head-count" content="13"/><link rel="preload" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" as="style"/><link rel="stylesheet" href="/rust-for-typescript-devs/_next/static/css/46fe900f2490d915.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/rust-for-typescript-devs/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/rust-for-typescript-devs/_next/static/chunks/webpack-96df002cefccd98a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/framework-4556c45dd113b893.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/main-6607c1a1abd42fdc.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/_app-450f2eef7687996a.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/chunks/pages/lessons/%5Bsection%5D/%5Bslug%5D-1a57ac5cb3cfea2d.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_buildManifest.js" defer=""></script><script src="/rust-for-typescript-devs/_next/static/80Kch6YahQPprgQ870uS5/_ssgManifest.js" defer=""></script></head><body><div id="__next"><div class="remix-app"><header class="navbar"><h1 class="navbar-brand"><a href="/rust-for-typescript-devs">Rust For Typescript Devs</a></h1><div class="navbar-info"><a href="https://frontendmasters.com/courses/rust-ts-devs/" class="cta-btn">Watch on Frontend Masters</a></div></header><div class="content-container"><div class="main"><div class="lesson-container"><div class="lesson"><div class="lesson-content"><h2 id="to-throw-or-not-to-throw-that-is-the-question">To throw or not to throw, that is the question</h2>
+<p>Another place where typescript and rust have fundamentally different design
+decisions.</p>
+<p>Ask yourself the following questions</p>
+<ul>
+<li>what function throws an error?</li>
+<li>who handles the error if thrown?</li>
+<li>what can be throw? (look at the promise reject definition (reason: any))</li>
+</ul>
+<p>with javascript you learn by trial. <br/></p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="how-rust-handles-errors">How Rust Handles Errors</h2>
+<p>Errors are values</p>
+<p>This means that there is no throwing. You get a value that is either a value
+or an error.</p>
+<p>Notice this is very similar to Option.</p>
+<ul>
+<li>Option is value or undefined</li>
+<li>Result is value or error value</li>
+</ul>
+<br />
+
+<h2 id="if-err--nil">if err != nil</h2>
+<p>yes, the golang meme of error handling doesn&#39;t exist in rust. Rust handles
+errors better than go.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="i-am-going-to-make-some-assumptions">I am going to make some assumptions</h2>
+<p>You don&#39;t need me to show you another example of how to handle enums because
+that&#39;s all we have been doing.</p>
+<p>The definition of a result</p>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Result</span>&lt;V, E&gt; {
+    <span class="hljs-title function_ invoke__">Ok</span>(V),
+    <span class="hljs-title function_ invoke__">Err</span>(E),
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+
+<p>Also, rust has <code>Ok</code> and <code>Err</code> as first class citizens</p>
+<br />
+<br />
+<br />
+<br />
+
+<pre><code class="hljs language-rust"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-variable">Ok</span>(value) = <span class="hljs-title function_ invoke__">a_function_that_can_error</span>() {
+    <span class="hljs-comment">// something with the value</span>
+}
+
+<span class="hljs-keyword">match</span> <span class="hljs-title function_ invoke__">a_function_that_can_error</span>() {
+    <span class="hljs-title function_ invoke__">Ok</span>(value) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;oh yeah, value! {}&quot;</span>, value);
+    <span class="hljs-title function_ invoke__">Err</span>(e) =&gt; eprintln!(<span class="hljs-string">&quot;ohh no... {}&quot;</span>, e);
+}
+
+<span class="hljs-comment">// you don&#x27;t care about the error</span>
+_ = <span class="hljs-title function_ invoke__">a_function_that_can_error</span>();
+
+<span class="hljs-comment">// yolo</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-title function_ invoke__">a_function_that_can_error</span>().<span class="hljs-title function_ invoke__">unwrap</span>();
+
+<span class="hljs-comment">// respectful yolo</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-title function_ invoke__">a_function_that_can_error</span>().<span class="hljs-title function_ invoke__">expect</span>(<span class="hljs-string">&quot;should never fail&quot;</span>);
+
+<span class="hljs-comment">// defaults</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-title function_ invoke__">a_function_that_can_error</span>().<span class="hljs-title function_ invoke__">unwrap_or</span>(<span class="hljs-number">0</span>);
+
+<span class="hljs-comment">// convert to option</span>
+<span class="hljs-comment">// Ok(V) =&gt; Some(V)</span>
+<span class="hljs-comment">// Err(E) =&gt; None</span>
+<span class="hljs-comment">// bai felicia</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-title function_ invoke__">a_function_that_can_error</span>().<span class="hljs-title function_ invoke__">ok</span>();
+
+<span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-title function_ invoke__">a_function_that_can_error</span>()
+    .<span class="hljs-title function_ invoke__">map</span>(|value| value + <span class="hljs-number">1</span>);
+
+<span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-title function_ invoke__">a_function_that_can_error</span>()
+    .<span class="hljs-title function_ invoke__">and_then</span>(|value| <span class="hljs-title function_ invoke__">another_possible_error</span>(value))
+    .<span class="hljs-title function_ invoke__">and_then</span>(|value| <span class="hljs-title function_ invoke__">again</span>(value));
+
+<span class="hljs-comment">// If your function returns an error, you can do this!</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-title function_ invoke__">a_function_that_can_error</span>()?;
+</code></pre>
+<h2 id="side-note">Side Note</h2>
+<p>there are two <code>crates</code> (rust package) that work very well with errors</p>
+<ul>
+<li>thiserror - great for creating your own errors. should be used in libraries</li>
+<li>anyhow - great for applications.</li>
+</ul>
+<p>We will use anyhow shortly</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="another-small-exercise">Another small exercise!</h2>
+<p>This is going to combine all of our knowledge of <code>Iterator</code>s, <code>Option</code>s, and
+newly introduced <code>Result</code>. <br /></p>
+<p>But! Lets go in small steps</p>
+<ol>
+<li>read the first argument passed to the program</li>
+</ol>
+<ul>
+<li><code>cargo run -- this_is_an_arg</code></li>
+<li><code>npx ts-node file this_is_an_arg</code></li>
+</ul>
+<ol>
+<li>the first argument is a name and path to the file to read</li>
+<li>print out each line of the file</li>
+</ol>
+<pre><code class="hljs language-typescript">process.<span class="hljs-property">argv</span>[<span class="hljs-number">2</span>] &lt;--- first arg to program
+</code></pre>
+<p>Now we have already done some of this, so this should become a bit easier, lets
+start with TypeScript.</p>
+<p>file you should use, save as proj/numbers</p>
+<pre><code>1
+5
+9
+33
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="complete-code">Complete Code</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;fs&quot;</span>;
+fs.<span class="hljs-title function_">readFileSync</span>(process.<span class="hljs-property">argv</span>[<span class="hljs-number">2</span>])
+  .<span class="hljs-title function_">toString</span>()
+  .<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;\n&quot;</span>)
+  .<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">line</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(line));
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<p>Ok... now try this</p>
+<pre><code class="hljs language-bash">npx ts-node src/index.ts filethatdoesntexist
+</code></pre>
+<p>what happens?
+why?</p>
+<p>ok... again</p>
+<pre><code class="hljs language-bash">npx ts-node src/index.ts
+</code></pre>
+<p>?? WHY YOU DO THIS TO ME</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="rust">Rust</h2>
+<p>Ok lets try the same thing in rust. It will be a bit more involved.</p>
+<p>I&#39;ll give you some hints.</p>
+<pre><code class="hljs language-rust">std::env::<span class="hljs-title function_ invoke__">args</span>().<span class="hljs-title function_ invoke__">nth</span>(<span class="hljs-number">1</span>) <span class="hljs-comment">// &lt;--- gets the first argument</span>
+                        <span class="hljs-comment">//      passed to the program</span>
+</code></pre>
+<p>if you forgot</p>
+<pre><code class="hljs language-rust">std::fs::<span class="hljs-title function_ invoke__">read_to_string</span>(...) <span class="hljs-comment">// reads a file to string</span>
+</code></pre>
+<p>I&#39;ll give you a second, then i&#39;ll do it</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="complete-code-1">Complete Code</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">arg</span> = std::env::<span class="hljs-title function_ invoke__">args</span>().<span class="hljs-title function_ invoke__">nth</span>(<span class="hljs-number">1</span>)
+        .<span class="hljs-title function_ invoke__">expect</span>(<span class="hljs-string">&quot;please provide a file name as an argument&quot;</span>);
+
+    std::fs::<span class="hljs-title function_ invoke__">read_to_string</span>(arg)
+        .<span class="hljs-title function_ invoke__">expect</span>(<span class="hljs-string">&quot;unable to read the file provided&quot;</span>)
+        .<span class="hljs-title function_ invoke__">lines</span>()
+        .<span class="hljs-title function_ invoke__">for_each</span>(|line| <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, line));
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="discussion-compare-typescript-w-rust">[Discussion]: Compare TypeScript w/ Rust</h2>
+<p>what makes rust better or worse in this example?</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="lets-add-more-requirements">Lets add more requirements</h2>
+<p>lets only print out lines that are <code>number</code>s and lines that are not, lets print
+out <code>Line not a number</code></p>
+<p>First, TypeScript, i&#39;ll give you a moment</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="complete-code-2">Complete Code</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;fs&quot;</span>;
+fs.<span class="hljs-title function_">readFileSync</span>(process.<span class="hljs-property">argv</span>[<span class="hljs-number">2</span>])
+  .<span class="hljs-title function_">toString</span>()
+  .<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;\n&quot;</span>)
+  .<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">line</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> v = <span class="hljs-built_in">parseInt</span>(line);
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isNaN</span>(v)) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Line not a number&quot;</span>);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(v);
+    }
+  });
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="now-how-do-we-do-this-in-rust">Now how do we do this in rust?</h2>
+<p>one piece of knowledge, <code>parse</code> is needed.</p>
+<p>A <code>&amp;str</code> has <code>parse</code> function which allows for any <code>Type</code> implementing
+<code>FromStr</code> to be parsed from a string. Now this sounds like a bunch of
+non-sense, don&#39;t worry, we will go through this more deeply soon.</p>
+<pre><code class="hljs language-rust"><span class="hljs-comment">// -------v</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span>: <span class="hljs-type">usize</span> = <span class="hljs-string">&quot;5&quot;</span>.<span class="hljs-title function_ invoke__">parse</span>();
+
+<span class="hljs-comment">// ---------------------v</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable">foo</span> = <span class="hljs-string">&quot;5&quot;</span>.parse::&lt;<span class="hljs-type">usize</span>&gt;();
+
+<span class="hljs-comment">// ------------v</span>
+<span class="hljs-keyword">fn</span> <span class="hljs-title function_">mult</span>() <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">usize</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;5&quot;</span>.<span class="hljs-title function_ invoke__">parse</span>().<span class="hljs-title function_ invoke__">unwrap_or</span>(<span class="hljs-number">0</span>);
+}
+</code></pre>
+<p>I&#39;ll give you a moment to try it out, then i&#39;ll do it
+(think pattern matching)</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="complete-code-3">Complete Code</h2>
+<pre><code class="hljs language-rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-variable">arg</span> = std::env::<span class="hljs-title function_ invoke__">args</span>().<span class="hljs-title function_ invoke__">nth</span>(<span class="hljs-number">1</span>)
+        .<span class="hljs-title function_ invoke__">expect</span>(<span class="hljs-string">&quot;please provide a file name as an argument&quot;</span>);
+
+    std::fs::<span class="hljs-title function_ invoke__">read_to_string</span>(arg)
+        .<span class="hljs-title function_ invoke__">expect</span>(<span class="hljs-string">&quot;unable to read the file provided&quot;</span>)
+        .<span class="hljs-title function_ invoke__">lines</span>()
+        .<span class="hljs-title function_ invoke__">for_each</span>(|line| {
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-variable">Ok</span>(value) = line.parse::&lt;<span class="hljs-type">usize</span>&gt;() {
+                <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, value);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;Line not a number&quot;</span>);
+            }
+        });
+}
+</code></pre>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="discussion-which-one-was-easier-to-get-right">[Discussion]: Which one was easier to get right?</h2>
+<p>Try to think through the problem as if you knew Rust as well as TypeScript</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="a-case-for-rust">A Case for rust</h2>
+<p>In the simplest sense, you always know where your errors happen, you always
+know when undefineds can happen</p>
+<ul>
+<li>Result saves you from errors you should be able to prevent</li>
+<li>Option saves you from <code>undefined is not a function</code></li>
+<li>Rust doesn&#39;t save you from bad logic, we are all bad programmers, sowwy</li>
+</ul>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2 id="questions">Questions?</h2>
+<p>Get them out of the way now, even if its not <code>Result</code> based.</p>
+<p>Remember:</p>
+<ul>
+<li>If you don&#39;t understand something, this is a great time to understand it
+better</li>
+<li>If you don&#39;t understand something, guarantee the person next to you is
+struggling with the same thing</li>
+<li>If you don&#39;t ask, who will?</li>
+</ul>
+<p>The next section is going to be much more rust focused.</p>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div><div class="lesson-links"><a href="/rust-for-typescript-devs/lessons/coding-rust/options" class="prev">← Previous</a><a href="/rust-for-typescript-devs/lessons/borrow-checker/a-light-intro-to-heap" class="next">Next →</a></div></div><div class="details-bg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="154" height="154" viewBox="0 0 154 154"><defs><clipPath id="clip-path"><rect id="Rectangle_2238" data-name="Rectangle 2238" width="154" height="154" transform="translate(9467 350)" fill="#fff" stroke="#707070" stroke-width="1"></rect></clipPath><clipPath id="clip-corner-image-active"><rect width="154" height="154"></rect></clipPath></defs><g id="corner-image-active" clip-path="url(#clip-corner-image-active)"><g id="Corner-image-active-2" data-name="Corner-image-active" transform="translate(-9467 -350)" clip-path="url(#clip-path)"><path id="Subtraction_34" data-name="Subtraction 34" d="M-3857.365,1740.766h0l-7.07-7.07,12.89-12.89v14.142l-5.818,5.818Zm-14.142-14.142h0l-7.071-7.07,27.033-27.033v14.143l-19.96,19.96Zm-14.143-14.143h0l-7.07-7.069,41.175-41.175v14.142Zm-14.142-14.142h0l-7.07-7.069,55.317-55.317v14.142Zm-14.142-14.142h0l-7.07-7.069,69.459-69.459v14.142Zm-14.142-14.142h0l-7.07-7.069,76.739-76.739h6.862v7.28Zm-14.143-14.143h0l-7.07-7.069,62.6-62.6h14.142Zm-14.142-14.142h0l-7.07-7.069,48.454-48.454h14.142Zm-14.142-14.142h0l-7.07-7.069,34.312-34.312h14.142Zm-14.142-14.142h0l-7.07-7.069,20.17-20.17h14.142Zm-14.142-14.142h0l-7.071-7.071,6.027-6.027h14.144l-13.1,13.1Zm367.24-56.114v-.909l.455.455-.453.453Z" transform="translate(13472.546 -1236.766)" fill="var(--corner-fill)"></path></g></g></svg></div></div></div></div><footer class="footer"><ul class="socials"><li class="social"><a href="https://twitter.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="32" viewBox="0 0 40 32"><defs><clipPath id="clip-twitter-social"><rect width="40" height="32"></rect></clipPath></defs><g id="twitter-social" clip-path="url(#clip-twitter-social)"><g id="Group_269" data-name="Group 269" transform="translate(-230.23 -1140.849)"><path id="Path_419" data-name="Path 419" d="M266.12,1148.861v1.035a23.092,23.092,0,0,1-1.507,8.1,24.08,24.08,0,0,1-4.475,7.381,22.175,22.175,0,0,1-7.306,5.4,24.129,24.129,0,0,1-10,2.07,23.7,23.7,0,0,1-6.667-.945,22.83,22.83,0,0,1-5.936-2.655q.959.091,1.963.09a16.518,16.518,0,0,0,5.434-.9,17.111,17.111,0,0,0,4.749-2.52,8.275,8.275,0,0,1-4.749-1.643,7.8,7.8,0,0,1-2.877-3.983,8.268,8.268,0,0,0,1.507.135,8.58,8.58,0,0,0,2.146-.27,8.16,8.16,0,0,1-5.685-4.344,8.326,8.326,0,0,1-.89-3.578v-.135a7.775,7.775,0,0,0,3.744,1.035,8.183,8.183,0,0,1-2.671-2.9,7.817,7.817,0,0,1-.982-3.848,7.948,7.948,0,0,1,1.1-4.05,23.53,23.53,0,0,0,16.895,8.46,9.221,9.221,0,0,1-.183-1.845,7.787,7.787,0,0,1,1.1-4.05,8.216,8.216,0,0,1,2.991-2.948,7.991,7.991,0,0,1,4.087-1.1,8.184,8.184,0,0,1,5.982,2.566,16.087,16.087,0,0,0,5.205-1.98,7.784,7.784,0,0,1-1.393,2.588,8.4,8.4,0,0,1-2.215,1.913,16.856,16.856,0,0,0,4.749-1.305A17.032,17.032,0,0,1,266.12,1148.861Z" fill="var(--footer-icons)"></path></g></g></svg></a></li><li class="social"><a href="https://github.com/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32"><defs><clipPath id="clip-github-social"><rect width="32" height="32"></rect></clipPath></defs><g id="github-social" clip-path="url(#clip-github-social)"><g id="Group_272" data-name="Group 272" transform="translate(13522.5 -6994)"><path id="Subtraction_33" data-name="Subtraction 33" d="M-24967.5,8041a15.9,15.9,0,0,1-11.312-4.688A15.893,15.893,0,0,1-24983.5,8025a15.893,15.893,0,0,1,4.689-11.315A15.894,15.894,0,0,1-24967.5,8009a15.894,15.894,0,0,1,11.313,4.686A15.893,15.893,0,0,1-24951.5,8025a15.893,15.893,0,0,1-4.689,11.313A15.9,15.9,0,0,1-24967.5,8041Zm-3.781-4.571h0v3.918h7.895v-6.665a1.836,1.836,0,0,0-1.2-1.718c5.1-.617,7.467-2.975,7.467-7.424a7.176,7.176,0,0,0-1.637-4.728,6.74,6.74,0,0,0,.275-1.812,4.34,4.34,0,0,0-.52-2.452.574.574,0,0,0-.359-.1c-1.061,0-3.465,1.411-3.936,1.694a16.644,16.644,0,0,0-4.2-.489,16.379,16.379,0,0,0-3.969.445c-.846-.5-2.91-1.649-3.859-1.649a.566.566,0,0,0-.354.095,4.3,4.3,0,0,0-.521,2.452,6.7,6.7,0,0,0,.244,1.718,7.346,7.346,0,0,0-1.6,4.822,7.263,7.263,0,0,0,1.533,4.985c1.193,1.359,3.115,2.165,5.871,2.464a1.826,1.826,0,0,0-1.129,1.693v.5h0l-.006,0a7.121,7.121,0,0,1-2.033.363,2.608,2.608,0,0,1-.965-.158,4.438,4.438,0,0,1-1.836-1.881,2.361,2.361,0,0,0-1.248-1.091,3.472,3.472,0,0,0-1.217-.3.584.584,0,0,0-.545.224.282.282,0,0,0,.027.367,1.875,1.875,0,0,0,.447.307,4.732,4.732,0,0,1,.561.355,10.726,10.726,0,0,1,1.682,2.755c.043.092.078.163.105.217a3.876,3.876,0,0,0,2.42,1.185,6.036,6.036,0,0,0,.607.025c.875,0,1.988-.124,2-.125Z" transform="translate(11461 -1015)" fill="var(--footer-icons)"></path><g id="Ellipse_670" data-name="Ellipse 670" transform="translate(-13522.5 6994)" fill="none" stroke="var(--footer-icons)" stroke-width="1"><circle cx="16" cy="16" r="16" stroke="none"></circle><circle cx="16" cy="16" r="15.5" fill="none"></circle></g></g></g></svg></a></li><li class="social"><a href="https://twitch.tv/theprimeagen"><svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45"><path d="M2.149 0l-1.612 4.119v16.836h5.731v3.045h3.245l3.045-3.045h4.657l6.269-6.269v-14.686h-21.314zm19.164 13.612l-3.582 3.582h-5.731l-3.045 3.045v-3.045h-4.836v-15.045h17.194v11.463zm-3.582-7.343v6.262h-2.149v-6.262h2.149zm-5.731 0v6.262h-2.149v-6.262h2.149z" fill-rule="evenodd" clip-rule="evenodd"></path></svg></a></li><li class="social"><div class="terms"><p>Content Licensed Under CC-BY-NC-4.0</p><p>Code Samples and Excercises Licensed Under Apache 2.0</p><p>Site Designed by<!-- --> <a href="https://www.alexdanielson.com/">Alex Danielson</a></p></div></li></ul></footer></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"post":{"attributes":{"title":"Learn Rustlang Results","description":"Lets go deep on results."},"html":"\u003ch2 id=\"to-throw-or-not-to-throw-that-is-the-question\"\u003eTo throw or not to throw, that is the question\u003c/h2\u003e\n\u003cp\u003eAnother place where typescript and rust have fundamentally different design\ndecisions.\u003c/p\u003e\n\u003cp\u003eAsk yourself the following questions\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003ewhat function throws an error?\u003c/li\u003e\n\u003cli\u003ewho handles the error if thrown?\u003c/li\u003e\n\u003cli\u003ewhat can be throw? (look at the promise reject definition (reason: any))\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003ewith javascript you learn by trial. \u003cbr/\u003e\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"how-rust-handles-errors\"\u003eHow Rust Handles Errors\u003c/h2\u003e\n\u003cp\u003eErrors are values\u003c/p\u003e\n\u003cp\u003eThis means that there is no throwing. You get a value that is either a value\nor an error.\u003c/p\u003e\n\u003cp\u003eNotice this is very similar to Option.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eOption is value or undefined\u003c/li\u003e\n\u003cli\u003eResult is value or error value\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"if-err--nil\"\u003eif err != nil\u003c/h2\u003e\n\u003cp\u003eyes, the golang meme of error handling doesn\u0026#39;t exist in rust. Rust handles\nerrors better than go.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"i-am-going-to-make-some-assumptions\"\u003eI am going to make some assumptions\u003c/h2\u003e\n\u003cp\u003eYou don\u0026#39;t need me to show you another example of how to handle enums because\nthat\u0026#39;s all we have been doing.\u003c/p\u003e\n\u003cp\u003eThe definition of a result\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003eenum\u003c/span\u003e \u003cspan class=\"hljs-title class_\"\u003eResult\u003c/span\u003e\u0026lt;V, E\u0026gt; {\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eOk\u003c/span\u003e(V),\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eErr\u003c/span\u003e(E),\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eAlso, rust has \u003ccode\u003eOk\u003c/code\u003e and \u003ccode\u003eErr\u003c/code\u003e as first class citizens\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eOk\u003c/span\u003e(value) = \u003cspan class=\"hljs-title function_ invoke__\"\u003ea_function_that_can_error\u003c/span\u003e() {\n    \u003cspan class=\"hljs-comment\"\u003e// something with the value\u003c/span\u003e\n}\n\n\u003cspan class=\"hljs-keyword\"\u003ematch\u003c/span\u003e \u003cspan class=\"hljs-title function_ invoke__\"\u003ea_function_that_can_error\u003c/span\u003e() {\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eOk\u003c/span\u003e(value) =\u0026gt; \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;oh yeah, value! {}\u0026quot;\u003c/span\u003e, value);\n    \u003cspan class=\"hljs-title function_ invoke__\"\u003eErr\u003c/span\u003e(e) =\u0026gt; eprintln!(\u003cspan class=\"hljs-string\"\u003e\u0026quot;ohh no... {}\u0026quot;\u003c/span\u003e, e);\n}\n\n\u003cspan class=\"hljs-comment\"\u003e// you don\u0026#x27;t care about the error\u003c/span\u003e\n_ = \u003cspan class=\"hljs-title function_ invoke__\"\u003ea_function_that_can_error\u003c/span\u003e();\n\n\u003cspan class=\"hljs-comment\"\u003e// yolo\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-title function_ invoke__\"\u003ea_function_that_can_error\u003c/span\u003e().\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap\u003c/span\u003e();\n\n\u003cspan class=\"hljs-comment\"\u003e// respectful yolo\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-title function_ invoke__\"\u003ea_function_that_can_error\u003c/span\u003e().\u003cspan class=\"hljs-title function_ invoke__\"\u003eexpect\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;should never fail\u0026quot;\u003c/span\u003e);\n\n\u003cspan class=\"hljs-comment\"\u003e// defaults\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-title function_ invoke__\"\u003ea_function_that_can_error\u003c/span\u003e().\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap_or\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e);\n\n\u003cspan class=\"hljs-comment\"\u003e// convert to option\u003c/span\u003e\n\u003cspan class=\"hljs-comment\"\u003e// Ok(V) =\u0026gt; Some(V)\u003c/span\u003e\n\u003cspan class=\"hljs-comment\"\u003e// Err(E) =\u0026gt; None\u003c/span\u003e\n\u003cspan class=\"hljs-comment\"\u003e// bai felicia\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-title function_ invoke__\"\u003ea_function_that_can_error\u003c/span\u003e().\u003cspan class=\"hljs-title function_ invoke__\"\u003eok\u003c/span\u003e();\n\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-title function_ invoke__\"\u003ea_function_that_can_error\u003c/span\u003e()\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003emap\u003c/span\u003e(|value| value + \u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e);\n\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-title function_ invoke__\"\u003ea_function_that_can_error\u003c/span\u003e()\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003eand_then\u003c/span\u003e(|value| \u003cspan class=\"hljs-title function_ invoke__\"\u003eanother_possible_error\u003c/span\u003e(value))\n    .\u003cspan class=\"hljs-title function_ invoke__\"\u003eand_then\u003c/span\u003e(|value| \u003cspan class=\"hljs-title function_ invoke__\"\u003eagain\u003c/span\u003e(value));\n\n\u003cspan class=\"hljs-comment\"\u003e// If your function returns an error, you can do this!\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-title function_ invoke__\"\u003ea_function_that_can_error\u003c/span\u003e()?;\n\u003c/code\u003e\u003c/pre\u003e\n\u003ch2 id=\"side-note\"\u003eSide Note\u003c/h2\u003e\n\u003cp\u003ethere are two \u003ccode\u003ecrates\u003c/code\u003e (rust package) that work very well with errors\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003ethiserror - great for creating your own errors. should be used in libraries\u003c/li\u003e\n\u003cli\u003eanyhow - great for applications.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eWe will use anyhow shortly\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"another-small-exercise\"\u003eAnother small exercise!\u003c/h2\u003e\n\u003cp\u003eThis is going to combine all of our knowledge of \u003ccode\u003eIterator\u003c/code\u003es, \u003ccode\u003eOption\u003c/code\u003es, and\nnewly introduced \u003ccode\u003eResult\u003c/code\u003e. \u003cbr /\u003e\u003c/p\u003e\n\u003cp\u003eBut! Lets go in small steps\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003eread the first argument passed to the program\u003c/li\u003e\n\u003c/ol\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003ecargo run -- this_is_an_arg\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003enpx ts-node file this_is_an_arg\u003c/code\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003col\u003e\n\u003cli\u003ethe first argument is a name and path to the file to read\u003c/li\u003e\n\u003cli\u003eprint out each line of the file\u003c/li\u003e\n\u003c/ol\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003eprocess.\u003cspan class=\"hljs-property\"\u003eargv\u003c/span\u003e[\u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e] \u0026lt;--- first arg to program\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eNow we have already done some of this, so this should become a bit easier, lets\nstart with TypeScript.\u003c/p\u003e\n\u003cp\u003efile you should use, save as proj/numbers\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e1\n5\n9\n33\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"complete-code\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e fs \u003cspan class=\"hljs-keyword\"\u003efrom\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;fs\u0026quot;\u003c/span\u003e;\nfs.\u003cspan class=\"hljs-title function_\"\u003ereadFileSync\u003c/span\u003e(process.\u003cspan class=\"hljs-property\"\u003eargv\u003c/span\u003e[\u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e])\n  .\u003cspan class=\"hljs-title function_\"\u003etoString\u003c/span\u003e()\n  .\u003cspan class=\"hljs-title function_\"\u003esplit\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;\\n\u0026quot;\u003c/span\u003e)\n  .\u003cspan class=\"hljs-title function_\"\u003eforEach\u003c/span\u003e(\u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003eline\u003c/span\u003e) =\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(line));\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003cp\u003eOk... now try this\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-bash\"\u003enpx ts-node src/index.ts filethatdoesntexist\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003ewhat happens?\nwhy?\u003c/p\u003e\n\u003cp\u003eok... again\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-bash\"\u003enpx ts-node src/index.ts\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e?? WHY YOU DO THIS TO ME\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"rust\"\u003eRust\u003c/h2\u003e\n\u003cp\u003eOk lets try the same thing in rust. It will be a bit more involved.\u003c/p\u003e\n\u003cp\u003eI\u0026#39;ll give you some hints.\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003estd::env::\u003cspan class=\"hljs-title function_ invoke__\"\u003eargs\u003c/span\u003e().\u003cspan class=\"hljs-title function_ invoke__\"\u003enth\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e) \u003cspan class=\"hljs-comment\"\u003e// \u0026lt;--- gets the first argument\u003c/span\u003e\n                        \u003cspan class=\"hljs-comment\"\u003e//      passed to the program\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eif you forgot\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003estd::fs::\u003cspan class=\"hljs-title function_ invoke__\"\u003eread_to_string\u003c/span\u003e(...) \u003cspan class=\"hljs-comment\"\u003e// reads a file to string\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eI\u0026#39;ll give you a second, then i\u0026#39;ll do it\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"complete-code-1\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003earg\u003c/span\u003e = std::env::\u003cspan class=\"hljs-title function_ invoke__\"\u003eargs\u003c/span\u003e().\u003cspan class=\"hljs-title function_ invoke__\"\u003enth\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e)\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003eexpect\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;please provide a file name as an argument\u0026quot;\u003c/span\u003e);\n\n    std::fs::\u003cspan class=\"hljs-title function_ invoke__\"\u003eread_to_string\u003c/span\u003e(arg)\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003eexpect\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;unable to read the file provided\u0026quot;\u003c/span\u003e)\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003elines\u003c/span\u003e()\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003efor_each\u003c/span\u003e(|line| \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;{}\u0026quot;\u003c/span\u003e, line));\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"discussion-compare-typescript-w-rust\"\u003e[Discussion]: Compare TypeScript w/ Rust\u003c/h2\u003e\n\u003cp\u003ewhat makes rust better or worse in this example?\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"lets-add-more-requirements\"\u003eLets add more requirements\u003c/h2\u003e\n\u003cp\u003elets only print out lines that are \u003ccode\u003enumber\u003c/code\u003es and lines that are not, lets print\nout \u003ccode\u003eLine not a number\u003c/code\u003e\u003c/p\u003e\n\u003cp\u003eFirst, TypeScript, i\u0026#39;ll give you a moment\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"complete-code-2\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-typescript\"\u003e\u003cspan class=\"hljs-keyword\"\u003eimport\u003c/span\u003e fs \u003cspan class=\"hljs-keyword\"\u003efrom\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;fs\u0026quot;\u003c/span\u003e;\nfs.\u003cspan class=\"hljs-title function_\"\u003ereadFileSync\u003c/span\u003e(process.\u003cspan class=\"hljs-property\"\u003eargv\u003c/span\u003e[\u003cspan class=\"hljs-number\"\u003e2\u003c/span\u003e])\n  .\u003cspan class=\"hljs-title function_\"\u003etoString\u003c/span\u003e()\n  .\u003cspan class=\"hljs-title function_\"\u003esplit\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;\\n\u0026quot;\u003c/span\u003e)\n  .\u003cspan class=\"hljs-title function_\"\u003eforEach\u003c/span\u003e(\u003cspan class=\"hljs-function\"\u003e(\u003cspan class=\"hljs-params\"\u003eline\u003c/span\u003e) =\u0026gt;\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003econst\u003c/span\u003e v = \u003cspan class=\"hljs-built_in\"\u003eparseInt\u003c/span\u003e(line);\n    \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e (\u003cspan class=\"hljs-built_in\"\u003eisNaN\u003c/span\u003e(v)) {\n      \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;Line not a number\u0026quot;\u003c/span\u003e);\n    } \u003cspan class=\"hljs-keyword\"\u003eelse\u003c/span\u003e {\n      \u003cspan class=\"hljs-variable language_\"\u003econsole\u003c/span\u003e.\u003cspan class=\"hljs-title function_\"\u003elog\u003c/span\u003e(v);\n    }\n  });\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"now-how-do-we-do-this-in-rust\"\u003eNow how do we do this in rust?\u003c/h2\u003e\n\u003cp\u003eone piece of knowledge, \u003ccode\u003eparse\u003c/code\u003e is needed.\u003c/p\u003e\n\u003cp\u003eA \u003ccode\u003e\u0026amp;str\u003c/code\u003e has \u003ccode\u003eparse\u003c/code\u003e function which allows for any \u003ccode\u003eType\u003c/code\u003e implementing\n\u003ccode\u003eFromStr\u003c/code\u003e to be parsed from a string. Now this sounds like a bunch of\nnon-sense, don\u0026#39;t worry, we will go through this more deeply soon.\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-comment\"\u003e// -------v\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e: \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e = \u003cspan class=\"hljs-string\"\u003e\u0026quot;5\u0026quot;\u003c/span\u003e.\u003cspan class=\"hljs-title function_ invoke__\"\u003eparse\u003c/span\u003e();\n\n\u003cspan class=\"hljs-comment\"\u003e// ---------------------v\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003efoo\u003c/span\u003e = \u003cspan class=\"hljs-string\"\u003e\u0026quot;5\u0026quot;\u003c/span\u003e.parse::\u0026lt;\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e\u0026gt;();\n\n\u003cspan class=\"hljs-comment\"\u003e// ------------v\u003c/span\u003e\n\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emult\u003c/span\u003e() \u003cspan class=\"hljs-punctuation\"\u003e-\u0026gt;\u003c/span\u003e \u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e {\n    \u003cspan class=\"hljs-keyword\"\u003ereturn\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\u0026quot;5\u0026quot;\u003c/span\u003e.\u003cspan class=\"hljs-title function_ invoke__\"\u003eparse\u003c/span\u003e().\u003cspan class=\"hljs-title function_ invoke__\"\u003eunwrap_or\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e0\u003c/span\u003e);\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eI\u0026#39;ll give you a moment to try it out, then i\u0026#39;ll do it\n(think pattern matching)\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"complete-code-3\"\u003eComplete Code\u003c/h2\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-rust\"\u003e\u003cspan class=\"hljs-keyword\"\u003efn\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003emain\u003c/span\u003e() {\n    \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003earg\u003c/span\u003e = std::env::\u003cspan class=\"hljs-title function_ invoke__\"\u003eargs\u003c/span\u003e().\u003cspan class=\"hljs-title function_ invoke__\"\u003enth\u003c/span\u003e(\u003cspan class=\"hljs-number\"\u003e1\u003c/span\u003e)\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003eexpect\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;please provide a file name as an argument\u0026quot;\u003c/span\u003e);\n\n    std::fs::\u003cspan class=\"hljs-title function_ invoke__\"\u003eread_to_string\u003c/span\u003e(arg)\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003eexpect\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;unable to read the file provided\u0026quot;\u003c/span\u003e)\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003elines\u003c/span\u003e()\n        .\u003cspan class=\"hljs-title function_ invoke__\"\u003efor_each\u003c/span\u003e(|line| {\n            \u003cspan class=\"hljs-keyword\"\u003eif\u003c/span\u003e \u003cspan class=\"hljs-keyword\"\u003elet\u003c/span\u003e \u003cspan class=\"hljs-variable\"\u003eOk\u003c/span\u003e(value) = line.parse::\u0026lt;\u003cspan class=\"hljs-type\"\u003eusize\u003c/span\u003e\u0026gt;() {\n                \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;{}\u0026quot;\u003c/span\u003e, value);\n            } \u003cspan class=\"hljs-keyword\"\u003eelse\u003c/span\u003e {\n                \u003cspan class=\"hljs-built_in\"\u003eprintln!\u003c/span\u003e(\u003cspan class=\"hljs-string\"\u003e\u0026quot;Line not a number\u0026quot;\u003c/span\u003e);\n            }\n        });\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"discussion-which-one-was-easier-to-get-right\"\u003e[Discussion]: Which one was easier to get right?\u003c/h2\u003e\n\u003cp\u003eTry to think through the problem as if you knew Rust as well as TypeScript\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"a-case-for-rust\"\u003eA Case for rust\u003c/h2\u003e\n\u003cp\u003eIn the simplest sense, you always know where your errors happen, you always\nknow when undefineds can happen\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eResult saves you from errors you should be able to prevent\u003c/li\u003e\n\u003cli\u003eOption saves you from \u003ccode\u003eundefined is not a function\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003eRust doesn\u0026#39;t save you from bad logic, we are all bad programmers, sowwy\u003c/li\u003e\n\u003c/ul\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\n\u003ch2 id=\"questions\"\u003eQuestions?\u003c/h2\u003e\n\u003cp\u003eGet them out of the way now, even if its not \u003ccode\u003eResult\u003c/code\u003e based.\u003c/p\u003e\n\u003cp\u003eRemember:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eIf you don\u0026#39;t understand something, this is a great time to understand it\nbetter\u003c/li\u003e\n\u003cli\u003eIf you don\u0026#39;t understand something, guarantee the person next to you is\nstruggling with the same thing\u003c/li\u003e\n\u003cli\u003eIf you don\u0026#39;t ask, who will?\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThe next section is going to be much more rust focused.\u003c/p\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n\u003cbr /\u003e\n","slug":"results","title":"Learn Rustlang Results","section":"Coding Rust","icon":"info-circle","filePath":"/home/runner/work/rust-for-typescript-devs/rust-for-typescript-devs/lessons/02-coding-rust/D-results.md","nextSlug":"/rust-for-typescript-devs/lessons/borrow-checker/a-light-intro-to-heap","prevSlug":"/rust-for-typescript-devs/lessons/coding-rust/options"}},"__N_SSG":true},"page":"/lessons/[section]/[slug]","query":{"section":"coding-rust","slug":"results"},"buildId":"80Kch6YahQPprgQ870uS5","assetPrefix":"/rust-for-typescript-devs","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>
